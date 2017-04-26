@@ -13,6 +13,7 @@
 #define AVOGADRO 6.0022141E23
 #define CUBIC_A_TO_CUBIC_M 1E-30
 #define G_IN_KG 1000.0
+#define J_TO_KJ 1000.0
 
 #ifndef FUGACITY_H
 #define FUGACITY_H
@@ -43,8 +44,8 @@ double co2_pengr_fugacity(double temperature, double pressure);
 
 void get_ideal_mu();
 
-void get_state_excess_mu();
-void get_state_fugacity(run * runss, int num_of_runs);
+void get_state_excess_mu(run * runs, int num_of_runs);
+void get_state_fugacity(run * runs, int num_of_runs);
 
 void get_simulation_fugacity();
 void get_simulation_mu();
