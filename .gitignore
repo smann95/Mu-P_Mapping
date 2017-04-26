@@ -1,1 +1,6 @@
-*.dat
+*
+!.gitignore
+!fugacity.c
+!fugacity.h
+!main.c
+!makefile
