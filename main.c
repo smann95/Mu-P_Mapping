@@ -23,7 +23,7 @@ int main(int argc, char ** argv)
   sscanf(first_line,"%d\n",&num_of_runs);
 
   run runs[num_of_runs];//make a struct for every run
-  double * output_array = (double*)malloc(sizeof(double)*5);
+  double * output_array = (double*)malloc(sizeof(double)*7);
 
   give_structs_species_data(runs, num_of_runs);
   read_simulation_input(runs);
@@ -46,5 +46,6 @@ int main(int argc, char ** argv)
   fclose(input);
   free(first_line);
   free(file_name);
+  free(output_array);
   return 0;
 }

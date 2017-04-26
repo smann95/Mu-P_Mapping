@@ -1,7 +1,7 @@
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #define M_PI 3.14159265358979323846264338327950288
 #define GAS_CONSTANT 8.3144598 
