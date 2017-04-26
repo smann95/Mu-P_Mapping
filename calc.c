@@ -110,7 +110,6 @@ void get_simulation_fugacity(run * runs, int num_of_runs)
     simulation_excess = (runs+i)->simulation_mu - (runs+i)->ideal_gas_mu;
     exp_term = -(simulation_excess/(BOLTZMANN_KJ_MOLAR*(runs+i)->temperature));
     (runs+i)->simulation_fugacity = exp(exp_term) * (runs+i)->pressure_atm;
-    (runs+i)->simulation_fugacity /= 1000.0;//don't ask
   }
 
 }
@@ -135,7 +134,9 @@ void output(double * output_array, char * file_name ,int num_of_runs)
   char * output_name = strtok(file_name,".dat");
   strcat(output_name,".out");
   output = fopen(output_name,"w");
+
   fprintf(output,"#T     \t      #P_ATM      #SIMFUG     #STATEFUG   #STATE_EX_MU   #IDEAL_MU     #SIMULATION_MU\n");
+
   for(int i = 0;i<num_of_runs;i++)
   {
     for(int j = 0;j<7;j++)
