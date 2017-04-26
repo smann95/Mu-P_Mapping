@@ -4,9 +4,19 @@ void read_simulation_input(run * runs)
 {
   FILE * input;
   input = fopen("co2.dat","r");
+  if(input == NULL)
+  {
+    printf("Failed to open input file in read_simulation_input().\nTry again.");
+    exit(EXIT_FAILURE);
+  }
   char * line = (char*)malloc(sizeof(char)*256); int i = 0;
+
+  fgets(line,256,input);//first two lines are trash
+  fgets(line,256,input);
+
   while(fgets(line,256,input))
   {
+    printf("THE LINE = %s\n",line);
     sscanf(line,"%lf %lf %lf %lf",&(runs+i)->temperature,&(runs+i)->pressure_bar,&(runs+i)->simulation_N,&(runs+i)->simulation_volume);
     i++;
   }
@@ -105,6 +115,34 @@ void get_simulation_fugacity(run * runs, int num_of_runs)
 
 }
 
+void populate_output_array(double * output_array, run * runs, int num_of_runs)
+{
+  for(int i = 0;i<num_of_runs;i++)
+  {
+    *(output_array+i*5+0) = (runs+i)->temperature;
+    *(output_array+i*5+1) = (runs+i)->pressure_atm;
+    *(output_array+i*5+2) = (runs+i)->simulation_fugacity;
+    *(output_array+i*5+3) = (runs+i)->state_fugacity;
+    *(output_array+i*5+4) = (runs+i)->state_excess_mu;
+  }
+}
+
+void output(double * output_array, char * file_name ,int num_of_runs)
+{
+  FILE * output;
+  strcat(file_name,".out");
+  output = fopen(file_name,"w");
+  fprintf(output,"#T #P_ATM #SIMFUG #STATEFUG #STATE_EX_MU\n");
+  for(int i = 0;i<num_of_runs;i++)
+  {
+    for(int j = 0;j<5;j++)
+    {
+      fprintf(output,"%lf ",*(output_array+i*5+j));
+    }
+    fprintf(output,"\n");
+  }
+  fclose(output);
+}
 
 
 

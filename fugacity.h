@@ -16,8 +16,7 @@
 #define J_TO_KJ 1000.0
 
 #ifndef FUGACITY_H
-#define FUGACITY_H
-
+#define FUGACITY_H 
 typedef struct _run
 {
   double temperature,
@@ -50,7 +49,8 @@ void get_state_fugacity(run * runs, int num_of_runs);
 void get_simulation_mu(run * runs, int num_of_runs);
 void get_simulation_fugacity(run * runs, int num_of_runs);
 
-
+void populate_output_array(double * output_array, run * runs, int num_of_runs);
+void output(double * output_array, char * file_name, int num_of_runs);
 
 
 #endif
