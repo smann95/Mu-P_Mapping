@@ -10,10 +10,15 @@
 #define BOLTZMANN_J_PER_K 0.000000000000000000000013806485279 
 #define BOLTZMANN_KJ_MOLAR 0.008314462175 //KJ/(mol*K)
 #define PLANCK 0.000000000000000000000000000000000662607 //J*S
-#define AVOGADRO 602214100000000000000000
+#define AVOGADRO 602214100000000000000000U
 
 #ifndef FUGACITY_H
 #define FUGACITY_H
+
+typedef struct simulation_run_struct
+{
+
+}simulation_run;
 
 double co2_pengr_fugacity(double temperature, double pressure);
 
