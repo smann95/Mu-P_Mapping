@@ -5,31 +5,46 @@
 
 #define M_PI 3.14159265358979323846264338327950288
 #define GAS_CONSTANT 8.3144598 
-#define BAR_TO_ATM 1.01325
+#define BAR_TO_ATM 0.986923
 #define BAR_TO_PASCAL 100000.0
-#define BOLTZMANN_J_PER_K 0.000000000000000000000013806485279 
+#define BOLTZMANN_J_PER_K 1.3806485279E-23
 #define BOLTZMANN_KJ_MOLAR 0.008314462175 //KJ/(mol*K)
-#define PLANCK 0.000000000000000000000000000000000662607 //J*S
-#define AVOGADRO 602214100000000000000000U
+#define PLANCK 6.62607004E-34 //J*S
+#define AVOGADRO 6.0022141E23
+#define CUBIC_A_TO_CUBIC_M 1E-30
+#define G_IN_KG 1000.0
 
 #ifndef FUGACITY_H
 #define FUGACITY_H
 
-typedef struct simulation_run_struct
+typedef struct _run
 {
+  double temperature,
+         pressure_bar,
+         pressure_atm,
+         pressure_pa,
+         mass;
+  double simulation_N,
+         simulation_volume,
+         simulation_mu,
+         simulation_fugacity;
+  double state_excess_mu,
+         state_fugacity;//fug
+  double ideal_gas_mu;
+}run;
 
-}simulation_run;
+void read_simulation_input(run * runs);
+
+void give_structs_species_data(run * runs, int num_of_runs);
+void convert_to_proper_units(run * runs, int num_of_runs);
 
 double co2_pengr_fugacity(double temperature, double pressure);
 
-void read_simulation_input();
-
-void get_mass_in_kilograms();
 
 void get_ideal_mu();
 
 void get_state_excess_mu();
-void get_state_fugacity();
+void get_state_fugacity(run * runss, int num_of_runs);
 
 void get_simulation_fugacity();
 void get_simulation_mu();
