@@ -14,6 +14,7 @@
 #define CUBIC_A_TO_CUBIC_M 1E-27
 #define G_IN_KG 1000.0
 #define J_TO_KJ 1000.0
+#define outputs 7
 
 #ifndef FUGACITY_H
 #define FUGACITY_H 
@@ -33,7 +34,7 @@ typedef struct _run
   double ideal_gas_mu;
 }run;
 
-void read_simulation_input(run * runs);
+void read_simulation_input(run * runs, char * file_name);
 
 void give_structs_species_data(run * runs, int num_of_runs);
 void convert_to_proper_units(run * runs, int num_of_runs);

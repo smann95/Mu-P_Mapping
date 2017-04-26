@@ -1,9 +1,9 @@
 #include "fugacity.h"
 
-void read_simulation_input(run * runs)
+void read_simulation_input(run * runs, char * file_name)
 {
   FILE * input;
-  input = fopen("co2.dat","r");
+  input = fopen(file_name,"r");
   if(input == NULL)
   {
     printf("Failed to open input file in read_simulation_input().\nTry again.");
@@ -110,6 +110,7 @@ void get_simulation_fugacity(run * runs, int num_of_runs)
     simulation_excess = (runs+i)->simulation_mu - (runs+i)->ideal_gas_mu;
     exp_term = -(simulation_excess/(BOLTZMANN_KJ_MOLAR*(runs+i)->temperature));
     (runs+i)->simulation_fugacity = exp(exp_term) * (runs+i)->pressure_atm;
+    (runs+i)->simulation_fugacity *= 1000.0;
   }
 
 }
@@ -118,21 +119,21 @@ void populate_output_array(double * output_array, run * runs, int num_of_runs)
 {
   for(int i = 0;i<num_of_runs;i++)
   {
-    *(output_array+i*5+0) = (runs+i)->temperature;
-    *(output_array+i*5+1) = (runs+i)->pressure_atm;
-    *(output_array+i*5+2) = (runs+i)->simulation_fugacity;
-    *(output_array+i*5+3) = (runs+i)->state_fugacity;
-    *(output_array+i*5+4) = (runs+i)->state_excess_mu;
-    *(output_array+i*5+5) = (runs+i)->ideal_gas_mu;
-    *(output_array+i*5+6) = (runs+i)->simulation_mu;
+    *((double*)output_array+i*outputs+0) = (runs+i)->temperature;
+    *((double*)output_array+i*outputs+1) = (runs+i)->pressure_atm;
+    *((double*)output_array+i*outputs+2) = (runs+i)->simulation_fugacity;
+    *((double*)output_array+i*outputs+3) = (runs+i)->state_fugacity;
+    *((double*)output_array+i*outputs+4) = (runs+i)->state_excess_mu;
+    *((double*)output_array+i*outputs+5) = (runs+i)->ideal_gas_mu;
+    *((double*)output_array+i*outputs+6) = (runs+i)->simulation_mu;
   }
 }
 
 void output(double * output_array, char * file_name ,int num_of_runs)
 {
   FILE * output;
-  char * output_name = strtok(file_name,".dat");
-  strcat(output_name,".out");
+  char * output_name = strtok(file_name,".");
+  strcat(output_name,".csv");
   output = fopen(output_name,"w");
 
   fprintf(output,"#T     \t      #P_ATM      #SIMFUG     #STATEFUG   #STATE_EX_MU   #IDEAL_MU     #SIMULATION_MU\n");
@@ -141,7 +142,7 @@ void output(double * output_array, char * file_name ,int num_of_runs)
   {
     for(int j = 0;j<7;j++)
     {
-      fprintf(output,"%lf  ",*(output_array+i*5+j));
+      fprintf(output,"%lf,",*(output_array+i*outputs+j));
     }
     fprintf(output,"\n");
   }
