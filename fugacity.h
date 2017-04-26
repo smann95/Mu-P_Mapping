@@ -42,13 +42,13 @@ void convert_to_proper_units(run * runs, int num_of_runs);
 double co2_pengr_fugacity(double temperature, double pressure);
 
 
-void get_ideal_mu();
+void get_ideal_mu(run * runs, int num_of_runs);
 
 void get_state_excess_mu(run * runs, int num_of_runs);
 void get_state_fugacity(run * runs, int num_of_runs);
 
-void get_simulation_fugacity();
-void get_simulation_mu();
+void get_simulation_mu(run * runs, int num_of_runs);
+void get_simulation_fugacity(run * runs, int num_of_runs);
 
 
 

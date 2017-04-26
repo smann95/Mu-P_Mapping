@@ -1,4 +1,10 @@
 #include "fugacity.h"
+/*
+ All code below this comment courtesy of the Space Lab at the University
+ of South Florida, via their MPMC (https://github.com/mpmccode/mpmc) 
+ software package.
+ */
+
 
 double co2_pengr_fugacity(double temperature, double pressure) {
 

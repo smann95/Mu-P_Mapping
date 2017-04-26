@@ -4,8 +4,7 @@ void read_simulation_input(run * runs)
 {
   FILE * input;
   input = fopen("co2.dat","r");
-  char * line = (char*)malloc(sizeof(char)*256);
-  int i = 0;
+  char * line = (char*)malloc(sizeof(char)*256); int i = 0;
   while(fgets(line,256,input))
   {
     sscanf(line,"%lf %lf %lf %lf",&(runs+i)->temperature,&(runs+i)->pressure_bar,&(runs+i)->simulation_N,&(runs+i)->simulation_volume);
@@ -60,5 +59,77 @@ void get_state_excess_mu(run * runs, int num_of_runs)
     (runs+i)->state_excess_mu /= J_TO_KJ;
   }
 }
+
+void get_ideal_mu(run * runs, int num_of_runs)
+{
+  double first_term,
+         sim_v_over_sim_n,
+         log_exp,
+         log_term;
+  for(int i = 0;i<num_of_runs;i++)
+  {
+    first_term = -BOLTZMANN_KJ_MOLAR * (runs+i)->temperature,
+    sim_v_over_sim_n = (runs+i)->simulation_volume / (runs+i)->simulation_N,
+    log_exp = pow(((10.0*M_PI*(runs+i)->mass*BOLTZMANN_J_PER_K*(runs+i)->temperature)/(3.0*PLANCK*PLANCK)),(3.0/2.0)),
+    log_term = sim_v_over_sim_n * log_exp;
+    (runs+i)->ideal_gas_mu = first_term * log(log_term);
+  }
+}
+
+void get_simulation_mu(run * runs, int num_of_runs)
+{
+  double first_term,
+         RT_over_p,
+         log_exp,
+         log_term;
+  for(int i = 0;i<num_of_runs;i++)
+  {
+    first_term = -BOLTZMANN_KJ_MOLAR * (runs+i)->temperature;
+    RT_over_p =(GAS_CONSTANT *(runs+i)->temperature)/((runs+i)->pressure_pa)/AVOGADRO;
+    log_exp = pow(((10.0*M_PI*(runs+i)->mass*BOLTZMANN_J_PER_K*(runs+i)->temperature)/(3.0*PLANCK*PLANCK)),(3.0/2.0)),
+    log_term = RT_over_p * log_exp;
+    (runs+i)->simulation_mu = first_term * log(log_term);
+  }
+}
+
+void get_simulation_fugacity(run * runs, int num_of_runs)
+{
+  double exp_term,
+         simulation_excess;
+  for(int i = 0;i<num_of_runs;i++)
+  {
+    simulation_excess = (runs+i)->simulation_mu - (runs+i)->ideal_gas_mu;
+    exp_term = -(simulation_excess/(BOLTZMANN_KJ_MOLAR*(runs+i)->temperature));
+    (runs+i)->simulation_fugacity = exp(exp_term) * (runs+i)->pressure_atm;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
