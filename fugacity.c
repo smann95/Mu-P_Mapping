@@ -24,8 +24,10 @@ double co2_pengr_fugacity(double temperature, double pressure) {
 	aa=0.45724*R*R*Tc*Tc/Pc;
 	bb=0.07780*R*Tc/Pc;
 	Tr=temperature/Tc;
+  printf("%lf\n",Tr);
 	stuff1=0.37464+1.54226*w -0.26992*w*w;
 	stuff2=1.0-sqrt(Tr);
+  printf("END");
 	alpha=1.0+stuff1*stuff2;
 	alpha2=alpha*alpha;
 	A=alpha2*aa*pressure/(R*R*temperature*temperature);
