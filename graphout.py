@@ -1,5 +1,4 @@
 import sys
-file_name=sys.argv[1]
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 import matplotlib.pyplot as plt
@@ -7,7 +6,7 @@ import numpy as np
 data = np.loadtxt(sys.argv[1],delimiter=',')
 import pandas
 colnames = ['t','p','simfug','statefug','state_ex_mu','ideal_mu','sim_mu']
-data = pandas.read_csv(data, names = colnames)
+data = pandas.read_csv(sys.argv[1], names = colnames)
 
 t = data.t.tolist()
 p = data.p.tolist()
