@@ -9,7 +9,8 @@ void read_simulation_input(run * runs, char * file_name)
     printf("Failed to open input file in read_simulation_input().\nTry again.");
     exit(EXIT_FAILURE);
   }
-  char * line = (char*)malloc(sizeof(char)*256); int i = 0;
+  char * line = malloc(sizeof(char)*256);
+  int i = 0;
 
   fgets(line,256,input);//first two lines are trash
   fgets(line,256,input);
