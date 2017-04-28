@@ -8,7 +8,7 @@ int main(int argc, char ** argv)
     exit(EXIT_FAILURE);
   }
 
-  int num_of_runs;
+  int num_of_runs = 0;
   char * first_line = (char*)malloc(sizeof(char)*256),
        * file_name =  (char*)malloc(sizeof(char)*256);
   strcpy(file_name,argv[1]);
@@ -24,10 +24,10 @@ int main(int argc, char ** argv)
   sscanf(first_line,"%d\n",&num_of_runs);
 
   run runs[num_of_runs];//make a struct for every run
-  double ** output_array = (double**)malloc(num_of_runs*sizeof(double*));
+  double ** output_array = malloc(num_of_runs*sizeof(double*));
   for(int i = 0;i<num_of_runs;i++)
   {
-    output_array[i] = (double*)malloc(sizeof(double)*outputs);
+    output_array[i] = malloc(sizeof(double)*outputs);
   }
 
   give_structs_species_data(runs, num_of_runs);
