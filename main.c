@@ -21,13 +21,13 @@ int main(int argc, char ** argv)
     return 1;
   }
   fgets(first_line,256,input);
-  sscanf(first_line,"%d\n",&num_of_runs);
+  sscanf(first_line,"%d",&num_of_runs);
 
   run * runs = malloc(sizeof(run)*num_of_runs); //make a struct for every run
-  double ** output_array = malloc(num_of_runs*outputs*sizeof(double*));
+  double ** output_array = malloc(num_of_runs*sizeof(double*));
   for(int i = 0;i<num_of_runs;i++)
   {
-    output_array[i] = malloc(sizeof(double)*outputs);
+    output_array[i] = malloc(sizeof(double)*OUTPUTS);
   }
 
   give_structs_species_data(runs, num_of_runs);
@@ -42,8 +42,8 @@ int main(int argc, char ** argv)
   get_simulation_mu(runs,num_of_runs);                                         
   get_simulation_fugacity(runs,num_of_runs);
 
-  populate_output_array(* output_array,runs,num_of_runs);
-  output(*output_array,file_name,num_of_runs);
+  populate_output_array(output_array,runs,num_of_runs);
+  output(output_array,file_name,num_of_runs);
   /*
   printf("SIMULATION V/N                =    %.12e\n",SIM_V/SIM_N);
   printf("IDEAL RT/P                    =    %.12e\n",((GAS_CONSTANT*T)/(p*BAR_TO_PASCAL))/AVOGADRO);
@@ -51,9 +51,11 @@ int main(int argc, char ** argv)
   fclose(input);
   free(first_line);
   free(file_name);
+  free(runs);
   for(int i = 0;i<num_of_runs;i++)
   {
     free(output_array[i]);
   }
+  free(output_array);
   return 0;
 }

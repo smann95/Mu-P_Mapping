@@ -14,7 +14,7 @@
 #define CUBIC_A_TO_CUBIC_M 1E-27
 #define G_IN_KG 1000.0
 #define J_TO_KJ 1000.0
-#define outputs 7
+#define OUTPUTS 7
 
 #ifndef FUGACITY_H
 #define FUGACITY_H 
@@ -50,8 +50,8 @@ void get_state_fugacity(run * runs, int num_of_runs);
 void get_simulation_mu(run * runs, int num_of_runs);
 void get_simulation_fugacity(run * runs, int num_of_runs);
 
-void populate_output_array(double * output_array, run * runs, int num_of_runs);
-void output(double * output_array, char * file_name, int num_of_runs);
+void populate_output_array(double ** output_array, run * runs, int num_of_runs);
+void output(double ** output_array, char * file_name, int num_of_runs);
 
 
 #endif

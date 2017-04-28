@@ -116,21 +116,21 @@ void get_simulation_fugacity(run * runs, int num_of_runs)
 
 }
 
-void populate_output_array(double * output_array, run * runs, int num_of_runs)
+void populate_output_array(double ** output_array, run * runs, int num_of_runs)
 {
   for(int i = 0;i<num_of_runs;i++)
   {
-    output_array[i*outputs+0] = runs[i].temperature;
-    output_array[i*outputs+1] = runs[i].pressure_atm;
-    output_array[i*outputs+2] = runs[i].simulation_fugacity;
-    output_array[i*outputs+3] = runs[i].state_fugacity;
-    output_array[i*outputs+4] = runs[i].state_excess_mu;
-    output_array[i*outputs+5] = runs[i].ideal_gas_mu;
-    output_array[i*outputs+6] = runs[i].simulation_mu;
+    output_array[i][0] = runs[i].temperature;
+    output_array[i][1] = runs[i].pressure_atm;
+    output_array[i][2] = runs[i].simulation_fugacity;
+    output_array[i][3] = runs[i].state_fugacity;
+    output_array[i][4]  = runs[i].state_excess_mu;
+    output_array[i][5] = runs[i].ideal_gas_mu;
+    output_array[i][6] = runs[i].simulation_mu;
   }
 }
 
-void output(double * output_array, char * file_name ,int num_of_runs)
+void output(double ** output_array, char * file_name ,int num_of_runs)
 {
   FILE * output;
   char * output_name = strtok(file_name,".");
@@ -141,9 +141,9 @@ void output(double * output_array, char * file_name ,int num_of_runs)
 
   for(int i = 0;i<num_of_runs;i++)
   {
-    for(int j = 0;j<7;j++)
+    for(int j = 0;j<OUTPUTS;j++)
     {
-      fprintf(output,"%lf,",*(output_array+i*outputs+j));
+      fprintf(output,"%lf,",output_array[i][j]);
     }
     fprintf(output,"\n");
   }
