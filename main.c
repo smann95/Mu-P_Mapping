@@ -39,7 +39,7 @@ int main(int argc, char ** argv)
 
   get_ideal_mu(runs,num_of_runs);
 
-  get_simulation_mu(runs,num_of_runs);                                         
+  get_simulation_mu(runs,num_of_runs);
   get_simulation_fugacity(runs,num_of_runs);
 
   populate_output_array(output_array,runs,num_of_runs);

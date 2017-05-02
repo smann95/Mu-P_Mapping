@@ -57,14 +57,18 @@ void get_state_fugacity(run * runs,int num_of_runs)
 {
   for(int i = 0;i<num_of_runs;i++)
   {
-    runs[i].state_fugacity = co2_pengr_fugacity(runs[i].temperature,runs[i].pressure_bar);
+    runs[i].state_fugacity = co2_pengr_fugacity(runs[i].temperature,runs[i].pressure_atm);
   }
 }
- 
+
 void get_state_excess_mu(run * runs, int num_of_runs)
 {
   for(int i = 0;i<num_of_runs;i++)
   {
+    printf("pressure in atm = %e\n",runs[i].pressure_atm);
+    printf("state fugacity = %e\n",runs[i].state_fugacity);
+    printf("state fug over atm pressure = %e\n",runs[i].state_fugacity/runs[i].pressure_atm);
+    printf("log of the above division =  %e\n",log((runs[i].state_fugacity/runs[i].pressure_atm)));
     runs[i].state_excess_mu = log(runs[i].state_fugacity/(runs[i].pressure_atm))*GAS_CONSTANT*runs[i].temperature;
     runs[i].state_excess_mu /= J_TO_KJ;
   }
@@ -111,7 +115,7 @@ void get_simulation_fugacity(run * runs, int num_of_runs)
     simulation_excess = runs[i].simulation_mu - runs[i].ideal_gas_mu;
     exp_term = -(simulation_excess/(BOLTZMANN_KJ_MOLAR*runs[i].temperature));
     runs[i].simulation_fugacity = exp(exp_term) * runs[i].pressure_atm;
-    runs[i].simulation_fugacity *= 1000.0;
+    //runs[i].simulation_fugacity *= 1000.0;
   }
 
 }
