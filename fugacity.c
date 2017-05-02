@@ -5,7 +5,7 @@
  software package.
  */
 
-
+//temp in K , pres in ATM
 double co2_pengr_fugacity(double temperature, double pressure) {
 
 	double Z, A, B, aa, bb, Tc, Pc, Tr;

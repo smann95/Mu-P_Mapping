@@ -21,8 +21,8 @@ fig = plt.figure()
 
 ax = fig.gca(projection='3d')
 
-ax.scatter(t,p,statefug, s=20, label='State Fugacity')
-ax.scatter(t,p,simfug, s=20, label='Simulation Fugacity')
+ax.scatter(t,p,statefug, s=20,c='red', label='State Fugacity')
+ax.scatter(t,p,simfug, s=20,c='green', label='Simulation Fugacity')
 
 
 ax.set_xlabel('T')
@@ -30,7 +30,7 @@ ax.set_ylabel('P')
 ax.set_zlabel('Fugacity')
 ax.set_xlim(0,450)
 ax.set_ylim(0,200)
-ax.set_zlim(0,175)
+ax.set_zlim(0,1000)
 
 ax.azim = -24
 ax.elev = 6

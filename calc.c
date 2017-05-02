@@ -74,7 +74,7 @@ void get_state_excess_mu(run * runs, int num_of_runs)
   }
 }
 
-void get_ideal_mu(run * runs, int num_of_runs)
+void get_simulation_mu(run * runs, int num_of_runs)
 {
   double first_term,
          sim_v_over_sim_n,
@@ -86,11 +86,11 @@ void get_ideal_mu(run * runs, int num_of_runs)
     sim_v_over_sim_n = runs[i].simulation_volume / runs[i].simulation_N,
     log_exp = pow(((10.0*M_PI*runs[i].mass*BOLTZMANN_J_PER_K*runs[i].temperature)/(3.0*PLANCK*PLANCK)),(3.0/2.0)),
     log_term = sim_v_over_sim_n * log_exp;
-    runs[i].ideal_gas_mu = first_term * log(log_term);
+    runs[i].simulation_mu = first_term * log(log_term);
   }
 }
 
-void get_simulation_mu(run * runs, int num_of_runs)
+void get_ideal_mu(run * runs, int num_of_runs)
 {
   double first_term,
          RT_over_p,
@@ -102,7 +102,7 @@ void get_simulation_mu(run * runs, int num_of_runs)
     RT_over_p =(GAS_CONSTANT *runs[i].temperature)/(runs[i].pressure_pa)/AVOGADRO;
     log_exp = pow(((10.0*M_PI*runs[i].mass*BOLTZMANN_J_PER_K*runs[i].temperature)/(3.0*PLANCK*PLANCK)),(3.0/2.0)),
     log_term = RT_over_p * log_exp;
-    runs[i].simulation_mu = first_term * log(log_term);
+    runs[i].ideal_gas_mu = first_term * log(log_term);
   }
 }
 
