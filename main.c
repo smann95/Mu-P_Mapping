@@ -9,20 +9,25 @@ int main(int argc, char ** argv)
   }
 
   int num_of_runs = 0;
-  char * first_line = (char*)malloc(sizeof(char)*256),
-       * file_name =  (char*)malloc(sizeof(char)*256);
-  strcpy(file_name,argv[1]);
-
-  FILE * input;
-  input = fopen(file_name,"r");
-  if(input == NULL)
+  char * line = (char*)malloc(sizeof(char)*256),
+       * file_name =  (char*)malloc(sizeof(char)*256);
+  char ** total_species =
+  for(int i = 0;i<argc,i++)
   {
-    printf("Failed to open input file in main().\nTry again.");
-    return 1;
-  }
-  fgets(first_line,256,input);
-  sscanf(first_line,"%d",&num_of_runs);
+      strcpy(file_name,argv[i]);
 
+      FILE * input;
+      input = fopen(file_name,"r");
+      if(input == NULL)
+      {
+        printf("Failed to open input file %d in main().\nTry again.",i+1);
+        return 1;
+      }
+      fgets(line,256,input);
+      sscanf(line,"%d",&num_of_runs);
+      fgets(line,256,input);
+      sscanf(line,"%d",&num_of_runs);
+  }
   run * runs = malloc(sizeof(run)*num_of_runs); //make a struct for every run
   double ** output_array = malloc(num_of_runs*sizeof(double*));
   for(int i = 0;i<num_of_runs;i++)

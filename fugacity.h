@@ -20,6 +20,7 @@
 #define FUGACITY_H 
 typedef struct _run
 {
+  char * atom_type;
   double temperature,
          pressure_bar,
          pressure_atm,

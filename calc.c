@@ -12,7 +12,8 @@ void read_simulation_input(run * runs, char * file_name)
   char * line = malloc(sizeof(char)*256);
   int i = 0;
 
-  fgets(line,256,input);//first two lines are trash
+  fgets(line,256,input);//first three lines are trash
+  fgets(line,256,input);
   fgets(line,256,input);
 
   while(fgets(line,256,input))
