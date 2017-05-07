@@ -18,6 +18,10 @@
 
 #ifndef FUGACITY_H
 #define FUGACITY_H 
+ /*************************************************************
+ * A "run" is one simulation state point, ie at specific
+ * temperature and presure. 
+ *************************************************************/
 typedef struct _run
 {
   char * atom_type;

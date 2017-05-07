@@ -2,31 +2,37 @@
 
 int main(int argc, char ** argv)
 {
-  if(argc != 2)
+  if(argc < 2)
   {
-    printf("Wrong number of args. Takes input filename as only input.\n");
+    printf("Wrong number of args. Takes input filenames only, with at least one.\n");
     exit(EXIT_FAILURE);
   }
 
   int num_of_runs = 0;
   char * line = (char*)malloc(sizeof(char)*256),
        * file_name =  (char*)malloc(sizeof(char)*256);
-  char ** total_species =
-  for(int i = 0;i<argc,i++)
+  char ** total_species = malloc(sizeof(char*)*(argc-1));
+  /*************************************************************
+   * ONLY WORKS FOR ONE ATOM TYPE RIGHT NOW
+   * This should probably be split up into its own function
+   * eventually
+   * ***********************************************************/
+  for(int i = 0;i<argc;i++)
   {
-      strcpy(file_name,argv[i]);
+    strcpy(file_name,argv[i]);
 
-      FILE * input;
-      input = fopen(file_name,"r");
-      if(input == NULL)
-      {
-        printf("Failed to open input file %d in main().\nTry again.",i+1);
-        return 1;
-      }
-      fgets(line,256,input);
-      sscanf(line,"%d",&num_of_runs);
-      fgets(line,256,input);
-      sscanf(line,"%d",&num_of_runs);
+    FILE * input;
+    input = fopen(file_name,"r");
+    if(input == NULL)
+    {
+      printf("Failed to open input file %d in main().\nTry again.",i+1);
+      return 1;
+    }
+    fgets(line,256,input);
+    sscanf(line,"%d",&num_of_runs);
+    fgets(line,256,input);
+    sscanf(line,"%d",&num_of_runs);
+    fclose(input);
   }
   run * runs = malloc(sizeof(run)*num_of_runs); //make a struct for every run
   double ** output_array = malloc(num_of_runs*sizeof(double*));
@@ -49,18 +55,15 @@ int main(int argc, char ** argv)
 
   populate_output_array(output_array,runs,num_of_runs);
   output(output_array,file_name,num_of_runs);
-  /*
-  printf("SIMULATION V/N                =    %.12e\n",SIM_V/SIM_N);
-  printf("IDEAL RT/P                    =    %.12e\n",((GAS_CONSTANT*T)/(p*BAR_TO_PASCAL))/AVOGADRO);
-  */
-  fclose(input);
-  free(first_line);
-  free(file_name);
-  free(runs);
+
   for(int i = 0;i<num_of_runs;i++)
   {
     free(output_array[i]);
   }
   free(output_array);
+  free(file_name);
+  free(runs);
+  free(line);
+  free(total_species);
   return 0;
 }

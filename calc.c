@@ -1,5 +1,9 @@
 #include "fugacity.h"
 
+ /************************************************************************
+ * Reads in input from the .dat file created by my bash script and
+ * stores it into the runs struct in fugacity.h
+ *************************************************************************/
 void read_simulation_input(run * runs, char * file_name)
 {
   FILE * input;
@@ -26,6 +30,9 @@ void read_simulation_input(run * runs, char * file_name)
 }
 
 
+ /************************************************************************
+ * TODO: add atom type checking here, this only works for CO2 at the moment
+ *************************************************************************/
 void give_structs_species_data(run * runs, int num_of_runs)
 {
   for(int i = 0;i<num_of_runs;i++)
@@ -33,6 +40,11 @@ void give_structs_species_data(run * runs, int num_of_runs)
     runs[i].mass = 44.01;
   }
 }
+
+ /************************************************************************
+ * We need certain properties in certain units, so we convert them
+ *************************************************************************/
+
 void convert_to_proper_units(run * runs, int num_of_runs)
 {
  //convert mass from g/mol to kg/molecule
@@ -54,6 +66,10 @@ void convert_to_proper_units(run * runs, int num_of_runs)
   }
 }
 
+ /************************************************************************
+ * Gets fugacity using the Peng-Robinson equation of state, code provided
+ * by the good folks at the Space lab and their MPMC code
+ *************************************************************************/
 void get_state_fugacity(run * runs,int num_of_runs)
 {
   for(int i = 0;i<num_of_runs;i++)
@@ -62,19 +78,43 @@ void get_state_fugacity(run * runs,int num_of_runs)
   }
 }
 
+ /***********************************************************************
+  * Gets the chemical potential of a gas with the fugacity given by the 
+  * equation of state above
+  ***********************************************************************/
 void get_state_excess_mu(run * runs, int num_of_runs)
 {
   for(int i = 0;i<num_of_runs;i++)
   {
-    printf("pressure in atm = %e\n",runs[i].pressure_atm);
-    printf("state fugacity = %e\n",runs[i].state_fugacity);
-    printf("state fug over atm pressure = %e\n",runs[i].state_fugacity/runs[i].pressure_atm);
-    printf("log of the above division =  %e\n",log((runs[i].state_fugacity/runs[i].pressure_atm)));
     runs[i].state_excess_mu = log(runs[i].state_fugacity/(runs[i].pressure_atm))*GAS_CONSTANT*runs[i].temperature;
     runs[i].state_excess_mu /= J_TO_KJ;
   }
 }
 
+
+  /***********************************************************************
+   * Chemical potential of an ideal gas, using stat mech and the ideal gas 
+   * law 
+   ***********************************************************************/
+void get_ideal_mu(run * runs, int num_of_runs)
+{
+  double first_term,
+         RT_over_p,
+         log_exp,
+         log_term;
+  for(int i = 0;i<num_of_runs;i++)
+  {
+    first_term = -BOLTZMANN_KJ_MOLAR * runs[i].temperature;
+    RT_over_p =(GAS_CONSTANT *runs[i].temperature)/(runs[i].pressure_pa)/AVOGADRO;
+    log_exp = pow(((10.0*M_PI*runs[i].mass*BOLTZMANN_J_PER_K*runs[i].temperature)/(3.0*PLANCK*PLANCK)),(3.0/2.0)),
+    log_term = RT_over_p * log_exp;
+    runs[i].ideal_gas_mu = first_term * log(log_term);
+  }
+}
+ /***********************************************************************
+  * Get chemical potential for the simulation using statistical mechanics
+  * and the average particle number / box volume size from the simulation
+  ***********************************************************************/
 void get_simulation_mu(run * runs, int num_of_runs)
 {
   double first_term,
@@ -91,22 +131,10 @@ void get_simulation_mu(run * runs, int num_of_runs)
   }
 }
 
-void get_ideal_mu(run * runs, int num_of_runs)
-{
-  double first_term,
-         RT_over_p,
-         log_exp,
-         log_term;
-  for(int i = 0;i<num_of_runs;i++)
-  {
-    first_term = -BOLTZMANN_KJ_MOLAR * runs[i].temperature;
-    RT_over_p =(GAS_CONSTANT *runs[i].temperature)/(runs[i].pressure_pa)/AVOGADRO;
-    log_exp = pow(((10.0*M_PI*runs[i].mass*BOLTZMANN_J_PER_K*runs[i].temperature)/(3.0*PLANCK*PLANCK)),(3.0/2.0)),
-    log_term = RT_over_p * log_exp;
-    runs[i].ideal_gas_mu = first_term * log(log_term);
-  }
-}
-
+ /**********************************************************************
+  * get fugacity of the simulation from the chemical potential and the
+  * ideal gas chemical potential
+  **********************************************************************/
 void get_simulation_fugacity(run * runs, int num_of_runs)
 {
   double exp_term,
@@ -116,11 +144,13 @@ void get_simulation_fugacity(run * runs, int num_of_runs)
     simulation_excess = runs[i].simulation_mu - runs[i].ideal_gas_mu;
     exp_term = -(simulation_excess/(BOLTZMANN_KJ_MOLAR*runs[i].temperature));
     runs[i].simulation_fugacity = exp(exp_term) * runs[i].pressure_atm;
-    //runs[i].simulation_fugacity *= 1000.0;
   }
-
 }
 
+
+ /***********************************************************************
+  * Ok, now we have our data and store it in an array
+  ***********************************************************************/
 void populate_output_array(double ** output_array, run * runs, int num_of_runs)
 {
   for(int i = 0;i<num_of_runs;i++)
@@ -135,6 +165,9 @@ void populate_output_array(double ** output_array, run * runs, int num_of_runs)
   }
 }
 
+ /***********************************************************************
+  * And now we output
+  ***********************************************************************/
 void output(double ** output_array, char * file_name ,int num_of_runs)
 {
   FILE * output;
@@ -154,31 +187,3 @@ void output(double ** output_array, char * file_name ,int num_of_runs)
   }
   fclose(output);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
