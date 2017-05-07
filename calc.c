@@ -2,8 +2,7 @@
 
  /************************************************************************
  * Reads in input from the .dat file created by my bash script and
- * stores it into the runs struct in fugacity.h
- *************************************************************************/
+ * stores it into the runs struct in fugacity.h *************************************************************************/
 void read_simulation_input(run * runs, char * file_name)
 {
   FILE * input;
@@ -181,7 +180,14 @@ void output(double ** output_array, char * file_name ,int num_of_runs)
   {
     for(int j = 0;j<OUTPUTS;j++)
     {
-      fprintf(output,"%lf,",output_array[i][j]);
+      if(j==(OUTPUTS-1))
+      {
+        fprintf(output,"%lf",output_array[i][j]);
+      }
+      else
+      {
+        fprintf(output,"%lf,",output_array[i][j]);
+      }
     }
     fprintf(output,"\n");
   }
