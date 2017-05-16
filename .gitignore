@@ -1,8 +1,3 @@
 *
 !.gitignore
-!fugacity.c
-!fugacity.h
-!calc.c
-!main.c
-!makefile
-!graphout.py
+!fugacity/
