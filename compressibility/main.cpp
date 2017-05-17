@@ -18,7 +18,7 @@ int main(int argc, char ** argv)
     {
         file_name = argv[i];
         ifstream input;
-        input.open("file_name");
+        input.open(file_name);
         if(input.is_open())
         {
             general_run_data this_run;
@@ -39,8 +39,8 @@ int main(int argc, char ** argv)
          end = general_runs.end();
     while(beg != end)
     {
-        cout << "species" << beg->species
-             << "num of runs"  << beg->num_runs
+        cout << "species: " << beg->species
+             << "num of runs: "  << beg->num_runs
              << endl;
         beg++;
     }
