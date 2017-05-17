@@ -3,5 +3,5 @@ project(compressibility)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp calculations.h)
+set(SOURCE_FILES main.cpp compressibility.h)
 add_executable(compressibility ${SOURCE_FILES})
