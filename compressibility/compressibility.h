@@ -7,6 +7,15 @@
 
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <sstream>
+
+struct general_run_data
+{
+    std::string species;
+    int num_runs;
+};
+
 
 
 double get_state_compressibility(double temperature, double pressure);
