@@ -38,3 +38,25 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
     }
     return general_runs;
 }
+
+
+vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_runs)
+{
+    vector<vector<run>> all_runs;
+    auto general_beg = general_runs.begin(),
+         general_end = general_runs.end();
+
+    while(general_beg != general_end)
+    {
+        vector<run> this_run;
+        for(auto i = 0;i < general_beg->num_runs;i++)
+        {
+            run current;
+            current.atom_type = general_beg->species;
+            this_run.push_back(current);
+        }
+        all_runs.push_back(this_run);
+        general_beg++;
+    }
+    return all_runs;
+}

@@ -21,7 +21,6 @@
 #define CUBIC_A_TO_CUBIC_M 1.0E-30
 #define G_IN_KG 1000.0
 #define J_TO_KJ 1000.0
-#define OUTPUTS 7
 
 struct general_run_data
 {
@@ -44,6 +43,7 @@ struct run
 
 
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);
+std::vector<std::vector<run>> set_up_simulation_structs(std::vector<general_run_data> general_runs);
 double get_state_compressibility(double temperature, double pressure);
 double get_simulation_compressiblity(double temperature, double pressure);
 #endif //COMPRESSIBILITY_COMPRESSIBILITY_H
