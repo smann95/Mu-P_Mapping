@@ -30,8 +30,6 @@ int main(int argc, char ** argv)
     }
     fgets(line,256,input);
     sscanf(line,"%d",&num_of_runs);
-    fgets(line,256,input);
-    sscanf(line,"%d",&num_of_runs);
     fclose(input);
   }
   run * runs = malloc(sizeof(run)*num_of_runs); //make a struct for every run
