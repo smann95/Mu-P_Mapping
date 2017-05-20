@@ -33,7 +33,7 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
         else
         {
             cerr << "Error in opening file " << file_name
-                 << " in main() " << endl;
+                 << " in set_up_general_runs() " << endl;
         }
     }
     return general_runs;
@@ -59,4 +59,28 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
         general_beg++;
     }
     return all_runs;
+}
+
+void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> all_runs)
+{
+    auto beg = all_runs.begin(),
+         end = all_runs.end();
+
+    string file_name;
+    string line;
+    for(int i = 1;i < argc;i++)
+    {
+        file_name = argv[i];
+        ifstream input;
+        input.open(file_name);
+        if(input.is_open())
+        {
+            
+        }
+        else
+        {
+            cerr << "Error in opening file " << file_name
+                 << " in give_structs_simulation_data() " << endl;
+        }
+    }
 }

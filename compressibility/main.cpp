@@ -13,8 +13,6 @@ int main(int argc, char ** argv)
 
     vector<general_run_data> general_runs = set_up_general_runs(argc, argv);
     vector<vector<run>> all_runs = set_up_simulation_structs(general_runs);
-    auto all_beg = all_runs.begin(),
-            all_end = all_runs.end();
 
     return 0;
 }
