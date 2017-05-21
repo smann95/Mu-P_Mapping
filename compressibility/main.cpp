@@ -6,7 +6,7 @@ int main(int argc, char ** argv)
 {
     if(argc < 2)
     {
-        cerr << "Wrong number of args. Takes at least one input filename.\n"
+        cerr << "Wrong number of args. Takes at least one filename as input.\n"
              << endl;
         return 1;
     }

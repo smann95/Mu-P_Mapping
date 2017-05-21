@@ -34,6 +34,7 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
         {
             cerr << "Error in opening file " << file_name
                  << " in set_up_general_runs() " << endl;
+            exit(EXIT_FAILURE);
         }
     }
     return general_runs;
@@ -73,9 +74,13 @@ void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> al
         file_name = argv[i];
         ifstream input;
         input.open(file_name);
+        input.ignore('\n');//first two lines are stuff we already got
+        input.ignore('\n');
         if(input.is_open())
         {
-            
+            //if the line starts with '#' skip it
+            //then get the other input and read it in
+
         }
         else
         {
