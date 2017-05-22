@@ -62,7 +62,7 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
     return all_runs;
 }
 
-void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs, vector<general_run_data> general_runs)
+void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
 {
     string file_name;
     string line;
