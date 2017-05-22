@@ -44,6 +44,7 @@ struct run
 
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);
 std::vector<std::vector<run>> set_up_simulation_structs(std::vector<general_run_data> general_runs);
+void give_structs_simulation_data(int argc, char ** argv, std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> &general_runs);
 double get_state_compressibility(double temperature, double pressure);
 double get_simulation_compressiblity(double temperature, double pressure);
 #endif //COMPRESSIBILITY_COMPRESSIBILITY_H

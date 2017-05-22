@@ -62,11 +62,8 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
     return all_runs;
 }
 
-void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> all_runs)
+void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs, vector<general_run_data> &general_runs)
 {
-    auto beg = all_runs.begin(),
-         end = all_runs.end();
-
     string file_name;
     string line;
     for(int i = 1;i < argc;i++)
@@ -78,8 +75,26 @@ void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> al
         input.ignore('\n');
         if(input.is_open())
         {
-            //if the line starts with '#' skip it
             //then get the other input and read it in
+            while(getline(input,line))
+            {
+                vector<string> this_line;
+                istringstream iss(line);
+                copy(
+                        istream_iterator<string>(iss),
+                        istream_iterator<string>(),
+                        back_inserter(this_line)
+                );
+                if(!strncasecmp(this_line[0].c_str(), "#",1))
+                    continue;//lines that start with # are comments
+                else
+                    for(int j = 0;j<general_runs[i-1].num_runs;j++)
+                    {
+                        (all_runs[i-1])[j].temperature = atof(this_line[0].c_str());
+                        (all_runs[i-1])[j].pressure_bar = atof(this_line[1].c_str());
+                        (all_runs[i-1])[j].simulation_V = atof(this_line[2].c_str());
+                    }
+            }
 
         }
         else
