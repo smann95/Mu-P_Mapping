@@ -10,3 +10,9 @@ double get_simulation_compressibility(double temperature, double pressure, doubl
     return pressure*volume/(num*GAS_CONSTANT*temperature);
 }
 
+double get_simulation_fugacity(double Z, double pressure)
+{
+    double goes_in_exp = (Z - 1.0) * log(pressure);
+    double simulation_fugacity = pressure * exp(goes_in_exp);
+    return simulation_fugacity;
+}

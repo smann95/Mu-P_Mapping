@@ -114,6 +114,15 @@ void get_species_mass(vector<vector<run>> &all_runs, vector<general_run_data> ge
         {
            if(strcasecmp((all_runs[i][j].atom_type).c_str(), "co2") == 0)
                (all_runs[i])[j].mass = 44.0095;
+           else if(strcasecmp((all_runs[i][j].atom_type).c_str(), "n2") == 0)
+               (all_runs[i])[j].mass = 28.0134;
+           else
+           {
+               cerr << "Unsupported atom type "
+                    << (all_runs[i])[j].atom_type
+                    << " provided, please try again."
+                    << endl;
+           }
         }
 
     }
@@ -132,4 +141,10 @@ void convert_data_to_other_units(vector<vector<run>> &all_runs, vector<general_r
            (all_runs[i])[j].simulation_V *= CUBIC_A_TO_CUBIC_M;
        }
     }
+}
+
+//output function from MPMC code
+void output(string msg)
+{
+    cout << msg << endl;
 }
