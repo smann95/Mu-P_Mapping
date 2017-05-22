@@ -62,10 +62,11 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
     return all_runs;
 }
 
-void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs, vector<general_run_data> &general_runs)
+void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs, vector<general_run_data> general_runs)
 {
     string file_name;
     string line;
+    int j = 0;
     for(int i = 1;i < argc;i++)
     {
         file_name = argv[i];
@@ -88,12 +89,12 @@ void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &a
                 if(!strncasecmp(this_line[0].c_str(), "#",1))
                     continue;//lines that start with # are comments
                 else
-                    for(int j = 0;j<general_runs[i-1].num_runs;j++)
-                    {
+                {
                         (all_runs[i-1])[j].temperature = atof(this_line[0].c_str());
                         (all_runs[i-1])[j].pressure_bar = atof(this_line[1].c_str());
                         (all_runs[i-1])[j].simulation_V = atof(this_line[2].c_str());
-                    }
+                }
+                j++;
             }
 
         }
@@ -102,5 +103,33 @@ void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &a
             cerr << "Error in opening file " << file_name
                  << " in give_structs_simulation_data() " << endl;
         }
+    }
+}
+
+void get_species_mass(vector<vector<run>> &all_runs, vector<general_run_data> general_runs)
+{
+    for(int i = 0;i<general_runs.size();i++)
+    {
+        for(int j = 0;j<general_runs[i].num_runs;j++)
+        {
+           if(strcasecmp((all_runs[i][j].atom_type).c_str(), "co2") == 0)
+               (all_runs[i])[j].mass = 44.0095;
+        }
+
+    }
+}
+
+void convert_data_to_other_units(vector<vector<run>> &all_runs, vector<general_run_data> general_runs)
+{
+    for(int i = 0;i<general_runs.size();i++)
+    {
+       for(int j = 0;j<general_runs[i].num_runs;j++)
+       {
+           (all_runs[i])[j].pressure_atm = (all_runs[i])[j].pressure_bar * BAR_TO_ATM;
+           (all_runs[i])[j].pressure_pa = (all_runs[i])[j].pressure_bar * BAR_TO_PASCAL;
+           (all_runs[i])[j].mass /=AVOGADRO;
+           (all_runs[i])[j].mass /=G_IN_KG;
+           (all_runs[i])[j].simulation_V *= CUBIC_A_TO_CUBIC_M;
+       }
     }
 }
