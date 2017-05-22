@@ -167,7 +167,38 @@ void calculate_data(vector<vector<run>> &all_runs, vector<general_run_data> gene
     }
 }
 
-//output function from MPMC code
+void file_output(vector<vector<run>> all_runs, vector<general_run_data> general_runs, int argc, char ** argv)
+{
+    for(int i = 1;i < argc;i++)
+    {
+        ofstream output_file;
+        string input_name = argv[i];
+        string file_name = input_name + ".OUT";
+        output_file.open(file_name, ios_base::app);
+        cout << "FILE NAME FOR OUTPUT : "
+             << file_name
+             << endl;
+        output_file << "#TEMP  #PRESSURE_BAR  #EOS_Z  #EOS_FUG  #SIM_Z  #SIM_FUG"
+                    << endl;
+        for(auto j = 0;j<all_runs.size();j++)
+        {
+           for(int k = 0;k<general_runs[j].num_runs;k++)
+           {
+               auto ref = (all_runs[j])[k];
+               output_file << ref.temperature << ",  "
+                           << ref.pressure_bar << ",  "
+                           << ref.EOS_Z << ",  "
+                           << ref.EOS_fugacity << ",  "
+                           << ref.simulation_Z << ",  "
+                           << ref.simulation_fugacity
+                           << endl;
+           }
+        }
+        output_file.close();
+    }
+}
+
+//output function from MPMC
 void output(string msg)
 {
     cout << msg << endl;

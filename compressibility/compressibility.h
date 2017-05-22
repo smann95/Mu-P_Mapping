@@ -17,10 +17,11 @@
 #define AVOGADRO 6.0022141E23
 #define CUBIC_A_TO_CUBIC_M 1.0E-30
 #define G_IN_KG 1000.0
+
 //BEGIN MPMC DEFINES
-#define MAXLINE                                 512
-#define NA			6.0221415e23
-#define KB			1.3806503e-23
+#define MAXLINE         512
+#define NA		    	6.0221415e23
+#define KB		     	1.3806503e-23
 #define ATM2PASCALS		101325.0
 #define ATM2PSI			14.6959488
 //END MPMC DEFINES
@@ -53,6 +54,7 @@ void give_structs_simulation_data(int argc, char ** argv, std::vector<std::vecto
 void get_species_mass(std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> general_runs);
 void convert_data_to_other_units(std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> general_runs);
 void calculate_data(std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> general_runs);
+void file_output(std::vector<std::vector<run>> all_runs, std::vector<general_run_data> general_runs, int argc, char ** argv);
 
 double get_simulation_compressibility(double temperature, double pressure, double volume);
 double get_simulation_fugacity(double Z, double pressure,double temperature, std::string species);
