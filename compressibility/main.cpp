@@ -33,10 +33,10 @@ int main(int argc, char ** argv)
         for(int j = 0;j<general_runs[i].num_runs;j++)
         {
             auto ref = (all_runs[i])[j];
-            cout << ref.temperature << " "
-                 << ref.pressure_bar << " "
-                 << ref.EOS_Z << " "
-                 << ref.simulation_Z << " "
+            cout << ref.temperature << ","
+                 << ref.pressure_bar << ","
+                 << ref.EOS_Z << ","
+                 << ref.simulation_Z
                  << endl;
         }
     }
