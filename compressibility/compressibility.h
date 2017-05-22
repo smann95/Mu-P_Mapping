@@ -54,7 +54,7 @@ void get_species_mass(std::vector<std::vector<run>> &all_runs, std::vector<gener
 void convert_data_to_other_units(std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> general_runs);
 
 double get_simulation_compressibility(double temperature, double pressure, double volume);
-double get_simulation_fugacity(double Z, double pressure);
+double get_simulation_fugacity(double Z, double pressure,double temperature, std::string species);
 
 double get_co2_state_compressibility(double temperature, double pressure);
 double get_co2_state_fugacity(double temperature, double pressure);

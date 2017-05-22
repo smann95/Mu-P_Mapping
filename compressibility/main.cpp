@@ -23,16 +23,17 @@ int main(int argc, char ** argv)
         {
             auto &ref = (all_runs[i])[j];
             ref.simulation_Z = get_simulation_compressibility(ref.temperature, ref.pressure_pa, ref.simulation_V);
-            ref.simulation_fugacity = get_simulation_fugacity(ref.simulation_Z,ref.pressure_atm);
             if(ref.atom_type == "co2")
             {
                 ref.EOS_Z = get_co2_state_compressibility(ref.temperature, ref.pressure_atm);
                 ref.EOS_fugacity = get_co2_state_fugacity(ref.temperature, ref.pressure_atm);
+                ref.simulation_fugacity = get_simulation_fugacity(ref.simulation_Z,ref.pressure_atm, ref.temperature, "co2");
             }
             else if(ref.atom_type == "n2")
             {
                 ref.EOS_Z = get_n2_state_compressibility(ref.temperature, ref.pressure_atm);
                 ref.EOS_fugacity = get_n2_fugacity(ref.temperature, ref.pressure_atm);
+                ref.simulation_fugacity = get_simulation_fugacity(ref.simulation_Z,ref.pressure_atm, ref.temperature, "n2");
             }
         }
     }
