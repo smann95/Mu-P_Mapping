@@ -7,7 +7,7 @@
 //takes pressure in Pa and volume in m^3
 double get_simulation_compressibility(double temperature, double pressure, double volume)
 {
-    double num = 512.0/AVOGADRO;//n is in moles
+    double num = 512.0 / AVOGADRO;//n is in moles
     return (pressure * volume) / (num * GAS_CONSTANT * temperature);
 }
 
@@ -15,6 +15,10 @@ double get_simulation_compressibility(double temperature, double pressure, doubl
  * directly from MPMC and glued some stuff onto it so it would work with my code
  * The awful variable names and magic numbers are thankfully not my doing
  * I'm very sorry if you've made it here looking for answers */
+/*
+ * Anyways, it gets fugacity from Z using peng-robinson stuff
+ * TODO: ask adam if this is the way it should be
+ */
 
 double get_simulation_fugacity(double Z, double pressure,double temperature, std::string species)
 {

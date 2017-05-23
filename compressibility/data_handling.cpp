@@ -53,10 +53,9 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
 vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_runs)
 {
     vector<vector<run>> all_runs;
-    auto gen_beg = general_runs.begin(),
-         gen_end = general_runs.end();
+    auto gen_end = general_runs.end();
 
-    for(gen_beg;gen_beg != gen_end;gen_beg++)
+    for(auto gen_beg = general_runs.begin();gen_beg != gen_end;gen_beg++)
     {
         vector<run> this_run;
         for(auto i = 0;i < gen_beg->num_runs;i++)
