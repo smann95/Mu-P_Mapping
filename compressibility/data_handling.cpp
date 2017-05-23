@@ -44,56 +44,63 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
 /*
  * Now that we know how many groups of simulation runs we have, we
  * create the necessary vectors of vectors
- * the inner vectors (of type run) each
+ * The "outer" vector's members each represent a group of simulation runs
+ * e.g. member one might be for CO2, member two for N2, etc.
+ * The inner vector's members each represent a specific state point
+ * i.e. at a specific temperature and pressure
  */
 vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_runs)
 {
     vector<vector<run>> all_runs;
-    auto general_beg = general_runs.begin(),
-         general_end = general_runs.end();
+    auto gen_beg = general_runs.begin(),
+         gen_end = general_runs.end();
 
-    while(general_beg != general_end)
+    for(gen_beg;gen_beg != gen_end;gen_beg++)
     {
         vector<run> this_run;
-        for(auto i = 0;i < general_beg->num_runs;i++)
+        for(auto i = 0;i < gen_beg->num_runs;i++)
         {
             run current;
-            current.atom_type = general_beg->species;
+            current.atom_type = gen_beg->species;
             current.mass = get_species_mass(current.atom_type);
             this_run.push_back(current);
         }
         all_runs.push_back(this_run);
-        general_beg++;
     }
     return all_runs;
 }
 double get_species_mass(string atom_type)
 {
+    double mass;
     if(strcasecmp((atom_type).c_str(), "co2") == 0)
-        return 44.0095;
+        mass = 44.0095;
     else if(strcasecmp((atom_type).c_str(), "n2") == 0)
-        return 28.0134;
+        mass = 28.0134;
+    return mass;
 }
 
-void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
+/*
+ * Now that we've set up our vectors, we read the simulation data
+ * from our input file into the vectors
+ */
+void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
 {
-    string file_name;
-    string line;
+    string file_name,
+           line;
     int j = 0;
     for(int i = 1;i < argc;i++)
     {
         file_name = argv[i];
-        ifstream input;
-        input.open(file_name);
+        ifstream input(file_name);
         input.ignore('\n');//first two lines are stuff we already got
         input.ignore('\n');
         if(input.is_open())
         {
-            //then get the other input and read it in
             while(getline(input,line))
             {
                 vector<string> this_line;
                 istringstream iss(line);
+                //I got these next three lines from doug; have no idea what they do but they do it well
                 copy(
                         istream_iterator<string>(iss),
                         istream_iterator<string>(),
@@ -103,19 +110,20 @@ void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &a
                     continue;//lines that start with # are comments
                 else
                 {
-                        (all_runs[i-1])[j].temperature = atof(this_line[0].c_str());
-                        (all_runs[i-1])[j].pressure_bar = atof(this_line[1].c_str());
-                        (all_runs[i-1])[j].simulation_V = atof(this_line[2].c_str());
+                    auto &ref = (all_runs[i-1])[j];//make current run a ref to clean up the code a bit
+                    ref.temperature = atof(this_line[0].c_str());
+                    ref.pressure_bar = atof(this_line[1].c_str());
+                    ref.simulation_V = atof(this_line[2].c_str());
                 }
                 j++;
             }
-
         }
         else
         {
             cerr << "Error in opening file " << file_name
                  << " in give_structs_simulation_data() " << endl;
         }
+        input.close();
     }
 }
 
@@ -126,11 +134,12 @@ void convert_data_to_other_units(vector<vector<run>> &all_runs, vector<general_r
     {
        for(int j = 0;j<general_runs[i].num_runs;j++)
        {
-           (all_runs[i])[j].pressure_atm = (all_runs[i])[j].pressure_bar * BAR_TO_ATM;
-           (all_runs[i])[j].pressure_pa = (all_runs[i])[j].pressure_bar * BAR_TO_PASCAL;
-           (all_runs[i])[j].mass /=AVOGADRO;
-           (all_runs[i])[j].mass /=G_IN_KG;
-           (all_runs[i])[j].simulation_V *= CUBIC_A_TO_CUBIC_M;
+           auto & ref = (all_runs[i])[j];
+           ref.pressure_atm = ref.pressure_bar * BAR_TO_ATM;
+           ref.pressure_pa = ref.pressure_bar * BAR_TO_PASCAL;
+           ref.mass /=AVOGADRO;
+           ref.mass /=G_IN_KG;
+           ref.simulation_V *= CUBIC_A_TO_CUBIC_M;
        }
     }
 }
@@ -166,11 +175,8 @@ void file_output(vector<vector<run>> all_runs, vector<general_run_data> general_
         string input_name = argv[i];
         string file_name = input_name + ".OUT";
         ofstream output_file(file_name);
-        cout << "FILE NAME FOR OUTPUT : "
-             << file_name
-             << endl;
-        output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z       #SIM_FUG    #EOS_FUG"
-                    << endl;
+        cout << "FILE NAME FOR OUTPUT : " << file_name << endl;
+        output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z       #SIM_FUG    #EOS_FUG" << endl;
         for(auto j = 0;j<all_runs.size();j++)
         {
            for(int k = 0;k<general_runs[j].num_runs;k++)
@@ -189,8 +195,9 @@ void file_output(vector<vector<run>> all_runs, vector<general_run_data> general_
     }
 }
 
-/* this is only here to play nice with the MPMC functions for
- * n2 fugacity that I'm using here
+/*
+ * this is only here to play nice with the
+ * MPMC functions for n2 fugacity that I'm using
  */
 void output(string msg)
 {

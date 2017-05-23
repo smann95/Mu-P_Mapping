@@ -17,7 +17,7 @@ int main(int argc, char ** argv)
      * 3. read in the simulation data from the input file to all_runs*/
     vector<general_run_data> general_runs = set_up_general_runs(argc, argv);
     vector<vector<run>> all_runs = set_up_simulation_structs(general_runs);
-    give_structs_simulation_data(argc, argv, all_runs);
+    read_simulation_data(argc, argv, all_runs);
 
     /* Convert data to friendlier units */
     convert_data_to_other_units(all_runs, general_runs);
