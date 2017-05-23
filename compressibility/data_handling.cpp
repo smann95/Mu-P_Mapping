@@ -2,6 +2,7 @@
 // Created by Luciano Laratelli on 17/05/2017.
 //
 
+#include <iterator>
 #include "compressibility.h"
 
 using namespace std;
@@ -82,8 +83,8 @@ void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &a
                 vector<string> this_line;
                 istringstream iss(line);
                 copy(
-                        istream_iterator<string>(iss),
-                        istream_iterator<string>(),
+                        std::istream_iterator<string>(iss),
+                        std::istream_iterator<string>(),
                         back_inserter(this_line)
                 );
                 if(!strncasecmp(this_line[0].c_str(), "#",1))
