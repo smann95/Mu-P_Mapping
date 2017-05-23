@@ -1,7 +1,6 @@
 // Created by Luciano Laratelli on 17/05/2017.
 //
 
-#include <iterator>
 #include "compressibility.h"
 
 using namespace std;
@@ -71,7 +70,7 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
 }
 double get_species_mass(string atom_type)
 {
-    double mass;
+    double mass = 0.0;
     if(strcasecmp((atom_type).c_str(), "co2") == 0)
         mass = 44.0095;
     else if(strcasecmp((atom_type).c_str(), "n2") == 0)
