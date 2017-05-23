@@ -1,4 +1,3 @@
-// Handles file in/out
 // Created by Luciano Laratelli on 17/05/2017.
 //
 
@@ -13,9 +12,9 @@ using namespace std;
 vector <general_run_data> set_up_general_runs(int argc, char ** argv)
 {
     vector<general_run_data> general_runs;
-    string file_name;
-    string line;
-    for(int i = 1;i < argc;i++)
+    string file_name,
+           line;
+    for(auto i = 1; i < argc; i++)
     {
         file_name = argv[i];
         ifstream input;
@@ -23,9 +22,9 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
         if(input.is_open())
         {
             general_run_data this_run;
-            getline(input,line);
+            getline(input,line);//first line contains species string
             this_run.species = line;
-            getline(input,line);
+            getline(input,line);//second line contains number of state points for current species
             stringstream convert (line);
             convert >> this_run.num_runs;
             general_runs.push_back(this_run);
@@ -171,26 +170,25 @@ void file_output(vector<vector<run>> all_runs, vector<general_run_data> general_
 {
     for(int i = 1;i < argc;i++)
     {
-        ofstream output_file;
         string input_name = argv[i];
         string file_name = input_name + ".OUT";
-        output_file.open(file_name, ios_base::app);
+        ofstream output_file(file_name);
         cout << "FILE NAME FOR OUTPUT : "
              << file_name
              << endl;
-        output_file << "#TEMP  #PRESSURE_BAR  #EOS_Z  #EOS_FUG  #SIM_Z  #SIM_FUG"
+        output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z       #SIM_FUG    #EOS_FUG"
                     << endl;
         for(auto j = 0;j<all_runs.size();j++)
         {
            for(int k = 0;k<general_runs[j].num_runs;k++)
            {
                auto ref = (all_runs[j])[k];
-               output_file << ref.temperature << ",  "
-                           << ref.pressure_bar << ",  "
-                           << ref.EOS_Z << ",  "
-                           << ref.EOS_fugacity << ",  "
+               output_file << ref.temperature << ",     "
+                           << ref.pressure_bar << ",    "
                            << ref.simulation_Z << ",  "
-                           << ref.simulation_fugacity
+                           << ref.EOS_Z << ",  "
+                           << ref.simulation_fugacity << ", "
+                           << ref.EOS_fugacity
                            << endl;
            }
         }
@@ -198,7 +196,9 @@ void file_output(vector<vector<run>> all_runs, vector<general_run_data> general_
     }
 }
 
-//output function from MPMC
+/* this is only here to play nice with the MPMC functions for
+ * n2 fugacity that I'm using here
+ */
 void output(string msg)
 {
     cout << msg << endl;

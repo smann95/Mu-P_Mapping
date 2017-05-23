@@ -64,8 +64,9 @@ double get_co2_state_fugacity(double temperature, double pressure);
 
 double get_n2_state_compressibility(double temperature, double pressure);
 
-//MPMC FUNCTIONS
 void output(std::string msg);
+
+//MPMC FUNCTIONS
 double get_n2_fugacity(double temperature, double pressure);
 double n2_fugacity_back(double temperature, double pressure);
 double n2_comp_back(double temperature, double pressure);
