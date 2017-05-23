@@ -19,10 +19,7 @@ int main(int argc, char ** argv)
     vector<vector<run>> all_runs = set_up_simulation_structs(general_runs);
     give_structs_simulation_data(argc, argv, all_runs);
 
-    /* These next two functions:
-     * 1. assigns the mass to each individual <run> in all_runs based on atom type
-     * 2. converts simulation data to friendlier units*/
-    get_species_mass(all_runs, general_runs);
+    /* Convert data to friendlier units */
     convert_data_to_other_units(all_runs, general_runs);
 
     /* We get our answers...*/

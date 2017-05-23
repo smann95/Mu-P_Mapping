@@ -5,8 +5,10 @@
 
 using namespace std;
 
-/* sets up struct that contains general run data (species type and number
- * of runs per species
+/*
+ * set_up_general_runs reads the first two lines of the input file(s) to determine the
+ * species of each group of simulations and how many state points are in each
+ * group of simulations
  */
 
 vector <general_run_data> set_up_general_runs(int argc, char ** argv)
@@ -14,22 +16,21 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
     vector<general_run_data> general_runs;
     string file_name,
            line;
-    for(auto i = 1; i < argc; i++)
+    for(auto i = 1; i < argc; i++)//argv[0] is the program name, don't forget!
     {
         file_name = argv[i];
-        ifstream input;
-        input.open(file_name);
+        ifstream input(file_name);
         if(input.is_open())
         {
-            general_run_data this_run;
+            general_run_data this_species;
             getline(input,line);//first line contains species string
-            this_run.species = line;
+            this_species.species = line;
             getline(input,line);//second line contains number of state points for current species
-            stringstream convert (line);
-            convert >> this_run.num_runs;
-            general_runs.push_back(this_run);
+            stringstream convert(line);//get num as an int
+            convert >> this_species.num_runs;
+            general_runs.push_back(this_species);
         }
-        else
+        else//check the execution directory to make sure your data is there
         {
             cerr << "Error in opening file " << file_name
                  << " in set_up_general_runs() " << endl;
@@ -40,6 +41,11 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
 }
 
 
+/*
+ * Now that we know how many groups of simulation runs we have, we
+ * create the necessary vectors of vectors
+ * the inner vectors (of type run) each
+ */
 vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_runs)
 {
     vector<vector<run>> all_runs;
@@ -53,12 +59,20 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
         {
             run current;
             current.atom_type = general_beg->species;
+            current.mass = get_species_mass(current.atom_type);
             this_run.push_back(current);
         }
         all_runs.push_back(this_run);
         general_beg++;
     }
     return all_runs;
+}
+double get_species_mass(string atom_type)
+{
+    if(strcasecmp((atom_type).c_str(), "co2") == 0)
+        return 44.0095;
+    else if(strcasecmp((atom_type).c_str(), "n2") == 0)
+        return 28.0134;
 }
 
 void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
@@ -105,27 +119,6 @@ void give_structs_simulation_data(int argc, char ** argv, vector<vector<run>> &a
     }
 }
 
-void get_species_mass(vector<vector<run>> &all_runs, vector<general_run_data> general_runs)
-{
-    for(int i = 0;i<general_runs.size();i++)
-    {
-        for(int j = 0;j<general_runs[i].num_runs;j++)
-        {
-           if(strcasecmp((all_runs[i][j].atom_type).c_str(), "co2") == 0)
-               (all_runs[i])[j].mass = 44.0095;
-           else if(strcasecmp((all_runs[i][j].atom_type).c_str(), "n2") == 0)
-               (all_runs[i])[j].mass = 28.0134;
-           else
-           {
-               cerr << "Unsupported atom type "
-                    << (all_runs[i])[j].atom_type
-                    << " provided, please try again."
-                    << endl;
-           }
-        }
-
-    }
-}
 
 void convert_data_to_other_units(vector<vector<run>> &all_runs, vector<general_run_data> general_runs)
 {
