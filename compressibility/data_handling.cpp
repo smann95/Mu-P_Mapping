@@ -1,6 +1,7 @@
 // Created by Luciano Laratelli on 17/05/2017.
 //
 
+#include <iterator>
 #include "compressibility.h"
 
 using namespace std;
@@ -102,8 +103,8 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                 istringstream iss(line);
                 //I got these next three lines from doug; have no idea what they do but they do it well
                 copy(
-                        istream_iterator<string>(iss),
-                        istream_iterator<string>(),
+                        std::istream_iterator<string>(iss),
+                        std::istream_iterator<string>(),
                         back_inserter(this_line)
                 );
                 if(!strncasecmp(this_line[0].c_str(), "#",1))
