@@ -87,9 +87,9 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
 {
     string file_name,
            line;
-    int j = 0;
     for(int i = 1;i < argc;i++)
     {
+        int j = 0;
         file_name = argv[i];
         ifstream input(file_name);
         input.ignore('\n');//first two lines are stuff we already got
