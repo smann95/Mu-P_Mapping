@@ -47,6 +47,7 @@ struct run
            simulation_fugacity;
     double EOS_fugacity,
            EOS_Z;//compressibility
+    double density;
 };
 
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);

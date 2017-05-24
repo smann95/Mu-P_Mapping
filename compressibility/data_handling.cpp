@@ -1,6 +1,7 @@
 // Created by Luciano Laratelli on 17/05/2017.
 //
 
+#include <iterator>
 #include "compressibility.h"
 
 using namespace std;
@@ -105,16 +106,19 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                         std::istream_iterator<string>(),
                         back_inserter(this_line)
                 );
-                if(!strncasecmp(this_line[0].c_str(), "#",1))
-                    continue;//lines that start with # are comments
+                cout << line << endl;
+                if(!strncasecmp(this_line[0].c_str(),"#",1))
+                    continue;
                 else
                 {
                     auto &ref = (all_runs[i-1])[j];//make current run a ref to clean up the code a bit
                     ref.temperature = atof(this_line[0].c_str());
                     ref.pressure_bar = atof(this_line[1].c_str());
                     ref.simulation_V = atof(this_line[2].c_str());
+                    ref.density = atof(this_line[3].c_str());
+                    j++;
+
                 }
-                j++;
             }
         }
         else
