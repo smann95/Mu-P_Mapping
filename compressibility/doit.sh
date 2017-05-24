@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 scp laratelli@itn.rc.usf.edu:~/muP_mapping/co2_05_24_2017.dat .
 scp laratelli@itn.rc.usf.edu:~/muP_mapping/n2_05_24_2017.dat .
 
