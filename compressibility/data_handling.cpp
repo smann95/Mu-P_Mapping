@@ -1,6 +1,8 @@
 // Created by Luciano Laratelli on 17/05/2017.
 //
 
+#include <strings.h>
+#include <iterator>
 #include "compressibility.h"
 
 using namespace std;
@@ -71,7 +73,7 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
 }
 double get_species_mass(string atom_type)
 {
-    double mass;
+    double mass = 0;
     if(strcasecmp((atom_type).c_str(), "co2") == 0)
         mass = 44.0095;
     else if(strcasecmp((atom_type).c_str(), "n2") == 0)
@@ -92,8 +94,12 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
         int j = 0;
         file_name = argv[i];
         ifstream input(file_name);
+        /*
         input.ignore('\n');//first two lines are stuff we already got
         input.ignore('\n');
+        */
+        getline(input,line);
+        getline(input,line);
         if(input.is_open())
         {
             while(getline(input,line))
