@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
     calculate_data(all_runs);
 
     /* And write them to a new file*/
-    file_output(all_runs, general_runs, argc, argv);
+    file_output(all_runs, argc, argv);
 
     return 0;
 }

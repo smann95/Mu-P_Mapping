@@ -173,7 +173,7 @@ void calculate_data(vector<vector<run>> &all_runs)
     }
 }
 
-void file_output(vector<vector<run>> all_runs, vector<general_run_data> general_runs, int argc, char ** argv)
+void file_output(vector<vector<run>> all_runs, int argc, char ** argv)
 {
     for(int i = 1;i < argc;i++)
     {
@@ -182,17 +182,16 @@ void file_output(vector<vector<run>> all_runs, vector<general_run_data> general_
         ofstream output_file(file_name);
         cout << "FILE NAME FOR OUTPUT : " << file_name << endl;
         output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z       #SIM_FUG    #EOS_FUG" << endl;
-        for(auto j = 0;j<all_runs.size();j++)
+        for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
         {
-           for(int k = 0;k<general_runs[j].num_runs;k++)
+           for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
            {
-               auto ref = (all_runs[j])[k];
-               output_file << ref.temperature << ",     "
-                           << ref.pressure_atm << ",    "
-                           << ref.simulation_Z << ",  "
-                           << ref.EOS_Z << ",  "
-                           << ref.simulation_fugacity << ", "
-                           << ref.EOS_fugacity
+               output_file << mini_beg->temperature << ",     "
+                           << mini_beg->pressure_atm << ",    "
+                           << mini_beg->simulation_Z << ",  "
+                           << mini_beg->EOS_Z << ",  "
+                           << mini_beg->simulation_fugacity << ", "
+                           << mini_beg->EOS_fugacity
                            << endl;
            }
         }
