@@ -1,6 +1,7 @@
 /.idea/
-/cmake-build-debug
 *.dat
 *.csv
 co2/
 n2/
+co2_05_24_2017.dat.OUT
+n2_05_24_2017.dat.OUT
