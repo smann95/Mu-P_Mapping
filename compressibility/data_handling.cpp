@@ -87,9 +87,9 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
 {
     string file_name,
            line;
-    int j = 0;
     for(int i = 1;i < argc;i++)
     {
+        int j = 0;
         file_name = argv[i];
         ifstream input(file_name);
         input.ignore('\n');//first two lines are stuff we already got
@@ -112,7 +112,7 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                 {
                     auto &ref = (all_runs[i-1])[j];//make current run a ref to clean up the code a bit
                     ref.temperature = atof(this_line[0].c_str());
-                    ref.pressure_bar = atof(this_line[1].c_str());
+                    ref.pressure_atm = atof(this_line[1].c_str());
                     ref.simulation_V = atof(this_line[2].c_str());
                 }
                 j++;
@@ -135,7 +135,7 @@ void convert_data_to_other_units(vector<vector<run>> &all_runs, vector<general_r
        for(int j = 0;j<general_runs[i].num_runs;j++)
        {
            auto & ref = (all_runs[i])[j];
-           ref.pressure_atm = ref.pressure_bar * BAR_TO_ATM;
+           ref.pressure_bar = ref.pressure_atm / BAR_TO_ATM;
            ref.pressure_pa = ref.pressure_bar * BAR_TO_PASCAL;
            ref.mass /=AVOGADRO;
            ref.mass /=G_IN_KG;
@@ -183,7 +183,7 @@ void file_output(vector<vector<run>> all_runs, vector<general_run_data> general_
            {
                auto ref = (all_runs[j])[k];
                output_file << ref.temperature << ",     "
-                           << ref.pressure_bar << ",    "
+                           << ref.pressure_atm << ",    "
                            << ref.simulation_Z << ",  "
                            << ref.EOS_Z << ",  "
                            << ref.simulation_fugacity << ", "
