@@ -23,7 +23,7 @@ int main(int argc, char ** argv)
     convert_data_to_other_units(all_runs, general_runs);
 
     /* We get our answers...*/
-    calculate_data(all_runs, general_runs);
+    calculate_data(all_runs);
 
     /* And write them to a new file*/
     file_output(all_runs, general_runs, argc, argv);

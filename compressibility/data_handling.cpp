@@ -150,25 +150,24 @@ void convert_data_to_other_units(vector<vector<run>> &all_runs, vector<general_r
     }
 }
 
-void calculate_data(vector<vector<run>> &all_runs, vector<general_run_data> general_runs)
+void calculate_data(vector<vector<run>> &all_runs)
 {
-    for(int i = 0;i<all_runs.size();i++)
+    for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
     {
-        for(int j = 0;j<general_runs[i].num_runs;j++)
+        for(auto mini_beg = all_beg->begin(); mini_beg != all_beg->end();mini_beg++)
         {
-            auto &ref = (all_runs[i])[j];
-            ref.simulation_Z = get_simulation_compressibility(ref.temperature, ref.pressure_pa, ref.simulation_V);
-            if(ref.atom_type == "co2")
+            mini_beg->simulation_Z = get_simulation_compressibility(mini_beg->temperature, mini_beg->pressure_pa, mini_beg->simulation_V);
+            if(mini_beg->atom_type == "co2")
             {
-                ref.EOS_Z = get_co2_state_compressibility(ref.temperature, ref.pressure_atm);
-                ref.EOS_fugacity = get_co2_state_fugacity(ref.temperature, ref.pressure_atm);
-                ref.simulation_fugacity = get_simulation_fugacity(ref.simulation_Z,ref.pressure_atm, ref.temperature, "co2");
+                mini_beg->EOS_Z = get_co2_state_compressibility(mini_beg->temperature, mini_beg->pressure_atm);
+                mini_beg->EOS_fugacity = get_co2_state_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
+                mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "co2");
             }
-            else if(ref.atom_type == "n2")
+            else if(mini_beg->atom_type == "n2")
             {
-                ref.EOS_Z = get_n2_state_compressibility(ref.temperature, ref.pressure_atm);
-                ref.EOS_fugacity = get_n2_fugacity(ref.temperature, ref.pressure_atm);
-                ref.simulation_fugacity = get_simulation_fugacity(ref.simulation_Z,ref.pressure_atm, ref.temperature, "n2");
+                mini_beg->EOS_Z = get_n2_state_compressibility(mini_beg->temperature, mini_beg->pressure_atm);
+                mini_beg->EOS_fugacity = get_n2_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
+                mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "n2");
             }
         }
     }
