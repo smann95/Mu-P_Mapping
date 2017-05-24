@@ -1,7 +1,6 @@
 // Created by Luciano Laratelli on 17/05/2017.
 //
 
-#include <iterator>
 #include "compressibility.h"
 
 using namespace std;
@@ -53,9 +52,10 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
 vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_runs)
 {
     vector<vector<run>> all_runs;
-    auto gen_end = general_runs.end();
+    auto gen_beg = general_runs.begin(),
+         gen_end = general_runs.end();
 
-    for(auto gen_beg = general_runs.begin();gen_beg != gen_end;gen_beg++)
+    for(gen_beg;gen_beg != gen_end;gen_beg++)
     {
         vector<run> this_run;
         for(auto i = 0;i < gen_beg->num_runs;i++)
@@ -71,7 +71,7 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
 }
 double get_species_mass(string atom_type)
 {
-    double mass = 0.0;
+    double mass;
     if(strcasecmp((atom_type).c_str(), "co2") == 0)
         mass = 44.0095;
     else if(strcasecmp((atom_type).c_str(), "n2") == 0)
@@ -87,9 +87,9 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
 {
     string file_name,
            line;
+    int j = 0;
     for(int i = 1;i < argc;i++)
     {
-        int j = 0;
         file_name = argv[i];
         ifstream input(file_name);
         input.ignore('\n');//first two lines are stuff we already got
@@ -102,23 +102,20 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                 istringstream iss(line);
                 //I got these next three lines from doug; have no idea what they do but they do it well
                 copy(
-                        std::istream_iterator<string>(iss),
-                        std::istream_iterator<string>(),
+                        istream_iterator<string>(iss),
+                        istream_iterator<string>(),
                         back_inserter(this_line)
                 );
-                cout << line << endl;
-                if(!strncasecmp(this_line[0].c_str(),"#",1))
-                    continue;
+                if(!strncasecmp(this_line[0].c_str(), "#",1))
+                    continue;//lines that start with # are comments
                 else
                 {
                     auto &ref = (all_runs[i-1])[j];//make current run a ref to clean up the code a bit
                     ref.temperature = atof(this_line[0].c_str());
                     ref.pressure_bar = atof(this_line[1].c_str());
                     ref.simulation_V = atof(this_line[2].c_str());
-                    ref.density = atof(this_line[3].c_str());
-                    j++;
-
                 }
+                j++;
             }
         }
         else

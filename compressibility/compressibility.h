@@ -10,7 +10,6 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
-#include <cstring>
 
 #define GAS_CONSTANT 8.3144598
 #define BAR_TO_ATM 0.986923
@@ -47,32 +46,33 @@ struct run
            simulation_fugacity;
     double EOS_fugacity,
            EOS_Z;//compressibility
-    double density;
 };
 
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);
 std::vector<std::vector<run>> set_up_simulation_structs(std::vector<general_run_data> general_runs);
 void read_simulation_data(int argc, char ** argv, std::vector<std::vector<run>> &all_runs);
 double get_species_mass(std::string atom_type);
-
 void convert_data_to_other_units(std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> general_runs);
 void calculate_data(std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> general_runs);
+void file_output(std::vector<std::vector<run>> all_runs, std::vector<general_run_data> general_runs, int argc, char ** argv);
 
 double get_simulation_compressibility(double temperature, double pressure, double volume);
 double get_simulation_fugacity(double Z, double pressure,double temperature, std::string species);
 
-void file_output(std::vector<std::vector<run>> all_runs, std::vector<general_run_data> general_runs, int argc, char ** argv);
-void output(std::string msg);
-
-//MPMC FUNCTIONS (with some modifications)
 double get_co2_state_compressibility(double temperature, double pressure);
 double get_co2_state_fugacity(double temperature, double pressure);
+
 double get_n2_state_compressibility(double temperature, double pressure);
+
+void output(std::string msg);
+
+//MPMC FUNCTIONS
 double get_n2_fugacity(double temperature, double pressure);
 double n2_fugacity_back(double temperature, double pressure);
 double n2_comp_back(double temperature, double pressure);
 double n2_fugacity_PR(double temperature, double pressure);
 double n2_fugacity_zhou(double temperature, double pressure);
+
 //END MPMC FUNCTIONS
 
 #endif //COMPRESSIBILITY_COMPRESSIBILITY_H
