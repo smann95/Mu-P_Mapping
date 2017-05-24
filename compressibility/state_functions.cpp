@@ -178,7 +178,7 @@ double get_n2_fugacity(double temperature, double pressure) {
         return(n2_fugacity_PR(temperature, pressure));
 
     } else {
-        output("INPUT: Unknown if N2 fugacity will be correct at the requested temperature & pressure...defaulting to use the PR EoS.\n");
+        //output("INPUT: Unknown if N2 fugacity will be correct at the requested temperature & pressure...defaulting to use the PR EoS.\n");
         return(n2_fugacity_PR(temperature, pressure));
 
     }

@@ -175,27 +175,26 @@ void calculate_data(vector<vector<run>> &all_runs)
 
 void file_output(vector<vector<run>> all_runs, int argc, char ** argv)
 {
-    for(int i = 1;i < argc;i++)
+    int i = 1;
+    for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
     {
         string input_name = argv[i];
         string file_name = input_name + ".OUT";
         ofstream output_file(file_name);
         cout << "FILE NAME FOR OUTPUT : " << file_name << endl;
-        output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z       #SIM_FUG    #EOS_FUG" << endl;
-        for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
+        //output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z       #SIM_FUG    #EOS_FUG" << endl;
+        for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
         {
-           for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
-           {
-               output_file << mini_beg->temperature << ",     "
-                           << mini_beg->pressure_atm << ",    "
-                           << mini_beg->simulation_Z << ",  "
-                           << mini_beg->EOS_Z << ",  "
-                           << mini_beg->simulation_fugacity << ", "
-                           << mini_beg->EOS_fugacity
-                           << endl;
-           }
+           output_file << mini_beg->temperature << ",     "
+                       << mini_beg->pressure_atm << ",    "
+                       << mini_beg->simulation_Z << ",  "
+                       << mini_beg->EOS_Z << ",  "
+                       << mini_beg->simulation_fugacity << ", "
+                       << mini_beg->EOS_fugacity
+                       << endl;
         }
         output_file.close();
+        i++;
     }
 }
 
