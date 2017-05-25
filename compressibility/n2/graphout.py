@@ -20,22 +20,29 @@ plt.scatter(t, sim_z, s=20, c='green')
 plt.plot(t, sim_z, c='green', label='Simulation Z')
 
 title = "name"
+file_name = "file"
 if sys.argv[1] == "DATAaa":
-    title = "CO2 at P = 0.1"
+    title = "N2 at P = 0.1"
+    file_name = "N2_P_0.1.png"
 elif sys.argv[1] == "DATAab":
-    title = "CO2 at P = 1.0"
+    title = "N2 at P = 1.0"
+    file_name = "N2_P_1.png"
 elif sys.argv[1] == "DATAac":
-    title = "CO2 at P = 5.0"
+    title = "N2 at P = 5.0"
+    file_name = "N2_P_5.png"
 elif sys.argv[1] == "DATAad":
-    title = "CO2 at P = 10.0"
+    title = "N2 at P = 10.0"
+    file_name = "N2_P_10.png"
 elif sys.argv[1] == "DATAae":
-    title = "CO2 at P = 20.0"
+    title = "N2 at P = 20.0"
+    file_name = "N2_P_20.png"
 elif sys.argv[1] == "DATAaf":
-    title = "CO2 at P = 30.0"
+    title = "N2 at P = 30.0"
+    file_name = "N2_P_30.png"
 
 plt.title(title)
 plt.legend()
 plt.xlabel('Temperature')
 plt.ylabel('Compressibility')
 
-plt.savefig(PLOTS/title)
+plt.savefig(file_name)

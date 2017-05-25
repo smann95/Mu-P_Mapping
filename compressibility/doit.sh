@@ -1,29 +1,30 @@
-#!/usr/bin/bash
-scp laratelli@itn.rc.usf.edu:~/muP_mapping/co2_05_24_2017.dat .
-scp laratelli@itn.rc.usf.edu:~/muP_mapping/n2_05_24_2017.dat .
+#!/bin/bash
 
-cmake-build-debug/compressibility co2_05_24_2017.dat n2_05_24_2017.dat
+datestamp=$(date +'_%m_%d_%Y')
 
-mkdir -p co2 n2 GRAPHS
+for species in co2 n2; do
+    scp laratelli@itn.rc.usf.edu:~/muP_mapping/${species}${datestamp}".dat" .
+    cmake-build-debug/compressibility ${species}${datestamp}".dat"
+    mkdir -p ${species} GRAPHS
+    cd GRAPHS
+    rm *.png
+    cd ..
+done
 
-cd GRAPHS
-rm *.png
-cd ..
-
-split -l 11 co2_05_24_2017.dat.OUT DATA
+split -l 11 "co2"${datestamp}".dat.OUT" DATA
 cd co2/
 rm DATAa*
 cd ..
 mv DATAa* co2/
 
-split -l 12 n2_05_24_2017.dat.OUT DATA
+split -l 12 "n2"${datestamp}".dat.OUT" DATA
 cd n2/
 rm DATAa*
 cd ..
 mv DATAa* n2/
 
 for species in co2 n2; do
-    cd $species
+    cd ${species}
         echo "Starting $species graphs now..."
         python graphout.py DATAaa
         python graphout.py DATAab
