@@ -60,6 +60,10 @@ double get_simulation_fugacity(double Z, double pressure,double temperature, std
         A=alpha2*aa*pressure/(R*R*temperature*temperature);
         B=bb*pressure/(R*temperature);
     }
+    else if(species == "h2")
+    {
+        //USE INTEGRATOR FOR (Z-1)/P
+    }
     else
     {
         std::cerr << "You shouldn't be getting this message."

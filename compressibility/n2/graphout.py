@@ -42,6 +42,7 @@ elif sys.argv[1] == "DATAaf":
 
 plt.title(title)
 plt.legend()
+plt.ylim([0, 1.2])
 plt.xlabel('Temperature')
 plt.ylabel('Compressibility')
 

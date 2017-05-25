@@ -73,6 +73,12 @@ double n2_comp_back(double temperature, double pressure);
 double n2_fugacity_PR(double temperature, double pressure);
 double n2_fugacity_zhou(double temperature, double pressure);
 
+double get_h2_fugacity(double temperature, double pressure);
+double h2_fugacity_back(double temperature, double pressure);
+double h2_comp_back(double temperature, double pressure);
+double h2_fugacity_shaw(double temperature, double pressure);
+double h2_fugacity_zhou(double temperature, double pressure);
+
 //END MPMC FUNCTIONS
 
 #endif //COMPRESSIBILITY_COMPRESSIBILITY_H
