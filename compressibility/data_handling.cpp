@@ -78,7 +78,7 @@ double get_species_mass(string atom_type)
         mass = 44.0095;
     else if(strcasecmp((atom_type).c_str(), "n2") == 0)
         mass = 28.0134;
-    else if(strcasecmp((atom_type).c_str(), "n2") == 0)
+    else if(strcasecmp((atom_type).c_str(), "h2") == 0)
         mass = 2.016;
     return mass;
 }
