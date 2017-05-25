@@ -16,6 +16,7 @@ double get_simulation_compressibility(double temperature, double pressure, doubl
  * The awful variable names and magic numbers are thankfully not my doing
  * I'm very sorry if you've made it here looking for answers */
 
+
 double get_simulation_fugacity(double Z, double pressure,double temperature, std::string species)
 {
     double A, B, aa, bb, Tc, Pc, Tr;
@@ -62,7 +63,14 @@ double get_simulation_fugacity(double Z, double pressure,double temperature, std
     }
     else if(species == "h2")
     {
-        //USE INTEGRATOR FOR (Z-1)/P
+        double P,
+               dp;
+        double fugacity_coefficient = 0;
+        for(P = 0.001, dp = 0.001; P <= pressure; P += dp)
+            fugacity_coefficient += dp*(Z-1.0)/P;
+        fugacity_coefficient = exp(fugacity_coefficient);
+        simulation_fugacity = pressure * fugacity_coefficient;
+        return simulation_fugacity;
     }
     else
     {
@@ -80,3 +88,4 @@ double get_simulation_fugacity(double Z, double pressure,double temperature, std
 
     return simulation_fugacity;
 }
+
