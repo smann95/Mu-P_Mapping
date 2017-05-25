@@ -4,7 +4,11 @@ scp laratelli@itn.rc.usf.edu:~/muP_mapping/n2_05_24_2017.dat .
 
 cmake-build-debug/compressibility co2_05_24_2017.dat n2_05_24_2017.dat
 
-mkdir -p co2 n2
+mkdir -p co2 n2 GRAPHS
+
+cd GRAPHS
+rm *.png
+cd ..
 
 split -l 11 co2_05_24_2017.dat.OUT DATA
 cd co2/
@@ -18,20 +22,15 @@ rm DATAa*
 cd ..
 mv DATAa* n2/
 
-cd co2/
-python graphout.py DATAaa
-python graphout.py DATAab
-python graphout.py DATAac
-python graphout.py DATAad
-python graphout.py DATAae
-python graphout.py DATAaf
-cd ..
-
-cd n2/
-python graphout.py DATAaa
-python graphout.py DATAab
-python graphout.py DATAac
-python graphout.py DATAad
-python graphout.py DATAae
-python graphout.py DATAaf
-cd ..
+for species in co2 n2; do
+    cd $species
+        echo "Starting $species graphs now..."
+        python graphout.py DATAaa
+        python graphout.py DATAab
+        python graphout.py DATAac
+        python graphout.py DATAad
+        python graphout.py DATAae
+        python graphout.py DATAaf
+        mv *.png ../GRAPHS
+    cd ..
+done
