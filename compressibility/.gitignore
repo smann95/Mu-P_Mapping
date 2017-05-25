@@ -3,9 +3,7 @@
 *.csv
 co2_05_24_2017.dat.OUT
 n2_05_24_2017.dat.OUT
-*.dat
 GRAPHS/
 DATAa*
 *.OUT
-CMakeLists.txt
 
