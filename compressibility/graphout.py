@@ -14,10 +14,10 @@ sim_z = the_data.sim_z.tolist()
 fig = plt.figure()
 
 
-plt.scatter(t, state_z, s=20, c='red')
-plt.plot(t, state_z, c='red', label='State Z')
-plt.scatter(t, sim_z, s=20, c='green')
-plt.plot(t, sim_z, c='green', label='Simulation Z')
+plt.scatter(p, state_z, s=20, c='red')
+plt.plot(p, state_z, c='red', label='State Z')
+plt.scatter(p, sim_z, s=20, c='green')
+plt.plot(p, sim_z, c='green', label='Simulation Z')
 
 title = "name"
 if sys.argv[1] == "DATAaa":
