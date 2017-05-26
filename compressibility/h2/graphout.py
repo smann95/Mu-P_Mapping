@@ -3,7 +3,7 @@ import pandas
 import matplotlib.pyplot as plt
 import numpy
 data = numpy.loadtxt(sys.argv[1], delimiter=',')
-column_names = ['t', 'p', 'sim_z', 'eos_z', 'simulation_f', 'eos_f']
+column_names = ['t', 'p', 'sim_z', 'eos_z']
 the_data = pandas.read_csv(sys.argv[1], names=column_names)
 
 t = the_data.t.tolist()

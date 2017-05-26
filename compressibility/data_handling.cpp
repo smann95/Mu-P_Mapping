@@ -196,9 +196,7 @@ void file_output(vector<vector<run>> all_runs, char ** argv)
            output_file << mini_beg->temperature << ",     "
                        << mini_beg->pressure_atm << ",    "
                        << mini_beg->simulation_Z << ",  "
-                       << mini_beg->EOS_Z << ",  "
-                       << mini_beg->simulation_fugacity << ", "
-                       << mini_beg->EOS_fugacity
+                       << mini_beg->EOS_Z
                        << endl;
         }
         output_file.close();
