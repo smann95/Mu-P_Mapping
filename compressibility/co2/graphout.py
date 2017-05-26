@@ -40,10 +40,11 @@ elif sys.argv[1] == "DATAaf":
     title += "CO2 at P = 30.0"
     file_name = "CO2_P_30.png"
 
+title += "ATM"
 plt.title(title)
 plt.legend(loc='center left', bbox_to_anchor=(0, 1))
 plt.ylim([0, 1.2])
-plt.xlabel('Temperature')
+plt.xlabel('Temperature (K)')
 plt.ylabel('Compressibility')
 
 plt.savefig(file_name, bbox_inches='tight')
