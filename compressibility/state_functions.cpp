@@ -154,31 +154,31 @@ double get_n2_fugacity(double temperature, double pressure) {
 
     if((temperature == 78.0) && (pressure <= 1.0)) {
 
-        output("INPUT: N2 fugacity calculation using Zhou\n");
+        ////output("INPUT: N2 fugacity calculation using Zhou\n");
         return(n2_fugacity_zhou(temperature, pressure));
 
     } else if((temperature == 78.0) && (pressure >= 10.0) && (pressure <= 300.0)) {
 
-        output("INPUT: N2 fugacity calculation using Peng-Robinson EoS\n");
+        //output("INPUT: N2 fugacity calculation using Peng-Robinson EoS\n");
         return(n2_fugacity_PR(temperature, pressure));
 
     } else if((temperature == 150.0) && (pressure < 175.0)) {
 
-        output("INPUT: N2 fugacity calculation using Peng-Robinson EoS\n");
+        //output("INPUT: N2 fugacity calculation using Peng-Robinson EoS\n");
         return(n2_fugacity_PR(temperature, pressure));
 
     } else if((temperature == 150.0) && (pressure >= 175.0) && (pressure <= 325.0)) {
 
-        output("INPUT: N2 fugacity calculation using BACK EoS\n");
+        //output("INPUT: N2 fugacity calculation using BACK EoS\n");
         return(n2_fugacity_back(temperature, pressure));
 
     } else if((temperature >= 298.0) && (temperature <= 300.0) && (pressure <= 350.0)) {
 
-        output("INPUT: N2 fugacity calculation using Peng-Robinson EoS\n");
+        //output("INPUT: N2 fugacity calculation using Peng-Robinson EoS\n");
         return(n2_fugacity_PR(temperature, pressure));
 
     } else {
-        //output("INPUT: Unknown if N2 fugacity will be correct at the requested temperature & pressure...defaulting to use the PR EoS.\n");
+        ////output("INPUT: Unknown if N2 fugacity will be correct at the requested temperature & pressure...defaulting to use the PR EoS.\n");
         return(n2_fugacity_PR(temperature, pressure));
 
     }
@@ -207,7 +207,7 @@ double n2_fugacity_back(double temperature, double pressure) {
 
     comp_factor = n2_comp_back(temperature, pressure);
     sprintf(linebuf, "INPUT: BACK compressibility factor at %.3f atm is %.3f\n", pressure, comp_factor);
-    output(linebuf);
+    //output(linebuf);
 
     fugacity = pressure*fugacity_coefficient;
     return(fugacity);
@@ -345,7 +345,7 @@ double n2_fugacity_zhou(double temperature, double pressure) {
 
     double fugacity_coefficient, fugacity;
 
-    output("INPUT: N2 fugacity calculation using Zhou function\n");
+    //output("INPUT: N2 fugacity calculation using Zhou function\n");
 
     pressure *= ATM2PSI;
 
@@ -432,17 +432,17 @@ double get_h2_fugacity(double temperature, double pressure) {
 
     if((temperature == 77.0) && (pressure <= 200.0)) {
 
-        output("INPUT: fugacity calculation using Zhou function\n");
+        //output("INPUT: fugacity calculation using Zhou function\n");
         return(h2_fugacity_zhou(temperature, pressure));
 
     }  else if(temperature >= 273.15) {
 
-        output("INPUT: fugacity calculation using Shaw function\n");
+        //output("INPUT: fugacity calculation using Shaw function\n");
         return(h2_fugacity_shaw(temperature, pressure));
 
     } else {
 
-        output("INPUT: fugacity calculation using BACK EoS\n");
+        //output("INPUT: fugacity calculation using BACK EoS\n");
         return(h2_fugacity_back(temperature, pressure));
 
     }
@@ -473,7 +473,7 @@ double h2_fugacity_back(double temperature, double pressure) {
 
     comp_factor = h2_comp_back(temperature, pressure);
     sprintf(linebuf, "INPUT: BACK compressibility factor at %.3f atm is %.3f\n", pressure, comp_factor);
-    output(linebuf);
+    //output(linebuf);
 
     fugacity = pressure*fugacity_coefficient;
     return(fugacity);
