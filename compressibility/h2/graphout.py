@@ -43,6 +43,7 @@ elif sys.argv[1] == "DATAaf":
 title += "ATM"
 plt.title(title)
 plt.legend(loc='center left',bbox_to_anchor=(0,1))
+plt.ylim([0, 4.2])
 plt.xlabel('Temperature (K)')
 plt.ylabel('Compressibility')
 
