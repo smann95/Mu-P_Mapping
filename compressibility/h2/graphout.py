@@ -22,28 +22,28 @@ plt.plot(t, sim_z, c='green', label='Simulation Z')
 title = "NPT "
 file_name = "file"
 if sys.argv[1] == "DATAaa":
-    title += "H2 (BSSP) at P = 0.1"
+    title += "H2 (BSSP), P = 0.1"
     file_name = "H2_P_0.1.png"
 elif sys.argv[1] == "DATAab":
-    title += "H2 (BSSP) at P = 1.0"
+    title += "H2 (BSSP), P = 1.0"
     file_name = "H2_P_1.png"
 elif sys.argv[1] == "DATAac":
-    title += "H2 (BSSP) at P = 5.0"
+    title += "H2 (BSSP), P = 5.0"
     file_name = "H2_P_5.png"
 elif sys.argv[1] == "DATAad":
-    title += "H2 (BSSP) at P = 10.0"
+    title += "H2 (BSSP), P = 10.0"
     file_name = "H2_P_10.png"
 elif sys.argv[1] == "DATAae":
-    title += "H2 (BSSP) at P = 20.0"
+    title += "H2 (BSSP), P = 20.0"
     file_name = "H2_P_20.png"
 elif sys.argv[1] == "DATAaf":
-    title += "H2 (BSSP)  at P = 30.0"
+    title += "H2 (BSSP), P = 30.0"
     file_name = "H2_P_30.png"
 
 title += "ATM"
 plt.title(title)
 plt.legend(loc='center left',bbox_to_anchor=(0,1))
-plt.ylim([0, 4.2])
+plt.ylim([0, 1.2])
 plt.xlabel('Temperature (K)')
 plt.ylabel('Compressibility')
 
