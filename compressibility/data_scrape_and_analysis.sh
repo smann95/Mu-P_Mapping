@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#RUN THIS PROGRAM ON THE COMPUTER YOU WILL BE DOING DATA ANALYSIS ON
+#for me, this is my laptop/work computer
+
 trap "[ -z "$ctl" ] || ssh -S $ctl -O exit $user@$host" EXIT # closes conn, deletes fifo
 
 read -p "Host to connect to? " host

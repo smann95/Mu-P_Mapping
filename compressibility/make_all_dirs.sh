@@ -1,11 +1,11 @@
 #!/bin/bash
-#this file makes all of the directories of interest for my simulations.
-#this is not a neat script but it gets the job done
+
+#RUN THIS ON THE SUPERCOMPUTING CLUSTER YOU WANT TO RUN YOUR JOBS ON
 
 #TODO: make new input files and change that part in the innermost body of the for loops
 
 current=$(pwd)
-ensemble=$(npt)
+ensemble=npt
 
 CH4_models=( 9_site_nonpolar 9_site_polar trappe )
 CO2_models=( PHAST TRAPPE PHAST_STAR )
