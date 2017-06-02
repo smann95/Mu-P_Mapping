@@ -1,7 +1,10 @@
 #!/bin/bash
 
+#this file gets data from your simulations
+#run it on the cluster, before you run data_scrape_and_analysis
+
 sum=0
-shopt -s extglob
+shopt -s extglob #no idea what this does, someone on stackoverflow told me to do it
 datestamp=$(date +'_%m_%d_%Y')
 
 current=$(pwd)
@@ -43,10 +46,10 @@ for species in CH4 CO2 N2 NE AR KR XE; do
                         for temperature in "${!temp_array}";do
                             mkdir -p ${temperature}
                             cd ${temperature}
-                                volume=$(tail -20 runlog.log | grep "OUTPUT: volume "|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
-                                density=$(tail -20 runlog.log | grep "OUTPUT: density"|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
+                                volume=$(tail -20 *.log | grep "OUTPUT: volume "|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
+                                density=$(tail -20 *.log | grep "OUTPUT: density"|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
                                 ((sum++))
-                                echo "$temp $pres $volume $density" >> $current/TEMP
+                                echo "$temperature $pres $volume $density" >> ${current}/TEMP
                             cd .. #out of temperature
                         done
                     cd .. #out of pressure
@@ -54,8 +57,8 @@ for species in CH4 CO2 N2 NE AR KR XE; do
             echo ${species} >> ${current}/${species}${model}${datestamp}".dat"
             echo ${model} >> ${current}/${species}${model}${datestamp}".dat"
             echo ${sum} >> ${current}/${species}${model}${datestamp}".dat"
-            echo "#TEMP #PRES #V #DENSITY" >> ${current}/${species}${datestamp}".dat"
-            cat ${current}/TEMP >> ${current}/${species}${datestamp}".dat"
+            echo "#TEMP #PRES #V #DENSITY" >> ${current}/${species}${model}${datestamp}".dat"
+            cat ${current}/TEMP >> ${current}/${species}${model}${datestamp}".dat"
             rm ${current}/TEMP
             cd .. #out of model
         done
@@ -84,19 +87,20 @@ for species in H2 HE; do
                                         volume=$(tail -20 runlog.log | grep "OUTPUT: volume "|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
                                         density=$(tail -20 runlog.log | grep "OUTPUT: density"|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
                                         ((sum++))
-                                        echo "$temp $pres $volume $density" >> $current/TEMP
+                                        echo "$temperature $pres $volume $density" >> ${current}/TEMP
                                     cd .. #out of temperature
                                 done
                             cd .. #out of pressure
                         done
+                        echo ${species} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        echo ${model} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        echo ${sum} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        echo "#TEMP #PRES #V #DENSITY" >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        cat ${current}/TEMP >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        rm ${current}/TEMP
                     cd .. #out of model
                 done
             cd .. #out of corrections
         done;
     cd .. #out of species
-    echo $species >> $current/$species$datestamp".dat"
-    echo $sum >> $current/$species$datestamp".dat"
-    echo "#TEMP #PRES #V #DENSITY" >> $current/$species$datestamp".dat"
-    cat TEMP >> $species$datestamp".dat"
-    rm TEMP
 done
