@@ -16,7 +16,12 @@ ctl=${sshfifos}/${user}@${host}:22 # ssh stores named socket for open ctrl conn 
 
 ssh -fNMS $ctl $user@$host  # Control Master: Prompts password then persists in background
 
-
+if [ "$host" = "bridges.psc.edu" ]; then
+    scp_path="/pylon5/ch3benp/luciano2/MuP_Mapping/compressibility/"
+fi
+if [ "$host" = "itn.rc.usf.edu" ]; then
+    scp_path="~/repos/MuP_Mapping/compressibility/"
+fi
 date_stamp=$(date +'_%m_%d_%Y')
 mkdir -p GRAPHS ; cd GRAPHS ; rm *.png ; cd ..
 
@@ -32,10 +37,12 @@ XE_models=( XE )
 
 for species in CH4 CO2 NE AR KR XE; do
     array="${species}_models[@]"
+    mkdir -p ${species}
     cd ${species}
     for model in "${!array}"; do
+        mkdir -p ${model}
         cd .. #out of species into the main directory
-        scp -o ControlPath=${ctl} ${user}@${host}:~/muP_mapping/${species}${model}${date_stamp}".dat" .
+        scp -o ControlPath=${ctl} ${user}@${host}:${scp_path}${species}${model}${date_stamp}".dat" .
         cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
         split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
         cd ${species}/${model} #into the innermost directory (species + model)
@@ -57,22 +64,25 @@ for species in CH4 CO2 NE AR KR XE; do
 done
 
 for species in H2 HE; do
+    mkdir -p ${species}
     model_array="${species}_models[@]"
     temp_array="${species}_temperatures[@]"
     cd ${species}
         for corrections in FH_ON FH_OFF; do
+            mkdir -p ${corrections}
             cd ${corrections}
                 for model in "${!model_array}"; do
-                    cd .. #out of species into the main directory
-                    scp -o ControlPath=${ctl} ${user}@${host}:~/muP_mapping/${species}${model}${date_stamp}".dat" .
-                    cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
-                    split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
-                    cd ${species}/${model} #into the innermost directory (species + model)
+                    mkdir -p ${model}
+                    cd ../.. #out of species into the main directory
+                    scp -o ControlPath=${ctl} ${user}@${host}:${scp_path}${species}${corrections}${model}${date_stamp}".dat" .
+                    cmake-build-debug/compressibility ${species}${corrections}${model}${date_stamp}".dat"
+                    split -l 11 ${species}${corrections}${model}${date_stamp}".dat.OUT" DATA
+                    cd ${species}/${corrections}/${model} #into the innermost directory
                         rm DATAa*
-                    cd ../../ #to the outermost directory (the main working directory)
-                    mv DATAa* ${species}/${model}
-                    cd ${species}/${model} #into the innermost directory (species + model)
-                        echo "Starting $species($model) graphs now..."
+                    cd ../../../ #to the outermost directory (the main working directory)
+                    mv DATAa* ${species}/${corrections}/${model}/
+                    cd ${species}/${corrections}${model} #into the innermost directory (species + model)
+                        echo "Starting $species($model) with $corrections graphs now..."
                         python graphout.py DATAaa
                         python graphout.py DATAab
                         python graphout.py DATAac
