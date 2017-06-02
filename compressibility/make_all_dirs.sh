@@ -33,13 +33,13 @@ for species in CH4 CO2 H2 N2; do
                         for temperature in "${!temp_array}";do
                             mkdir -p ${temperature}
                             cd ${temperature}
-                                awk -v pres="$pres" -v temp="$temp" -v ensemble="$ensemble" -v species="$species" '{
+                                awk -v pres="$pres" -v temp="$temperature" -v ensemble="$ensemble" -v species="$species" '{
                                 gsub(/XXXENSEMBLEXXX/, ensemble);
                                 gsub(/XXXTEMPXXX/, temp);
                                 gsub(/XXXPRESXXX/, pres);
                                 gsub(/XXXSPECIESXXX/, species);
                                 print;
-                                }' ${current}/inputfiles/${species}_${model}"input.inp" > ${species}".inp"
+                                }' ${current}/inputfiles/${ensemble}${species}"input.inp" > ${species}".inp"
                                 cp ${current}/modelfiles/FOURBYFOUR/${species}_${model}".pqr" input.pqr
                             cd .. #out of temperature
                         done
