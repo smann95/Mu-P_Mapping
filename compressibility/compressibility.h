@@ -10,6 +10,8 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <boost/algorithm/string.hpp>
+
 
 #define GAS_CONSTANT 8.3144598
 #define BAR_TO_ATM 0.986923

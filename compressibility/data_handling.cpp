@@ -4,6 +4,7 @@
 #include <strings.h>
 #include <iterator>
 #include "compressibility.h"
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -74,12 +75,14 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
 double get_species_mass(string atom_type)
 {
     double mass = 0;
-    if(strcasecmp((atom_type).c_str(), "co2") == 0)
+    if(boost::iequals(atom_type,"co2"))
         mass = 44.0095;
-    else if(strcasecmp((atom_type).c_str(), "n2") == 0)
+    else if(boost::iequals(atom_type,"n2"))
         mass = 28.0134;
-    else if(strcasecmp((atom_type).c_str(), "h2") == 0)
+    else if(boost::iequals(atom_type,"h2"))
         mass = 2.016;
+    else if(boost::iequals(atom_type,"ch4"))
+        mass = 16.04260;
     return mass;
 }
 
