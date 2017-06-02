@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#RUN THIS ON THE SUPERCOMPUTING CLUSTER YOU WANT TO RUN YOUR JOBS ON
-
-#TODO: make new input files and change that part in the innermost body of the for loops
+sum=0
+shopt -s extglob
+datestamp=$(date +'_%m_%d_%Y')
 
 current=$(pwd)
 ensemble=npt
@@ -43,18 +43,20 @@ for species in CH4 CO2 N2 NE AR KR XE; do
                         for temperature in "${!temp_array}";do
                             mkdir -p ${temperature}
                             cd ${temperature}
-                                awk -v pres="$pres" -v temp="$temperature" -v ensemble="$ensemble" -v species="$species" '{
-                                gsub(/XXXENSEMBLEXXX/, ensemble);
-                                gsub(/XXXTEMPXXX/, temp);
-                                gsub(/XXXPRESXXX/, pres);
-                                gsub(/XXXSPECIESXXX/, species);
-                                print;
-                                }' ${current}/inputfiles/${ensemble}${species}"input.inp" > ${species}".inp"
-                                cp ${current}/modelfiles/FOURBYFOUR/${species}_${model}".pqr" input.pqr
+                                volume=$(tail -20 runlog.log | grep "OUTPUT: volume "|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
+                                density=$(tail -20 runlog.log | grep "OUTPUT: density"|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
+                                ((sum++))
+                                echo "$temp $pres $volume $density" >> $current/TEMP
                             cd .. #out of temperature
                         done
                     cd .. #out of pressure
                 done
+            echo ${species} >> ${current}/${species}${model}${datestamp}".dat"
+            echo ${model} >> ${current}/${species}${model}${datestamp}".dat"
+            echo ${sum} >> ${current}/${species}${model}${datestamp}".dat"
+            echo "#TEMP #PRES #V #DENSITY" >> ${current}/${species}${datestamp}".dat"
+            cat ${current}/TEMP >> ${current}/${species}${datestamp}".dat"
+            rm ${current}/TEMP
             cd .. #out of model
         done
     cd .. #out of species
@@ -79,14 +81,10 @@ for species in H2 HE; do
                                 for temperature in "${!temp_array}";do
                                     mkdir -p ${temperature}
                                     cd ${temperature}
-                                        awk -v pres="$pres" -v temp="$temperature" -v ensemble="$ensemble" -v species="$species" '{
-                                        gsub(/XXXENSEMBLEXXX/, ensemble);
-                                        gsub(/XXXTEMPXXX/, temp);
-                                        gsub(/XXXPRESXXX/, pres);
-                                        gsub(/XXXSPECIESXXX/, species);
-                                        print;
-                                        }' ${current}/inputfiles/${ensemble}${species}${corrections}"input.inp" > ${species}".inp"
-                                        cp ${current}/modelfiles/FOURBYFOUR/${species}_${model}".pqr" input.pqr
+                                        volume=$(tail -20 runlog.log | grep "OUTPUT: volume "|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
+                                        density=$(tail -20 runlog.log | grep "OUTPUT: density"|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
+                                        ((sum++))
+                                        echo "$temp $pres $volume $density" >> $current/TEMP
                                     cd .. #out of temperature
                                 done
                             cd .. #out of pressure
@@ -96,4 +94,9 @@ for species in H2 HE; do
             cd .. #out of corrections
         done;
     cd .. #out of species
+    echo $species >> $current/$species$datestamp".dat"
+    echo $sum >> $current/$species$datestamp".dat"
+    echo "#TEMP #PRES #V #DENSITY" >> $current/$species$datestamp".dat"
+    cat TEMP >> $species$datestamp".dat"
+    rm TEMP
 done
