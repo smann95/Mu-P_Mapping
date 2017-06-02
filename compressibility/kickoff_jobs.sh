@@ -15,28 +15,51 @@ N2_temperatures=( 077.0 110.0 140.0 170.0 200.0 230.0 260.0 290.0 330.0 370.0 41
 for species in CH4 CO2 H2 N2; do
     model_array="${species}_models[@]"
     temp_array="${species}_temperatures[@]"
-    mkdir -p ${species}
     cd ${species}
         for model in "${!model_array}"; do
-            mkdir -p ${model}
             cd ${model}
                 touch these_numbers_are_pressures_in_ATM
                 for pres in 00.1 01.0 05.0 10.0 20.0 30.0; do
-                    mkdir -p ${pres}
                     cd ${pres}
                         touch these_are_temperatures_in_kelvin
                         for temperature in "${!temp_array}";do
-                            mkdir -p ${temperature}
                             cd ${temperature}
-                                cp ~current/submit.sh .
-                                sed -i "s/XXXJOBNAMEXXX/${species}_${model}"P"${pres}"T"${temperature}/g" submit.sh
+                                cp ${current}/submit.sh .
+                                sed -i "s/XXXJOBNAMEXXX/${species}_${model}"_P"${pres}"_T"${temperature}/g" submit.sh
                                 sbatch submit.sh
-                                #INNER LOOP
                             cd .. #out of temperature
                         done
                     cd .. #out of pressure
                 done
             cd .. #out of model
         done
+    cd .. #out of species
+done
+
+for species in H2 HE; do
+    model_array="${species}_models[@]"
+    temp_array="${species}_temperatures[@]"
+    cd ${species}
+        for corrections in FH_ON FH_OFF; do
+            cd ${corrections}
+                for model in "${!model_array}"; do
+                    cd ${model}
+                        touch these_numbers_are_pressures_in_ATM
+                        for pres in 00.1 01.0 05.0 10.0 20.0 30.0; do
+                            cd ${pres}
+                                touch these_are_temperatures_in_kelvin
+                                for temperature in "${!temp_array}";do
+                                    cd ${temperature}
+                                        cp ${current}/submit.sh .
+                                        sed -i "s/XXXJOBNAMEXXX/${species}_${corrections}_${model}"_P"${pres}"_T"${temperature}/g" submit.sh
+                                        sbatch submit.sh
+                                    cd .. #out of temperature
+                                done
+                            cd .. #out of pressure
+                        done
+                    cd .. #out of model
+                done
+            cd .. #out of corrections
+        done;
     cd .. #out of species
 done

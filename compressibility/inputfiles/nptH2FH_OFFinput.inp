@@ -1,0 +1,34 @@
+job_name                    XXXSPECIESXXX
+
+ensemble                    XXXENSEMBLEXXX
+
+numsteps                    10000000
+corrtime                    1000
+
+volume_probability          .333
+move_factor	                1
+rot_factor	                1
+
+temperature                 XXXTEMPXXX
+pressure                    XXXPRESXXX
+calc_pressure               on
+
+read_pqr_box                on
+feynman_hibbs               off
+
+polarization            	on
+polar_damp_type         	exponential
+polar_damp              	2.1304
+polar_wolf              	on
+polar_wolf_alpha		    0.13
+
+polar_iterative         	on
+polar_palmo             	on
+polar_gs_ranked         	on
+polar_gamma             	1.03
+polar_max_iter          	4
+
+wrapall                     on
+pqr_input                   input.pqr 
+pop_histogram           	on
+pop_histogram_output    	histogram.dat
