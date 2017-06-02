@@ -21,7 +21,7 @@ for species in H2; do
                 for ensemble in npt; do
                     mkdir -p ${ensemble}
                     cd ${ensemble}
-                    for model in BSS BUCH DL POLAR_ADJQ; do
+                    for model in BSS BUCH DL POLAR_ADJQ BSSP; do
                         mkdir -p ${model}
                         cd ${model}
                         awk -v pres="$pres" -v temp="$temp" -v ensemble="$ensemble" -v species="$species" '{
@@ -58,7 +58,7 @@ for species in CO2; do
                 for ensemble in npt; do
                     mkdir -p ${ensemble}
                     cd ${ensemble}
-                    for model in PHAST TRAPPE; do
+                    for model in PHAST TRAPPE PHAST_STAR; do
                         mkdir -p ${model}
                         cd ${model}
                         awk -v pres="$pres" -v temp="$temp" -v ensemble="$ensemble" -v species="$species" '{
@@ -95,7 +95,7 @@ for species in CH4; do
                 for ensemble in npt; do
                     mkdir -p ${ensemble}
                     cd ${ensemble}
-                    for model in 9_site_nonpolar 9_site_polar _trappe; do
+                    for model in 9_site_nonpolar 9_site_polar trappe; do
                         mkdir -p ${model}
                         cd ${model}
                         awk -v pres="$pres" -v temp="$temp" -v ensemble="$ensemble" -v species="$species" '{
@@ -132,7 +132,7 @@ for species in N2; do
                 for ensemble in npt; do
                     mkdir -p ${ensemble}
                     cd ${ensemble}
-                    for model in 9_site_nonpolar 9_site_polar _trappe; do
+                    for model in TRAPPE PHAST_STAR_LB; do
                         mkdir -p ${model}
                         cd ${model}
                         awk -v pres="$pres" -v temp="$temp" -v ensemble="$ensemble" -v species="$species" '{

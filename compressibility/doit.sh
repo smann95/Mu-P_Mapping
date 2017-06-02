@@ -15,39 +15,135 @@ ssh -fNMS $ctl $user@$host  # Control Master: Prompts password then persists in 
 
 
 date_stamp=$(date +'_%m_%d_%Y')
-
-for species in co2 n2 h2; do
-    scp -o ControlPath=${ctl} ${user}@${host}:~/muP_mapping/${species}${date_stamp}".dat" .
-    cmake-build-debug/compressibility ${species}${date_stamp}".dat"
-    mkdir -p ${species} GRAPHS
-    cd GRAPHS
-    rm *.png
-    cd ..
-done
-
-for species in co2 h2;do
-    split -l 11 ${species}${date_stamp}".dat.OUT" DATA
-    cd ${species}
-    rm DATAa*
-    cd ..
-    mv DATAa* ${species}
-done
-
-split -l 12 "n2"${date_stamp}".dat.OUT" DATA
-cd n2/
-rm DATAa*
+mkdir -p GRAPHS
+cd GRAPHS
+rm *.png
 cd ..
-mv DATAa* n2/
 
-for species in co2 n2 h2; do
+for species in H2; do
+    mkdir -p ${species}
     cd ${species}
-        echo "Starting $species graphs now..."
+    for model in BSS BUCH DL POLAR_ADJQ BSSP; do
+        mkdir -p ${model}
+        scp -o ControlPath=${ctl} ${user}@${host}:~/muP_mapping/${species}${model}${date_stamp}".dat" .
+        cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
+        split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
+        cd ${species}/${model}
+        rm DATAa*
+        cd ../../
+        mv DATAa* ${species}/${model}
+        cd ${species}/${model}
+        echo "Starting $species($model) graphs now..."
         python graphout.py DATAaa
         python graphout.py DATAab
         python graphout.py DATAac
         python graphout.py DATAad
         python graphout.py DATAae
         python graphout.py DATAaf
-        mv *.png ../GRAPHS
-    cd ..
+        mv *.png ../../GRAPHS
+    done;
+    cd .. #out of species
+done
+
+for species in CO2; do
+    mkdir -p ${species}
+    cd ${species}
+    for model in PHAST TRAPPE PHAST_STAR; do
+        mkdir -p ${model}
+        scp -o ControlPath=${ctl} ${user}@${host}:~/muP_mapping/${species}${model}${date_stamp}".dat" .
+        cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
+        split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
+        cd ${species}/${model}
+        rm DATAa*
+        cd ../../
+        mv DATAa* ${species}/${model}
+        cd ${species}/${model}
+        echo "Starting $species($model) graphs now..."
+        python graphout.py DATAaa
+        python graphout.py DATAab
+        python graphout.py DATAac
+        python graphout.py DATAad
+        python graphout.py DATAae
+        python graphout.py DATAaf
+        mv *.png ../../GRAPHS
+    done;
+    cd .. #out of species
+done
+
+for species in CH4; do
+    mkdir -p ${species}
+    cd ${species}
+    for model in 9_site_nonpolar 9_site_polar trappe; do
+        mkdir -p ${model}
+        scp -o ControlPath=${ctl} ${user}@${host}:~/muP_mapping/${species}${model}${date_stamp}".dat" .
+        cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
+        split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
+        cd ${species}/${model}
+        rm DATAa*
+        cd ../../
+        mv DATAa* ${species}/${model}
+        cd ${species}/${model}
+        echo "Starting $species($model) graphs now..."
+        python graphout.py DATAaa
+        python graphout.py DATAab
+        python graphout.py DATAac
+        python graphout.py DATAad
+        python graphout.py DATAae
+        python graphout.py DATAaf
+        mv *.png ../../GRAPHS
+    done;
+    cd .. #out of species
+done
+
+for species in N2; do
+    mkdir -p ${species}
+    cd ${species}
+    for model in TRAPPE PHAST_STAR_LB; do
+        mkdir -p ${model}
+        scp -o ControlPath=${ctl} ${user}@${host}:~/muP_mapping/${species}${model}${date_stamp}".dat" .
+        cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
+        split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
+        cd ${species}/${model}
+        rm DATAa*
+        cd ../../
+        mv DATAa* ${species}/${model}
+        cd ${species}/${model}
+        echo "Starting $species($model) graphs now..."
+        python graphout.py DATAaa
+        python graphout.py DATAab
+        python graphout.py DATAac
+        python graphout.py DATAad
+        python graphout.py DATAae
+        python graphout.py DATAaf
+        mv *.png ../../GRAPHS
+    done
+    cd .. #out of species
+done
+
+
+N2_models=( TRAPPE PHAST_STAR_LB )
+
+for species in N2; do
+    mkdir -p ${species}
+    cd ${species}
+    for model in ${species}_models; do
+        mkdir -p ${model}
+        scp -o ControlPath=${ctl} ${user}@${host}:~/muP_mapping/${species}${model}${date_stamp}".dat" .
+        cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
+        split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
+        cd ${species}/${model}
+        rm DATAa*
+        cd ../../
+        mv DATAa* ${species}/${model}
+        cd ${species}/${model}
+        echo "Starting $species($model) graphs now..."
+        python graphout.py DATAaa
+        python graphout.py DATAab
+        python graphout.py DATAac
+        python graphout.py DATAad
+        python graphout.py DATAae
+        python graphout.py DATAaf
+        mv *.png ../../GRAPHS
+    done
+    cd .. #out of species
 done
