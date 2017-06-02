@@ -83,6 +83,16 @@ double get_species_mass(string atom_type)
         mass = 2.016;
     else if(boost::iequals(atom_type,"ch4"))
         mass = 16.04260;
+    else if(boost::iequals(atom_type,"he"))
+        mass = 4.002602;
+    else if(boost::iequals(atom_type,"ne"))
+        mass = 20.1797;
+    else if(boost::iequals(atom_type,"xe"))
+        mass = 131.293;
+    else if(boost::iequals(atom_type,"kr"))
+        mass = 83.798;
+    else if(boost::iequals(atom_type,"ar"))
+        mass = 39.948;
     return mass;
 }
 
