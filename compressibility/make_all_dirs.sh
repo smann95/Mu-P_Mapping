@@ -67,7 +67,7 @@ for species in CO2; do
                         gsub(/XXXPRESXXX/, pres);
                         gsub(/XXXSPECIESXXX/, species);
                         print;
-                        }' ${current}/inputfiles/${ensemble}"H2input.inp" > ${species}".inp"
+                        }' ${current}/inputfiles/${ensemble}"input.inp" > ${species}".inp"
                         cp ${current}/modelfiles/FOURBYFOUR/${species}_${model}".pqr" input.pqr
                         cd .. #out of model
                     done
@@ -104,7 +104,7 @@ for species in CH4; do
                         gsub(/XXXPRESXXX/, pres);
                         gsub(/XXXSPECIESXXX/, species);
                         print;
-                        }' ${current}/inputfiles/${ensemble}"H2input.inp" > ${species}".inp"
+                        }' ${current}/inputfiles/${ensemble}"input.inp" > ${species}".inp"
                         cp ${current}/modelfiles/FOURBYFOUR/${species}_${model}".pqr" input.pqr
                         cd .. #out of model
                     done
@@ -141,7 +141,7 @@ for species in N2; do
                         gsub(/XXXPRESXXX/, pres);
                         gsub(/XXXSPECIESXXX/, species);
                         print;
-                        }' ${current}/inputfiles/${ensemble}"H2input.inp" > ${species}".inp"
+                        }' ${current}/inputfiles/${ensemble}"input.inp" > ${species}".inp"
                         cp ${current}/modelfiles/FOURBYFOUR/${species}_${model}".pqr" input.pqr
                         cd .. #out of model
                     done
