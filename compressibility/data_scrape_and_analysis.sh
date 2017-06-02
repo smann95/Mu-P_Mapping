@@ -22,7 +22,7 @@ CO2_models=( PHAST TRAPPE PHAST_STAR )
 H2_models=( BSS BSSP BUCH DL POLAR_ADJQ)
 N2_models=( TRAPPE PHAST_STAR_LB )
 
-for species in CH4 CO2 H2 N2; do
+
     array="${species}_models[@]"
     mkdir -p ${species}
     cd ${species}
