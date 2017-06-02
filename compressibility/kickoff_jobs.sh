@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#run this script on the cluster to get your jobs started, after running make_all_dirs on same
 current=$(pwd)
 
 CH4_models=( 9_site_nonpolar 9_site_polar trappe )

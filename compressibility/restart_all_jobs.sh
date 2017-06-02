@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#this runs on the supercomputer you did your work on
+#only run it after your jobs are all done unless you want to mess with the script
+
 current=$(pwd)
 ensemble=npt
 

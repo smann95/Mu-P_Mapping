@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #this file gets data from your simulations
-#run it on the cluster, before you run data_scrape_and_analysis
+#run it on the cluster, before you run data_scrape_and_analysis from your home or work PC
 
 sum=0
 shopt -s extglob #no idea what this does, someone on stackoverflow told me to do it

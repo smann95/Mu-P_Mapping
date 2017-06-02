@@ -2,8 +2,6 @@
 
 #RUN THIS ON THE SUPERCOMPUTING CLUSTER YOU WANT TO RUN YOUR JOBS ON
 
-#TODO: make new input files and change that part in the innermost body of the for loops
-
 current=$(pwd)
 ensemble=npt
 
