@@ -58,6 +58,7 @@ for species in CH4 CO2 N2 NE AR KR XE; do
     cd .. #out of species
 done
 
+#H2 and He have a separate loop because they require Feynman_Hibbs corrections
 for species in H2 HE; do
     model_array="${species}_models[@]"
     temp_array="${species}_temperatures[@]"

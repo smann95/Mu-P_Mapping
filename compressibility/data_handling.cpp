@@ -75,7 +75,7 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
 double get_species_mass(string atom_type)
 {
     double mass = 0;
-    if(boost::iequals(atom_type,"co2"))
+    if(boost::iequals(atom_type,"co2"))//case-insensitive string comparison
         mass = 44.0095;
     else if(boost::iequals(atom_type,"n2"))
         mass = 28.0134;
