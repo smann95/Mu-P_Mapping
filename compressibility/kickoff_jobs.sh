@@ -37,7 +37,7 @@ for species in CH4 CO2 N2 NE AR KR XE; do
                             cd ${temperature}
                                 cp ${current}/submit.sh .
                                 sed -i "s/XXXJOBNAMEXXX/${species}_${model}"_P"${pres}"_T"${temperature}/g" submit.sh
-                                #sbatch submit.sh
+                                sbatch submit.sh
                                 pwd
                             cd .. #out of temperature
                         done
@@ -64,7 +64,7 @@ for species in H2 HE; do
                                     cd ${temperature}
                                         cp ${current}/submit.sh .
                                         sed -i "s/XXXJOBNAMEXXX/${species}_${corrections}_${model}"_P"${pres}"_T"${temperature}/g" submit.sh
-                                        #sbatch submit.sh
+                                        sbatch submit.sh
                                         pwd
                                     cd .. #out of temperature
                                 done
