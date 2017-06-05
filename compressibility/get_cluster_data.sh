@@ -95,6 +95,7 @@ for species in H2 HE; do
                         echo ${species} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
                         echo ${model} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
                         echo ${sum} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        echo ${corrections} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
                         echo "#TEMP #PRES #V #DENSITY" >> ${current}/${species}${corrections}${model}${datestamp}".dat"
                         cat ${current}/TEMP >> ${current}/${species}${corrections}${model}${datestamp}".dat"
                         rm ${current}/TEMP

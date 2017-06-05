@@ -26,9 +26,9 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
         if(input.is_open())
         {
             general_run_data this_species;
-            getline(input,line);//first line contains species string
+            getline(input,line);//this line contains species string
             this_species.species = line;
-            getline(input,line);//second line contains number of state points for current species
+            getline(input,line);//this line contains number of state points for current species
             stringstream convert(line);//get num as an int
             convert >> this_species.num_runs;
             general_runs.push_back(this_species);
