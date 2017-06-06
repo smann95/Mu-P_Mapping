@@ -190,6 +190,12 @@ void calculate_data(vector<vector<run>> &all_runs)
                 mini_beg->EOS_fugacity = get_h2_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
                 //mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "h2");
             }
+            else if(mini_beg->atom_type == "ch4")
+            {
+                mini_beg->EOS_Z = ch4_comp_back(mini_beg->temperature, mini_beg->pressure_atm);
+                mini_beg->EOS_fugacity = get_ch4_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
+                //mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "h2");
+            }
         }
     }
 }

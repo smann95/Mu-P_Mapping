@@ -11,10 +11,10 @@ read -p "User to login with? " user
 BOLD="\n$(tput bold)"; NORMAL="$(tput sgr0)"
 echo -e "${BOLD}Create authenticated persistent control master connection:${NORMAL}"
 sshfifos=~/.ssh/controlmasters
-[ -d ${sshfifos} ] || mkdir -p $sshfifos; chmod 755 ${sshfifos}
+[ -d ${sshfifos} ] || mkdir -p ${sshfifos}; chmod 755 ${sshfifos}
 ctl=${sshfifos}/${user}@${host}:22 # ssh stores named socket for open ctrl conn here
 
-ssh -fNMS $ctl $user@$host  # Control Master: Prompts password then persists in background
+ssh -fNMS ${ctl} ${user}@${host}  # Control Master: Prompts password then persists in background
 
 if [ "$host" = "bridges.psc.edu" ]; then
     scp_path="/pylon5/ch3benp/luciano2/MuP_Mapping/compressibility/"
