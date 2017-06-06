@@ -54,11 +54,11 @@ for species in CH4 CO2 N2 NE AR KR XE; do
                         done
                     cd .. #out of pressure
                 done
-            echo ${species} >> ${current}/${species}${model}${datestamp}".dat"
-            echo ${model} >> ${current}/${species}${model}${datestamp}".dat"
-            echo ${sum} >> ${current}/${species}${model}${datestamp}".dat"
+            echo ${species}                >> ${current}/${species}${model}${datestamp}".dat"
+            echo ${model}                  >> ${current}/${species}${model}${datestamp}".dat"
+            echo ${sum}                    >> ${current}/${species}${model}${datestamp}".dat"
             echo "#TEMP #PRES #V #DENSITY" >> ${current}/${species}${model}${datestamp}".dat"
-            cat ${current}/TEMP >> ${current}/${species}${model}${datestamp}".dat"
+            cat ${current}/TEMP            >> ${current}/${species}${model}${datestamp}".dat"
             rm ${current}/TEMP
             cd .. #out of model
         done
@@ -84,20 +84,20 @@ for species in H2 HE; do
                                 for temperature in "${!temp_array}";do
                                     mkdir -p ${temperature}
                                     cd ${temperature}
-                                        volume=$(tail -20 runlog.log | grep "OUTPUT: volume "|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
-                                        density=$(tail -20 runlog.log | grep "OUTPUT: density"|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
+                                        volume=$(tail -20 *.log | grep "OUTPUT: volume "|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
+                                        density=$(tail -20 *.log | grep "OUTPUT: density"|sed -nr '/[0-9]/{s/^[^0-9]*([0-9]+\.?[0-9]*).*$/\1/p;q}')
                                         ((sum++))
                                         echo "$temperature $pres $volume $density" >> ${current}/TEMP
                                     cd .. #out of temperature
                                 done
                             cd .. #out of pressure
                         done
-                        echo ${species} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
-                        echo ${model} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
-                        echo ${sum} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
-                        echo ${corrections} >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        echo ${species}                >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        echo ${model}                  >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        echo ${sum}                    >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        echo ${corrections}            >> ${current}/${species}${corrections}${model}${datestamp}".dat"
                         echo "#TEMP #PRES #V #DENSITY" >> ${current}/${species}${corrections}${model}${datestamp}".dat"
-                        cat ${current}/TEMP >> ${current}/${species}${corrections}${model}${datestamp}".dat"
+                        cat ${current}/TEMP            >> ${current}/${species}${corrections}${model}${datestamp}".dat"
                         rm ${current}/TEMP
                     cd .. #out of model
                 done
