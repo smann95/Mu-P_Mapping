@@ -51,12 +51,12 @@ for species in CH4 CO2 NE AR KR XE; do
         mv DATAa* ${species}/${model}
         cd ${species}/${model} #into the innermost directory (species + model)
             echo "Starting $species($model) graphs now..."
-            python graphout.py DATAaa
-            python graphout.py DATAab
-            python graphout.py DATAac
-            python graphout.py DATAad
-            python graphout.py DATAae
-            python graphout.py DATAaf
+            python ../../graph_most.py DATAaa ${species} ${model}
+            python ../../graph_most.py DATAab ${species} ${model}
+            python ../../graph_most.py DATAac ${species} ${model}
+            python ../../graph_most.py DATAad ${species} ${model}
+            python ../../graph_most.py DATAae ${species} ${model}
+            python ../../graph_most.py DATAaf ${species} ${model}
             mv *.png ../../GRAPHS
         cd ../ #back to species
     done
@@ -81,14 +81,13 @@ for species in H2 HE; do
                         rm DATAa*
                     cd ../../../ #to the outermost directory (the main working directory)
                     mv DATAa* ${species}/${corrections}/${model}/
-                    cd ${species}/${corrections}${model} #into the innermost directory (species + model)
-                        echo "Starting $species($model) with $corrections graphs now..."
-                        python graphout.py DATAaa
-                        python graphout.py DATAab
-                        python graphout.py DATAac
-                        python graphout.py DATAad
-                        python graphout.py DATAae
-                        python graphout.py DATAaf
+                    cd ${species}/${corrections}/${model} #into the innermost directory (species + model)
+                        python ../../graph_H2He.py DATAaa ${species} ${corrections} ${model}
+                        python ../../graph_H2He.py DATAab ${species} ${corrections} ${model}
+                        python ../../graph_H2He.py DATAac ${species} ${corrections} ${model}
+                        python ../../graph_H2He.py DATAad ${species} ${corrections} ${model}
+                        python ../../graph_H2He.py DATAae ${species} ${corrections} ${model}
+                        python ../../graph_H2He.py DATAaf ${species} ${corrections} ${model}
                         mv *.png ../../GRAPHS
                     cd .. #back to species
                 done

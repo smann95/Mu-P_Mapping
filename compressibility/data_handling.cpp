@@ -203,7 +203,7 @@ void file_output(vector<vector<run>> all_runs, char ** argv)
         string file_name = input_name + ".OUT";
         ofstream output_file(file_name);
         cout << "FILE NAME FOR OUTPUT : " << file_name << endl;
-        //output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z       #SIM_FUG    #EOS_FUG" << endl;
+        //output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z " << endl;
         for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
         {
            output_file << mini_beg->temperature << ",     "
