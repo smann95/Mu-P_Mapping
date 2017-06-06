@@ -66,6 +66,7 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
             run current;
             current.atom_type = gen_beg->species;
             current.mass = get_species_mass(current.atom_type);
+            get_peng_robinson_constants(current);
             this_run.push_back(current);
         }
         all_runs.push_back(this_run);

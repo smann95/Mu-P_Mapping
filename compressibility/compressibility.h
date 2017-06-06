@@ -48,6 +48,9 @@ struct run
            simulation_fugacity;
     double EOS_fugacity,
            EOS_Z;//compressibility
+    double Tc,
+           Pc,
+           w;
 };
 
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);
@@ -66,6 +69,7 @@ double get_co2_state_fugacity(double temperature, double pressure);
 
 double get_n2_state_compressibility(double temperature, double pressure);
 
+void get_peng_robinson_constants(run &current);
 void output(std::string msg);
 
 //MPMC FUNCTIONS
