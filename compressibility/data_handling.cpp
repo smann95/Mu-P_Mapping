@@ -173,6 +173,8 @@ void calculate_data(vector<vector<run>> &all_runs)
         for(auto mini_beg = all_beg->begin(); mini_beg != all_beg->end();mini_beg++)
         {
             mini_beg->simulation_Z = get_simulation_compressibility(mini_beg->temperature, mini_beg->pressure_pa, mini_beg->simulation_V);
+            mini_beg->EOS_Z = solve_peng_robinson_for_compressibility(mini_beg->temperature, mini_beg->pressure_atm, *mini_beg);
+            /*
             if(mini_beg->atom_type == "co2")
             {
                 mini_beg->EOS_Z = get_co2_state_compressibility(mini_beg->temperature, mini_beg->pressure_atm);
@@ -197,6 +199,7 @@ void calculate_data(vector<vector<run>> &all_runs)
                 mini_beg->EOS_fugacity = get_ch4_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
                 //mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "h2");
             }
+            */
         }
     }
 }
