@@ -44,6 +44,7 @@ for species in CH4 CO2 N2 NE AR KR XE; do
                                 job_number=$(ls *.out | sed 's/^[^-]*-\([^.]*\).*/\1/')
                                 submitted=$(squeue -u $USER | grep -q "${job_number}")
                                 if [ "$?" -ne "0" ]; then
+                                    pwd
                                     mkdir -p saved_data
                                     mv input.pqr saved_data/old_input.pqr
                                     if [ -s *restar*.pqr ]; then
@@ -85,7 +86,8 @@ for species in H2 HE; do
                                         job_number=$(ls *.out | sed 's/^[^-]*-\([^.]*\).*/\1/')
                                         submitted=$(squeue -u $USER | grep -q "${job_number}")
                                         if [ "$?" -ne "0" ]; then
-                                        mkdir -p saved_data
+                                            pwd
+                                            mkdir -p saved_data
                                             mv input.pqr saved_data/old_input.pqr
                                             if [ -s *restar*.pqr ]; then
                                                 cp *restar*.pqr saved_data/restart.pqr
