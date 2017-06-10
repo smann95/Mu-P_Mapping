@@ -586,7 +586,7 @@ double h2_fugacity_zhou(double temperature, double pressure) {
 }
 
 /* ***************************** CH4 EQUATION OF STATE *************************************** */
-double get_ch4_fugacity(double temperature, double pressure) {
+double getch4_fugacity(double temperature, double pressure) {
 
     if((temperature >= 298.0) && (temperature <= 300.0) && (pressure <= 500.0)) {
 
