@@ -110,17 +110,18 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
         int j = 0;
         file_name = argv[i];
         ifstream input(file_name);
-        getline(input,line);
-        getline(input,line);
-        getline(input,line);
-        getline(input,line);
+        input.ignore();
+        input.ignore();
+        int num_runs = atof(line.c_str());
+        input.ignore();
         if(input.is_open())
         {
             while(getline(input,line))
             {
                 vector<string> this_line;
                 istringstream iss(line);
-                //I got these next three lines from doug; have no idea what they do but they do it well
+                //copy the numbers of interest from the line into the vector this_line (thanks Doug / SO !)
+                cout << "hello"<< endl;
                 copy(
                         istream_iterator<string>(iss),
                         istream_iterator<string>(),
@@ -130,7 +131,11 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                 ref.temperature = atof(this_line[0].c_str());
                 ref.pressure_atm = atof(this_line[1].c_str());
                 ref.simulation_V = atof(this_line[2].c_str());
-                j++;
+                ref.density = atof(this_line[3].c_str());
+                if(j == (num_runs - 1))
+                    break;
+                else
+                    j++;
             }
         }
         else

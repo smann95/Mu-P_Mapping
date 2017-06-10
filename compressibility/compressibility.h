@@ -45,7 +45,8 @@ struct run
            mass;
     double simulation_V,
            simulation_Z,
-           simulation_fugacity;
+           simulation_fugacity,
+           density;
     double EOS_fugacity,
            EOS_Z;//compressibility
     double Tc,
