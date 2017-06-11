@@ -11,6 +11,7 @@
 #include <sstream>
 #include <cmath>
 #include <boost/algorithm/string.hpp>
+#include <string.h>
 
 
 #define GAS_CONSTANT 8.3144598

@@ -28,6 +28,7 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
             general_run_data this_species;
             getline(input,line);//this line contains species string
             this_species.species = line;
+            getline(input,line);
             getline(input,line);//this line contains number of state points for current species
             stringstream convert(line);//get num as an int
             convert >> this_species.num_runs;
@@ -104,7 +105,7 @@ double get_species_mass(string atom_type)
 void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
 {
     string file_name,
-           line;
+           a_line;
     for(int i = 1;i < argc;i++)
     {
         int j = 0;
@@ -112,30 +113,41 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
         ifstream input(file_name);
         input.ignore();
         input.ignore();
-        int num_runs = atof(line.c_str());
+        int num_runs = atof(a_line.c_str());
         input.ignore();
         if(input.is_open())
         {
-            while(getline(input,line))
+            while(getline(input,a_line))
             {
                 vector<string> this_line;
-                istringstream iss(line);
+                istringstream iss(a_line);
                 //copy the numbers of interest from the line into the vector this_line (thanks Doug / SO !)
-                cout << "hello"<< endl;
-                copy(
-                        istream_iterator<string>(iss),
-                        istream_iterator<string>(),
-                        back_inserter(this_line)
-                );
-                auto &ref = (all_runs[i-1])[j];//make current run a ref to clean up the code a bit
-                ref.temperature = atof(this_line[0].c_str());
-                ref.pressure_atm = atof(this_line[1].c_str());
-                ref.simulation_V = atof(this_line[2].c_str());
-                ref.density = atof(this_line[3].c_str());
-                if(j == (num_runs - 1))
-                    break;
+                string line = a_line;
+                char * tok;
+                tok = strtok(line, " ");
+                while(tok != NULL)
+                {
+                    this_line.push_back(tok);
+                    tok = strtok(NULL, " ");
+                }
+                cout << this_line.size() << endl;
+                if(this_line.size())
+                {
+                    auto &ref = (all_runs[i - 1])[j];//make current run a ref to clean up the code a bit
+                    ref.temperature = atof(this_line[0].c_str());
+                    ref.pressure_atm = atof(this_line[1].c_str());
+                    ref.simulation_V = atof(this_line[2].c_str());
+                    ref.density = atof(this_line[3].c_str());
+                    if(j == (num_runs - 1))
+                        break;
+                    else
+                        j++;
+                }
                 else
-                    j++;
+                {
+                    cout << "Data line is empty--check your input file"
+                         << endl;
+                }
             }
         }
         else
