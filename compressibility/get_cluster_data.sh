@@ -75,6 +75,7 @@ for species in H2 HE; do
             mkdir -p ${corrections}
             cd ${corrections}
                 for model in "${!model_array}"; do
+                    sum=0
                     mkdir -p ${model}
                     cd ${model}
                         touch these_numbers_are_pressures_in_ATM
