@@ -2,6 +2,7 @@
 //
 
 #include <strings.h>
+#include <cstring>
 #include <iterator>
 #include "compressibility.h"
 #include <boost/algorithm/string.hpp>
@@ -111,10 +112,11 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
         int j = 0;
         file_name = argv[i];
         ifstream input(file_name);
-        input.ignore();
-        input.ignore();
-        int num_runs = atof(a_line.c_str());
-        input.ignore();
+        getline(input,a_line);
+        getline(input,a_line);
+        getline(input,a_line);
+        int num_runs = atoi(a_line.c_str());
+        getline(input,a_line);
         if(input.is_open())
         {
             while(getline(input,a_line))
@@ -122,15 +124,11 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                 vector<string> this_line;
                 istringstream iss(a_line);
                 //copy the numbers of interest from the line into the vector this_line (thanks Doug / SO !)
-                string line = a_line;
-                char * tok;
-                tok = strtok(line, " ");
-                while(tok != NULL)
-                {
-                    this_line.push_back(tok);
-                    tok = strtok(NULL, " ");
-                }
-                cout << this_line.size() << endl;
+                copy(
+                        istream_iterator<string>(iss),
+                        istream_iterator<string>(),
+                        back_inserter(this_line)
+                );
                 if(this_line.size())
                 {
                     auto &ref = (all_runs[i - 1])[j];//make current run a ref to clean up the code a bit
