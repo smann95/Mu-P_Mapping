@@ -17,7 +17,7 @@ ctl=${sshfifos}/${user}@${host}:22 # ssh stores named socket for open ctrl conn 
 ssh -fNMS ${ctl} ${user}@${host}  # Control Master: Prompts password then persists in background
 
 if [ "$host" = "bridges.psc.edu" ]; then
-    scp_path="/pylon5/ch3benp/luciano2/MuP_Mapping/compressibility/"
+    scp_path="/pylon5/ch3benp/luciano2/Mu-P_Mapping/compressibility/"
 fi
 if [ "$host" = "itn.rc.usf.edu" ]; then
     scp_path="~/repos/MuP_Mapping/compressibility/"
@@ -82,13 +82,13 @@ for species in H2 HE; do
                     cd ../../../ #to the outermost directory (the main working directory)
                     mv DATAa* ${species}/${corrections}/${model}/
                     cd ${species}/${corrections}/${model} #into the innermost directory (species + model)
-                        python ../../graph_H2He.py DATAaa ${species} ${corrections} ${model}
-                        python ../../graph_H2He.py DATAab ${species} ${corrections} ${model}
-                        python ../../graph_H2He.py DATAac ${species} ${corrections} ${model}
-                        python ../../graph_H2He.py DATAad ${species} ${corrections} ${model}
-                        python ../../graph_H2He.py DATAae ${species} ${corrections} ${model}
-                        python ../../graph_H2He.py DATAaf ${species} ${corrections} ${model}
-                        mv *.png ../../GRAPHS
+                        python ../../../graph_H2He.py DATAaa ${species} ${corrections} ${model}
+                        python ../../../graph_H2He.py DATAab ${species} ${corrections} ${model}
+                        python ../../../graph_H2He.py DATAac ${species} ${corrections} ${model}
+                        python ../../../graph_H2He.py DATAad ${species} ${corrections} ${model}
+                        python ../../../graph_H2He.py DATAae ${species} ${corrections} ${model}
+                        python ../../../graph_H2He.py DATAaf ${species} ${corrections} ${model}
+                        mv *.png ../../../GRAPHS
                     cd .. #back to species
                 done
             cd ../
