@@ -35,6 +35,7 @@ for species in CH4 CO2 N2 NE AR KR XE; do
     temp_array="${species}_temperatures[@]"
     mkdir -p ${species}
     cd ${species}
+        sum=0
         for model in "${!model_array}"; do
             mkdir -p ${model}
             cd ${model}
