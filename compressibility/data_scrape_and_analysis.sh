@@ -43,7 +43,7 @@ for species in CH4 CO2 NE AR KR XE; do
         mkdir -p ${model}
         cd .. #out of species into the main directory
         scp -o ControlPath=${ctl} ${user}@${host}:${scp_path}${species}${model}${date_stamp}".dat" .
-        cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
+        ./cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
         split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
         cd ${species}/${model} #into the innermost directory (species + model)
             rm DATAa*
