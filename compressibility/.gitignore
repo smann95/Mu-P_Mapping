@@ -17,3 +17,5 @@ N2/
 NE/
 XE/
 !CMakeLists.txt
+*.DS_Store
+
