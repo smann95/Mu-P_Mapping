@@ -11,6 +11,13 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
+    vector<string> pressures = {"00.1", "001", "005", "010", "020", "030"};
+
+    vector<vector<reference_data> > NIST_data = read_reference_data(species,pressures);
+
+
+
     /* these first three functions:
      * 1. figure out how many vectors and vectors-of-vectors we're going to need
      * 2. set up the needed data structures

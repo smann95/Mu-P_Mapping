@@ -53,7 +53,16 @@ struct run
     double Tc,
            Pc,
            w;
+    double moles;
 };
+
+struct reference_data
+{
+    double temperature,
+           volume_l_mol,
+           volume_A3;
+};
+
 
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);
 std::vector<std::vector<run>> set_up_simulation_structs(std::vector<general_run_data> general_runs);
@@ -74,6 +83,10 @@ double get_n2_state_compressibility(double temperature, double pressure);
 void get_peng_robinson_constants(run &current);
 
 void output(std::string msg);
+
+std::vector<std::vector<reference_data>>
+read_reference_data(std::vector<std::string> species,
+                    std::vector<std::string> pressures);
 
 //MPMC FUNCTIONS
 double solve_peng_robinson_for_compressibility(double temperature, double pressure, run some_run );

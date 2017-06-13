@@ -19,8 +19,8 @@ for species in CH4 CO2 H2 NE AR KR XE; do
         INC="${species}_data[3]}"
         link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=${!species_ID}&Type=IsoBar&Digits=5&P=${pressure}&THigh=${!T_HIGH}&TLow=${!T_LOW}&TInc=${!INC}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
         final_link="${link}"
-        echo ${final_link}
         python ../tables.py ${final_link} | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
+        sed -i '/^\s*$/d' ${species}${pressure}
     done
 done
 cd ..
@@ -42,8 +42,8 @@ for species in N2; do
             INC="${species}_data_${special}[3]}"
             link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=${!species_ID}&Type=IsoBar&Digits=5&P=${pressure}&THigh=${!T_HIGH}&TLow=${!T_LOW}&TInc=${!INC}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
             final_link="${link}"
-            echo ${final_link}
             python ../tables.py ${final_link} | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
+            sed -i '/^\s*$/d' ${species}${pressure}
         done
     done
 done
@@ -59,8 +59,8 @@ for species in HE; do
             INC="${species}_data_${special}[3]}"
             link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=${!species_ID}&Type=IsoBar&Digits=5&P=${pressure}&THigh=${!T_HIGH}&TLow=${!T_LOW}&TInc=${!INC}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
             final_link="${link}"
-            echo ${final_link}
             python ../tables.py ${final_link} | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
+            sed -i '/^\s*$/d' ${species}${pressure}
         done
     done
 done

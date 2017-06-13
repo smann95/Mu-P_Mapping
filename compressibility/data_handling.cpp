@@ -143,7 +143,7 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                 }
                 else
                 {
-                    cout << "Data line is empty--check your input file"
+                    cout << "Data line in read_simulation_data() is empty--check your input file"
                          << endl;
                 }
             }
@@ -151,7 +151,7 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
         else
         {
             cerr << "Error in opening file " << file_name
-                 << " in give_structs_simulation_data() " << endl;
+                 << " in read_simulation_data() " << endl;
         }
         input.close();
     }
@@ -242,4 +242,56 @@ void file_output(vector<vector<run>> all_runs, char ** argv)
 void output(string msg)
 {
     cout << msg << endl;
+}
+
+vector<vector<reference_data> > read_reference_data(vector<string> species,
+                                                    vector<string> pressures)
+{
+    vector<vector<reference_data> > NIST_data;
+    for(unsigned long species_ind = 0;species_ind<species.size();species_ind++)
+    {
+        vector<reference_data> this_here;
+        string a_line;
+        for(unsigned long pressure_ind= 0; pressure_ind < pressures.size(); pressure_ind++)
+        {
+            reference_data that_there;
+            string file_name = "data/";
+            file_name += species[species_ind];
+            file_name += pressures[pressure_ind];
+            ifstream input(file_name);
+            if(input.is_open())
+            {
+                while (getline(input, a_line))
+                {
+                    vector<string> this_line;
+                    istringstream iss(a_line);
+                    //copy the numbers of interest from the line into the vector this_line (thanks Doug / SO !)
+                    copy(
+                            istream_iterator<string>(iss),
+                            istream_iterator<string>(),
+                            back_inserter(this_line)
+                    );
+                    if(this_line.size())
+                    {
+                        that_there.temperature = atof(this_line[0].c_str());
+                        that_there.volume_l_mol = atof(this_line[1].c_str());
+                        this_here.push_back(that_there);
+                    }
+                    else
+                    {
+                        cerr << "Data line in read_reference_data() is empty--check your input file"
+                             << endl;
+                    }
+                }
+            }
+            else
+            {
+                cerr << "Error in opening file " << file_name
+                     << " in read_reference_data()" << endl;
+            }
+            input.close();
+        }
+        NIST_data.push_back(this_here);
+    }
+    return NIST_data;
 }
