@@ -1,24 +1,26 @@
 #!/bin/bash
-           #ID    #TH  #TL #INC
-data_CH4=( C74824 415 115 30 )
-data_CO2=( C124389 395 195 20 )
-data_H2=( C1333740 420 20 40 )
-data_NE=( C7440019 330 30 30)
-data_AR=( C7440371 390 90 30)
-data_KR=( C7439909 420 120 30)
-data_XE=( C7440633 370 170 20 )
+         #ID    #T_high #T_low #temperature_increment
+CH4_data=( C74824 415 115 30 )
+CO2_data=( C124389 395 195 20 )
+H2_data=( C1333740 420 20 40 )
+NE_data=( C7440019 330 30 30)
+AR_data=( C7440371 390 90 30)
+KR_data=( C7439909 420 120 30)
+XE_data=( C7440633 370 170 20 )
 
+rm -r data
 mkdir -p data
 cd data
-#for species in CH4 CO2 H2 Ne AR KR XE; do
-for species in CH4
+for species in CH4 CO2 H2 Ne AR KR XE; do
     for pressure in 00.1 001 005 010 020 030; do
-        #array="data_${species}[@]"
-        #echo ${!array[1]}
-        #link='http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID='"${!array[0]}"'&Type=IsoBar&Digits=5&P='${pressure}'&THigh='${!array[1]}'&TLow='${!array[2]}'&TInc='${!array[3]}'&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm'
-        this_id=${CH4_ID}
-        link='http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=C74828&Type=IsoBar&Digits=5&P='${pressure}'&THigh='${T_HIGH}'&TLow='${T_LOW}'&TInc='${T_INC}'&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm'
-        python ../tables.py ${link} | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
+        species_ID="${species}_data[0]}"
+        T_HIGH="${species}_data[1]}"
+        T_LOW="${species}_data[2]}"
+        INC="${species}_data[3]}"
+        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=${!species_ID}&Type=IsoBar&Digits=5&P=${pressure}&THigh=${!T_HIGH}&TLow=${!T_LOW}&TInc=${!INC}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
+        final_link="\"${link}\""
+        echo ${final_link}
+        #python ../tables.py ${final_link} | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
     done
 done
 cd ..
