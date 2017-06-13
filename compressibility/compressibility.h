@@ -20,6 +20,7 @@
 #define AVOGADRO 6.0022141E23
 #define CUBIC_A_TO_CUBIC_M 1.0E-30
 #define G_IN_KG 1000.0
+#define MOLES 64.0/AVOGADRO
 
 //BEGIN MPMC DEFINES
 #define MAXLINE         512
@@ -60,7 +61,8 @@ struct reference_data
 {
     double temperature,
            volume_l_mol,
-           volume_A3;
+           volume_m3,
+           compressibility;
 };
 
 
@@ -70,9 +72,11 @@ void read_simulation_data(int argc, char ** argv, std::vector<std::vector<run>> 
 double get_species_mass(std::string atom_type);
 void convert_data_to_other_units(std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> general_runs);
 void calculate_data(std::vector<std::vector<run>> &all_runs);
-void file_output(std::vector<std::vector<run>> all_runs, char ** argv);
+void file_output(std::vector<std::vector<run>> all_runs,
+                 std::vector<std::vector<reference_data>> NIST_DATA,
+                 char ** argv);
 
-double get_simulation_compressibility(double temperature, double pressure, double volume);
+double get_compressibility(double temperature, double pressure, double volume);
 //double get_simulation_fugacity(double Z, double pressure,double temperature, std::string species);
 
 double get_co2_state_compressibility(double temperature, double pressure);

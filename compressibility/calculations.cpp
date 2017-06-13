@@ -5,7 +5,7 @@
 #include "compressibility.h"
 
 //takes pressure in Pa and volume in m^3
-double get_simulation_compressibility(double temperature, double pressure, double volume)
+double get_compressibility(double temperature, double pressure, double volume)
 {
     double num = 64.0/AVOGADRO;//n is in moles
     return (pressure * volume) / (num * GAS_CONSTANT * temperature);

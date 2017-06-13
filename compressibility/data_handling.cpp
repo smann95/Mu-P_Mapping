@@ -68,6 +68,7 @@ vector<vector<run>> set_up_simulation_structs(vector<general_run_data> general_r
             run current;
             current.atom_type = gen_beg->species;
             current.mass = get_species_mass(current.atom_type);
+            current.moles = MOLES;
             get_peng_robinson_constants(current);
             this_run.push_back(current);
         }
@@ -180,7 +181,7 @@ void calculate_data(vector<vector<run>> &all_runs)
     {
         for(auto mini_beg = all_beg->begin(); mini_beg != all_beg->end();mini_beg++)
         {
-            mini_beg->simulation_Z = get_simulation_compressibility(mini_beg->temperature, mini_beg->pressure_pa, mini_beg->simulation_V);
+            mini_beg->simulation_Z = get_compressibility(mini_beg->temperature, mini_beg->pressure_pa, mini_beg->simulation_V);
             mini_beg->EOS_Z = solve_peng_robinson_for_compressibility(mini_beg->temperature, mini_beg->pressure_atm, *mini_beg);
             /*
             if(mini_beg->atom_type == "co2")
@@ -212,7 +213,9 @@ void calculate_data(vector<vector<run>> &all_runs)
     }
 }
 
-void file_output(vector<vector<run>> all_runs, char ** argv)
+void file_output(vector<vector<run>> all_runs,
+                 vector<vector<reference_data>> NIST_data,
+                 char ** argv)
 {
     int i = 1;
     for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
@@ -227,7 +230,7 @@ void file_output(vector<vector<run>> all_runs, char ** argv)
            output_file << mini_beg->temperature << ",     "
                        << mini_beg->pressure_atm << ",    "
                        << mini_beg->simulation_Z << ",  "
-                       << mini_beg->EOS_Z
+                       << mini_beg->EOS_Z //TODO: FIGURE OUT HOW TO GET REFERENCE COMPRESSIBILITIES EASILY
                        << endl;
         }
         output_file.close();
@@ -275,6 +278,11 @@ vector<vector<reference_data> > read_reference_data(vector<string> species,
                     {
                         that_there.temperature = atof(this_line[0].c_str());
                         that_there.volume_l_mol = atof(this_line[1].c_str());
+                        double liters = that_there.volume_l_mol*MOLES;
+                        that_there.volume_m3 = liters / 1000.0;
+                        that_there.compressibility = get_compressibility(that_there.temperature,
+                                                                         stod(pressures[pressure_ind]),
+                                                                         that_there.volume_m3);
                         this_here.push_back(that_there);
                     }
                     else
@@ -295,3 +303,4 @@ vector<vector<reference_data> > read_reference_data(vector<string> species,
     }
     return NIST_data;
 }
+
