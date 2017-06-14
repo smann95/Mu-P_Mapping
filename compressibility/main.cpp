@@ -14,7 +14,7 @@ int main(int argc, char ** argv)
     vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
     vector<string> pressures = {"00.1", "001", "005", "010", "020", "030"};
 
-    vector<vector<reference_data> > NIST_data = read_reference_data(species,pressures);
+    vector<vector<vector<vector<reference_data>>>> NIST_data = read_reference_data(species,pressures);
 
 
 
