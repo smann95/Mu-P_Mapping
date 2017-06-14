@@ -214,6 +214,7 @@ void calculate_data(vector<vector<run>> &all_runs)
 }
 
 void file_output(vector<vector<run>> all_runs,
+                 vector<general_run_data> general_runs,
                  vector<vector<reference_data>> NIST_data,
                  char ** argv)
 {
@@ -227,16 +228,52 @@ void file_output(vector<vector<run>> all_runs,
         //output_file << "#TEMP  #PRES   #SIM_Z      #EOS_Z " << endl;
         for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
         {
+           double reference_Z =get_reference_data_for_output(general_runs[i-1].species,
+                                                             mini_beg->pressure_atm,
+                                                             mini_beg->temperature,
+                                                             NIST_data);
+
            output_file << mini_beg->temperature << ",     "
                        << mini_beg->pressure_atm << ",    "
                        << mini_beg->simulation_Z << ",  "
-                       << mini_beg->EOS_Z //TODO: FIGURE OUT HOW TO GET REFERENCE COMPRESSIBILITIES EASILY
+                       << mini_beg->EOS_Z << ", "
+                       << reference_Z*100000.0
                        << endl;
         }
         output_file.close();
         i++;
     }
 }
+
+double get_reference_data_for_output(string atom_type,
+                                     double pressure_atm,
+                                     double this_temperature,
+                                     vector<vector<reference_data>> NIST_data)
+{
+    vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
+    vector<string> pressures = {"00.1", "001", "005", "010", "020", "030"};
+    int current_species_ind = 0,
+        current_pressure_ind = 0;
+    double reference_Z = 0;
+    for(int species_ind = 0;species_ind < species.size();species_ind++)
+    {
+        if(atom_type == species[species_ind])
+            current_species_ind = species_ind;
+    }
+    for(int pressure_ind = 0;pressure_ind < pressures.size();pressure_ind++)
+    {
+        if(pressure_atm == stof(pressures[pressure_ind]))
+            current_pressure_ind = pressure_ind;
+    }
+    for(int temperature_ind = 0;temperature_ind < NIST_data[current_species_ind].size(); temperature_ind++)
+    {
+        if(NIST_data[current_species_ind][current_pressure_ind].temperature == this_temperature)
+            reference_Z = NIST_data[current_species_ind][current_pressure_ind].compressibility;
+    }
+    //reference_Z = NIST_data[current_species_ind][current_pressure_ind].compressibility;
+    return reference_Z;
+}
+
 
 /*
  * this is only here to play nice with the

@@ -3,7 +3,7 @@ import pandas
 import matplotlib.pyplot as plt
 import numpy
 data = numpy.loadtxt(sys.argv[1], delimiter=',')
-column_names = ['t', 'p', 'sim_z', 'eos_z']
+column_names = ['t', 'p', 'sim_z', 'eos_z', 'reference_z']
 the_data = pandas.read_csv(sys.argv[1], names=column_names)
 
 species = sys.argv[2]
@@ -14,6 +14,7 @@ t = the_data.t.tolist()
 p = the_data.p.tolist()
 state_z = the_data.eos_z.tolist()
 sim_z = the_data.sim_z.tolist()
+reference_z = the_data.reference_z.tolist()
 
 fig = plt.figure()
 
@@ -22,6 +23,9 @@ plt.scatter(t, state_z, s=20, c='red')
 plt.plot(t, state_z, c='red', label='State Z')
 plt.scatter(t, sim_z, s=20, c='green')
 plt.plot(t, sim_z, c='green', label='Simulation Z')
+plt.scatter(t, reference_z, s=20, c='purple')
+plt.plot(t, reference_z, c='purple', label='Reference Z')
+
 
 title = "NPT " + species + "(" + model + ")" + "(" + corrections + ")"
 file_name = "placeholder"

@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
     calculate_data(all_runs);
 
     /* And write them to a new file*/
-    file_output(all_runs, NIST_data, argv);
+    file_output(all_runs,general_runs, NIST_data, argv);
 
     return 0;
 }
