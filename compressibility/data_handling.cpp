@@ -215,7 +215,7 @@ void calculate_data(vector<vector<run>> &all_runs)
 
 void file_output(vector<vector<run>> all_runs,
                  vector<general_run_data> general_runs,
-                 vector<vector<reference_data>> NIST_data,
+                 vector<vector<vector<reference_data>>> NIST_data,
                  char ** argv)
 {
     int i = 1;
@@ -248,7 +248,7 @@ void file_output(vector<vector<run>> all_runs,
 double get_reference_data_for_output(string atom_type,
                                      double pressure_atm,
                                      double this_temperature,
-                                     vector<vector<reference_data>> NIST_data)
+                                     vector<vector<vector<reference_data>>> NIST_data)
 {
                             /*  0    1     2     3    4    5    6    7    8 */
     vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
@@ -257,7 +257,7 @@ double get_reference_data_for_output(string atom_type,
 
     int current_species_ind = 0,
         current_pressure_ind = 0;
-    double reference_Z = 0;
+    double reference_Z = 0.0;
     for(int species_ind = 0;species_ind < species.size();species_ind++)
     {
         if(atom_type == species[species_ind])
@@ -274,16 +274,15 @@ double get_reference_data_for_output(string atom_type,
             break;
         }
     }
-    for(int temperature_ind = 0;temperature_ind < NIST_data[current_species_ind].size(); temperature_ind++)
+    vector<reference_data> current_point = NIST_data[current_species_ind][current_pressure_ind];
+    for(int temperature_ind = 0;temperature_ind < current_point.size(); temperature_ind++)
     {
-        double current_temperature = NIST_data[current_species_ind][current_pressure_ind].temperature;
-        if (this_temperature == current_temperature)
+        if (this_temperature == current_point[temperature_ind].temperature)
         {
-            reference_Z = NIST_data[current_species_ind][current_pressure_ind].compressibility;
+            reference_Z = current_point[temperature_ind].compressibility;
             break;
         }
     }
-    //reference_Z = NIST_data[current_species_ind][current_pressure_ind].compressibility;
     return reference_Z;
 }
 
@@ -298,7 +297,7 @@ void output(string msg)
 }
 
 /*
- * This next function is a no-good struct inside of a vector inside of a vector
+ * This next function is a no-good struct inside of  a vector
  * inside of a vector inside of a vector (did I get that right?)
  * I am so sorry that you are here.
  * Without further ado, here is an explanation for my crimes:
@@ -307,30 +306,28 @@ void output(string msg)
  * and 13 temperatures associated with it. We use the temperature as the final
  * identifier for the state point, which is the innermost struct.
  */
-vector<vector<vector<vector<reference_data>>>>
+vector<vector<vector<reference_data>>>
 read_reference_data(vector<string> species,
                     vector<string> pressure_strings)
 {
     vector<double> pressure_floats = {00.1, 001, 005, 010, 020, 030};
-   // ALL->SPECIES->PRES->TEMPS->STATE POINT
-    vector<vector<vector<vector<reference_data>>>> NIST_data;
+   // ALL->SPECIES->PRES->STATE POINTS
+    vector<vector<vector<reference_data>>> NIST_data;
     for(unsigned long species_ind = 0;species_ind<species.size();species_ind++)
     {
-        //SPECIES->PRES->TEMPS->STATE POINT
-        vector<vector<vector<reference_data>>> all_species;
+        //SPECIES->PRES->STATE POINTS
+        vector<vector<reference_data>> this_species;
         string a_line;
         for(unsigned long pressure_ind= 0; pressure_ind < pressure_strings.size(); pressure_ind++)
         {
-            //PRES->TEMPS->STATE POINT
-            vector<vector<reference_data>> all_pressures;
             string file_name = "data/";
             file_name += species[species_ind];
             file_name += pressure_strings[pressure_ind];
             ifstream input(file_name);
             if(input.is_open())
             {
-                //TEMPS->STATE POINT
-                vector<reference_data> all_temperatures;
+                //PRES->STATE POINTS
+                vector<reference_data> this_pressure;
                 while (getline(input, a_line))
                 {
                     vector<string> this_line;
@@ -352,7 +349,7 @@ read_reference_data(vector<string> species,
                         this_point.compressibility = get_compressibility(this_point.temperature,
                                                                          pressure_floats[pressure_ind],
                                                                          this_point.volume_m3);
-                        all_temperatures.push_back(this_point);
+                        this_pressure.push_back(this_point);//add current temperature to the pressure it corresponds to
                     }
                     else
                     {
@@ -360,7 +357,7 @@ read_reference_data(vector<string> species,
                              << endl;
                     }
                 }
-                all_pressures.push_back(all_temperatures);
+                this_species.push_back(this_pressure);//add current pressure to species it corresponds to
             }
             else
             {
@@ -368,9 +365,8 @@ read_reference_data(vector<string> species,
                      << " in read_reference_data()" << endl;
             }
             input.close();
-            all_species.push_back(all_pressures);
         }
-        NIST_data.push_back(all_species);
+        NIST_data.push_back(this_species);//add current species to all data
     }
     return NIST_data;
 }

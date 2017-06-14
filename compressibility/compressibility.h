@@ -74,7 +74,7 @@ void convert_data_to_other_units(std::vector<std::vector<run>> &all_runs, std::v
 void calculate_data(std::vector<std::vector<run>> &all_runs);
 void file_output(std::vector<std::vector<run>> all_runs,
                  std::vector<general_run_data> general_runs,
-                 std::vector<std::vector<reference_data>> NIST_data,
+                 std::vector<std::vector<std::vector<reference_data>>> NIST_data,
                  char ** argv);
 double get_compressibility(double temperature, double pressure, double volume);
 //double get_simulation_fugacity(double Z, double pressure,double temperature, std::string species);
@@ -88,14 +88,14 @@ void get_peng_robinson_constants(run &current);
 
 void output(std::string msg);
 
-std::vector<std::vector<std::vector<std::vector<reference_data>>>>
+std::vector<std::vector<std::vector<reference_data>>>
 read_reference_data(std::vector<std::string> species,
                     std::vector<std::string> pressures);
 
 double get_reference_data_for_output(std::string atom_type,
                                      double pressure_atm,
                                      double this_temperature,
-                                     std::vector<std::vector<reference_data>> NIST_data);
+                                     std::vector<std::vector<std::vector<reference_data>>> NIST_data);
 //MPMC FUNCTIONS
 double solve_peng_robinson_for_compressibility(double temperature, double pressure, run some_run );
 double get_n2_fugacity(double temperature, double pressure);
