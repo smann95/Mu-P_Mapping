@@ -1,7 +1,7 @@
 #!/bin/bash
          #ID    #T_high #T_low #temperature_increment
 CH4_data=( C74828 415 115 30 )
-CO2_data=( C124389 395 195 20 )
+CO2_data=( C124389 395 235 20 )
 H2_data=( C1333740 420 20 40 )
 NE_data=( C7440019 330 30 30)
 AR_data=( C7440371 390 90 30)

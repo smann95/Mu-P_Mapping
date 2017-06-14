@@ -48,11 +48,13 @@ elif sys.argv[1] == "DATAaf":
     file_name = species + model + "_P_30.png"
 
 title += "ATM"
+ax = plt.subplot(111)
 plt.title(title)
 #plt.legend(loc='center left', bbox_to_anchor=(0, 1))
 plt.ylim([0, 1.2])
 plt.xlabel('Temperature (K)')
 plt.ylabel('Compressibility')
+ax.legend(bbox_to_anchor=(1.1,1.05))
 
 plt.savefig(file_name, bbox_inches='tight')
 
