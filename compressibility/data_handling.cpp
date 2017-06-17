@@ -116,6 +116,9 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
         getline(input,a_line);
         getline(input,a_line);
         getline(input,a_line);
+        if(all_runs[i-1][j].atom_type == "H2" || all_runs[i-1][j].atom_type == "HE")
+            getline(input,a_line);//helium and H2 have an extra line in their input file
+
         int num_runs = atoi(a_line.c_str());
         getline(input,a_line);
         if(input.is_open())
