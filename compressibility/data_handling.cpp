@@ -182,36 +182,9 @@ void calculate_data(vector<vector<run>> &all_runs)
 {
     for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
     {
-        for(auto mini_beg = all_beg->begin(); mini_beg != all_beg->end();mini_beg++)
-        {
+        for(auto mini_beg = all_beg->begin(); mini_beg != all_beg->end();mini_beg++) {
             mini_beg->simulation_Z = get_compressibility(mini_beg->temperature, mini_beg->pressure_pa, mini_beg->simulation_V);
             mini_beg->EOS_Z = solve_peng_robinson_for_compressibility(mini_beg->temperature, mini_beg->pressure_atm, *mini_beg);
-            /*
-            if(mini_beg->atom_type == "co2")
-            {
-                mini_beg->EOS_Z = get_co2_state_compressibility(mini_beg->temperature, mini_beg->pressure_atm);
-                mini_beg->EOS_fugacity = get_co2_state_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
-                //mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "co2");
-            }
-            else if(mini_beg->atom_type == "n2")
-            {
-                mini_beg->EOS_Z = get_n2_state_compressibility(mini_beg->temperature, mini_beg->pressure_atm);
-                mini_beg->EOS_fugacity = get_n2_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
-                //mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "n2");
-            }
-            else if(mini_beg->atom_type == "h2")
-            {
-                mini_beg->EOS_Z = h2_comp_back(mini_beg->temperature, mini_beg->pressure_atm);
-                mini_beg->EOS_fugacity = get_h2_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
-                //mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "h2");
-            }
-            else if(mini_beg->atom_type == "ch4")
-            {
-                mini_beg->EOS_Z = ch4_comp_back(mini_beg->temperature, mini_beg->pressure_atm);
-                mini_beg->EOS_fugacity = get_ch4_fugacity(mini_beg->temperature, mini_beg->pressure_atm);
-                //mini_beg->simulation_fugacity = get_simulation_fugacity(mini_beg->simulation_Z,mini_beg->pressure_atm, mini_beg->temperature, "h2");
-            }
-            */
         }
     }
 }
