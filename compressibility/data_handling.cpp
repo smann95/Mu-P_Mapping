@@ -44,7 +44,6 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
                                                                      this_point.volume_m3);
                     NIST_data[s][p.first].emplace_back(this_point);
                 }
-
             }
         }
     }
