@@ -31,5 +31,6 @@ int main(int argc, char ** argv)
     /* And write them to a file*/
     file_output(all_runs,general_runs, NIST_data, argv);
 
+    cout << "DONE" << endl;
     return 0;
 }

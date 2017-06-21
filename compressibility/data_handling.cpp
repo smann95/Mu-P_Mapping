@@ -285,20 +285,16 @@ double get_reference_data_for_output(string atom_type,
             this_pressure = p.first;
     }
     double reference_Z;
-    int temperature_ind = 0;
-    auto nist_begin = NIST_data[atom_type][this_pressure].begin();
-    while(1)
+    auto nist_begin = NIST_data[atom_type][this_pressure].begin(),
+         nist_end = NIST_data[atom_type][this_pressure].end();
+    while(nist_begin != nist_end)
     {
         if (this_temperature == nist_begin->temperature)
         {
             reference_Z = nist_begin->compressibility;
             break;
         }
-        else
-        {
-            temperature_ind++;
-            nist_begin++;
-        }
+        nist_begin++;
     }
     return reference_Z;
 }
