@@ -27,7 +27,6 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
         for(auto p : pressures)
         {
             string fileName = "data/" + s + p.first;
-            cout << "FILENAME: " << fileName << endl;
             ifstream file(fileName);
             if(file.is_open())
             {
@@ -37,7 +36,6 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
                 {
                     reference_data this_point;
                     this_point.temperature = temperature;
-                    cout << "TEMP: " <<  this_point.temperature << endl;
                     this_point.volume_l_mol = volume;
                     double liters = this_point.volume_l_mol * MOLES;
                     this_point.volume_m3 = liters / 1000.0;
