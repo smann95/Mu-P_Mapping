@@ -6,7 +6,6 @@ n2_05_24_2017.dat.OUT
 GRAPHS/
 DATAa*
 *.OUT
-*.dat
 AR/
 CH4/
 CO2/
@@ -19,3 +18,9 @@ XE/
 !CMakeLists.txt
 *.DS_Store
 
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+compressibility
+compressibility.cbp

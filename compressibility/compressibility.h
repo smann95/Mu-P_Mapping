@@ -7,11 +7,14 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include <fstream>
 #include <sstream>
 #include <cmath>
 #include <boost/algorithm/string.hpp>
 #include <string.h>
+#include <cstring>
+#include <iterator>
 
 
 #define GAS_CONSTANT 8.3144598
@@ -22,13 +25,6 @@
 #define G_IN_KG 1000.0
 #define MOLES 64.0/AVOGADRO
 
-//BEGIN MPMC DEFINES
-#define MAXLINE         512
-#define NA		    	6.0221415e23
-#define KB		     	1.3806503e-23
-#define ATM2PASCALS		101325.0
-#define ATM2PSI			14.6959488
-//END MPMC DEFINES
 
 struct general_run_data
 {
@@ -47,14 +43,12 @@ struct run
            mass;
     double simulation_V,
            simulation_Z,
-           simulation_fugacity,
-           density;
-    double EOS_fugacity,
-           EOS_Z;//compressibility
+           density,
+           moles;
+    double EOS_Z;//compressibility
     double Tc,
            Pc,
            w;
-    double moles;
 };
 
 struct reference_data
@@ -65,57 +59,31 @@ struct reference_data
            compressibility;
 };
 
-
+std::map<std::string, std::map<std::string, std::vector<reference_data>>> read_reference_data();
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);
 std::vector<std::vector<run>> set_up_simulation_structs(std::vector<general_run_data> general_runs);
-void read_simulation_data(int argc, char ** argv, std::vector<std::vector<run>> &all_runs);
+//FUNCTIONS CALLED BY SET_UP_SIMULATION_STRUCTS:
 double get_species_mass(std::string atom_type);
+void get_peng_robinson_constants(run &current);
+// END
+
+void read_simulation_data(int argc, char ** argv, std::vector<std::vector<run>> &all_runs);
 void convert_data_to_other_units(std::vector<std::vector<run>> &all_runs, std::vector<general_run_data> general_runs);
 void calculate_data(std::vector<std::vector<run>> &all_runs);
+//FUNCTIONS CALLED BY CALCULATE_DATA:
+double get_compressibility(double temperature, double pressure, double volume);
+double solve_peng_robinson_for_compressibility(double temperature, double pressure, run some_run );
+//END
+
 void file_output(std::vector<std::vector<run>> all_runs,
                  std::vector<general_run_data> general_runs,
-                 std::vector<std::vector<std::vector<reference_data>>> NIST_data,
+                 std::map<std::string, std::map<std::string, std::vector<reference_data>>> NIST_data,
                  char ** argv);
-double get_compressibility(double temperature, double pressure, double volume);
-//double get_simulation_fugacity(double Z, double pressure,double temperature, std::string species);
-
-double get_co2_state_compressibility(double temperature, double pressure);
-double get_co2_state_fugacity(double temperature, double pressure);
-
-double get_n2_state_compressibility(double temperature, double pressure);
-
-void get_peng_robinson_constants(run &current);
-
-void output(std::string msg);
-
-std::vector<std::vector<std::vector<reference_data>>>
-read_reference_data(std::vector<std::string> species,
-                    std::vector<std::string> pressures);
-
+//FUNCTIONS CALLED BY FILE_OUTPUT:
 double get_reference_data_for_output(std::string atom_type,
                                      double pressure_atm,
                                      double this_temperature,
-                                     std::vector<std::vector<std::vector<reference_data>>> NIST_data);
-//MPMC FUNCTIONS
-double solve_peng_robinson_for_compressibility(double temperature, double pressure, run some_run );
-double get_n2_fugacity(double temperature, double pressure);
-double n2_fugacity_back(double temperature, double pressure);
-double n2_comp_back(double temperature, double pressure);
-double n2_fugacity_PR(double temperature, double pressure);
-double n2_fugacity_zhou(double temperature, double pressure);
-
-double get_h2_fugacity(double temperature, double pressure);
-double h2_fugacity_back(double temperature, double pressure);
-double h2_comp_back(double temperature, double pressure);
-double h2_fugacity_shaw(double temperature, double pressure);
-double h2_fugacity_zhou(double temperature, double pressure);
-
-double get_ch4_fugacity(double temperature, double pressure);
-double ch4_fugacity_back(double temperature, double pressure);
-double ch4_comp_back(double temperature, double pressure);
-double ch4_fugacity_PR(double temperature, double pressure);
-
-
-//END MPMC FUNCTIONS
+                                     std::map<std::string, std::map<std::string, std::vector<reference_data>>> NIST_data);
+//END
 
 #endif //COMPRESSIBILITY_COMPRESSIBILITY_H

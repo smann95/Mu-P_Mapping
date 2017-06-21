@@ -11,14 +11,10 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
-    vector<string> pressures = {"00.1", "001", "005", "010", "020", "030"};
+    //Get scraped data from data/ directory and store it for later use
+    map<string, map<string, vector<reference_data>>> NIST_data = read_reference_data();
 
-    vector<vector<vector<reference_data>>> NIST_data = read_reference_data(species,pressures);
-
-
-
-    /* these first three functions:
+    /* these three functions:
      * 1. figure out how many vectors and vectors-of-vectors we're going to need
      * 2. set up the needed data structures
      * 3. read in the simulation data from the input file to all_runs*/
@@ -32,7 +28,7 @@ int main(int argc, char ** argv)
     /* We get our answers...*/
     calculate_data(all_runs);
 
-    /* And write them to a new file*/
+    /* And write them to a file*/
     file_output(all_runs,general_runs, NIST_data, argv);
 
     return 0;
