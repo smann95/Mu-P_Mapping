@@ -48,8 +48,6 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
             }
         }
     }
-    auto thing = NIST_data["AR"]["0.1"][0].temperature;
-    cout << thing << endl;
     return NIST_data;
 }
 
