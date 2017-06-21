@@ -15,7 +15,7 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
 {
     map<string, map<string, vector<reference_data>>> NIST_data;
     vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
-    map<string, double> pressures = { {"0.1", 00.1},
+    map<string, double> pressures = { {"00.1", 00.1},
                                       {"001", 01.0},
                                       {"005", 05.0},
                                       {"010", 10.0},
@@ -27,6 +27,7 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
         for(auto p : pressures)
         {
             string fileName = "data/" + s + p.first;
+            cout << "FILENAME: " << fileName << endl;
             ifstream file(fileName);
             if(file.is_open())
             {
@@ -36,13 +37,14 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
                 {
                     reference_data this_point;
                     this_point.temperature = temperature;
+                    cout << "TEMP: " <<  this_point.temperature << endl;
                     this_point.volume_l_mol = volume;
                     double liters = this_point.volume_l_mol * MOLES;
                     this_point.volume_m3 = liters / 1000.0;
                     this_point.compressibility = get_compressibility(this_point.temperature,
                                                                      p.second,
                                                                      this_point.volume_m3);
-                    NIST_data[s][p.first].emplace_back(this_point);
+                    NIST_data[s][p.first].push_back(this_point);
                 }
             }
         }
@@ -271,7 +273,7 @@ double get_reference_data_for_output(string atom_type,
                                      map<string, map<string, vector<reference_data>>> NIST_data)
 {
     vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
-    map<string, double> pressures = { {"0.1", 00.1},
+    map<string, double> pressures = { {"00.1", 0.1},
                                       {"001", 01.0},
                                       {"005", 05.0},
                                       {"010", 10.0},
@@ -286,14 +288,19 @@ double get_reference_data_for_output(string atom_type,
     }
     double reference_Z;
     int temperature_ind = 0;
+    auto nist_begin = NIST_data[atom_type][this_pressure].begin();
     while(1)
     {
-        if (this_temperature == NIST_data[atom_type][this_pressure][temperature_ind].temperature)
+        if (this_temperature == nist_begin->temperature)
         {
-            reference_Z = NIST_data[atom_type][this_pressure][temperature_ind].compressibility;
+            reference_Z = nist_begin->compressibility;
             break;
         }
-        temperature_ind++;
+        else
+        {
+            temperature_ind++;
+            nist_begin++;
+        }
     }
     return reference_Z;
 }
