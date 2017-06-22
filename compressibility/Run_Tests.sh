@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
+echo "Installing necessary libraries and other dependencies..."
+bash install_dependencies.sh
+echo "Compiling..."
+cmake CMakeLists.txt && make
 echo "Running executable on test data..."
-./cmake-build-debug/compressibility TESTS/"test1"
-./cmake-build-debug/compressibility TESTS/"test2"
+./compressibility TESTS/"test1"
+./compressibility TESTS/"test2"
 cd TESTS
-    echo "Starting data comparison"
+    echo "Starting results check..."
     cmp --silent test1.OUT results1 || echo "ERROR: TEST 1 RESULTS ARE WRONG -- NOT RELATED TO HE or H2 LOOPS"
     cmp --silent test2.OUT results2 || echo "ERROR: TEST 2 RESULTS ARE WRONG -- CHECK HE and H2 LOOPS"
+    echo "Done with results check!"
     for test in test1.OUT test2.OUT; do
         echo "Making graphs for ${test}"
         split -l 11 ${test} DATA
