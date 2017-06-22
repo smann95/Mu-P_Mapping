@@ -24,5 +24,5 @@ cd TESTS
         rm DATA*
     done
 cd ..
-echo "Done! If there isn't any text in ALL-CAPS above, results are as expected."
+echo "Done! If there isn't any text between the 'results check' lines, results are as expected."
 echo "cd TESTS to see example graphs from test data"
