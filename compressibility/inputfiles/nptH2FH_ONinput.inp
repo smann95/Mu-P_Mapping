@@ -31,5 +31,6 @@ polar_max_iter          	4
 
 wrapall                     on
 pqr_input                   input.pqr 
-pop_histogram           	on
-pop_histogram_output    	histogram.dat
+pop_histogram           	off
+traj_output                 /dev/null
+
