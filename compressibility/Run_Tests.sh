@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-echo "Installing necessary libraries and other dependencies..."
 bash install_dependencies.sh
 echo "Compiling..."
 cmake CMakeLists.txt && make
