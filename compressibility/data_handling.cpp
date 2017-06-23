@@ -26,7 +26,7 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
     {
         for(auto p : pressures)
         {
-            string fileName = "data/" + s + p.first;
+            string fileName = "ISOBAR/" + s + p.first;
             ifstream file(fileName);
             if(file.is_open())
             {
@@ -71,7 +71,7 @@ vector <general_run_data> set_up_general_runs(int argc, char ** argv)
             convert >> this_species.num_runs;
             general_runs.push_back(this_species);
         }
-        else//check the execution directory to make sure your data is there
+        else//check the execution directory to make sure your small_dataset is there
         {
             cerr << "Error in opening file " << file_name
                  << " in set_up_general_runs() " << endl;
@@ -138,7 +138,7 @@ double get_species_mass(string atom_type)
 }
 
 /*
- * Now that we've set up our vectors, we read the simulation data
+ * Now that we've set up our vectors, we read the simulation small_dataset
  * from our input file into the vectors
  */
 void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)

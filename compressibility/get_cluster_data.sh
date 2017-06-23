@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#this file gets data from your simulations
+#this file gets small_dataset from your simulations
 #run it on the cluster, before you run data_scrape_and_analysis from your home or work PC
 
 sum=0

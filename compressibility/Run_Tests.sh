@@ -3,7 +3,7 @@
 bash install_dependencies.sh
 echo "Compiling..."
 cmake CMakeLists.txt && make
-echo "Running executable on test data..."
+echo "Running executable on test small_dataset..."
 ./compressibility TESTS/"test1"
 ./compressibility TESTS/"test2"
 cd TESTS
@@ -24,4 +24,4 @@ cd TESTS
     done
 cd ..
 echo "Done! If there isn't any text between the 'results check' lines, results are as expected."
-echo "cd TESTS to see example graphs from test data"
+echo "cd TESTS to see example graphs from test small_dataset"

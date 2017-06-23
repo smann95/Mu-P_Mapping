@@ -124,7 +124,7 @@ int main ( int argc, char * argv[] )
   int num_of_atoms = 0;
   int num_of_molecules = 0;
 
-  //read data and populate atoms
+  //read small_dataset and populate atoms
   char *first_part,*second_part;
   while (fgets(line,1000,file) != NULL && num_of_atoms < MAX_NUM_OF_ATOMS)
   {
