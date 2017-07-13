@@ -13,6 +13,8 @@ AR_models=( AR )
 KR_models=( KR )
 XE_models=( XE )
 
+mkdir -p GRAPHS
+
 for species in CH4 CO2 N2 NE AR KR XE; do
     array="${species}_models[@]"
     mkdir -p ${species}

@@ -130,3 +130,76 @@ double solve_peng_robinson_for_compressibility(double temperature, double pressu
     }
     return Z;
 }
+
+double solve_peng_robinson_for_fugacity(double temperature, double pressure, run some_run)
+{
+    double Z, A, B, aa, bb, Tc, Pc, Tr;
+    double alpha, alpha2, w, R, Q, X, j, k, l;
+    double theta, Q3;
+    double uu, U, V, root1, root2, root3, stuff1, stuff2, stuff3;
+    double pi=acos(-1.0);
+
+    /*Peng Robinson variables  units K,atm, L, mole*/
+    Tc = some_run.Tc;
+    Pc = some_run.Pc;
+    w = some_run.w;
+    R = 0.08206;   /* gas constant atmL/moleK */
+
+    aa = (0.45724*R*R*Tc*Tc) / Pc;
+    bb = (0.07780*R*Tc) / Pc;
+    Tr = temperature / Tc;
+    stuff1 = 0.37464 + 1.54226*w - 0.26992*w*w;
+    stuff2=1.0-sqrt(Tr);
+    alpha=1.0+stuff1*stuff2;
+    alpha2=alpha*alpha;
+    A=alpha2*aa*pressure/(R*R*temperature*temperature);
+    B=bb*pressure/(R*temperature);
+
+    /* solving a cubic equation part */
+    j=-1.0*(1-B);
+    k=A-3.0*B*B-2.0*B;
+    l= -1*(A*B- B*B -B*B*B);
+    Q=(j*j-3.0*k)/9.0;
+    X=(2.0*j*j*j -9.0*j*k+27.0*l)/54.0;
+    Q3=Q*Q*Q;
+
+    /* Need to check X^2 < Q^3 */
+    if((X*X)<(Q*Q*Q))
+    {    /* THREE REAL ROOTS  */
+        theta=acos((X/sqrt(Q3)));
+        root1=-2.0*sqrt(Q)*cos(theta/3.0)-j/3.0;
+        root2=-2.0*sqrt(Q)*cos((theta+2.0*pi)/3.0)-j/3.0;
+        root3=-2.0*sqrt(Q)*cos((theta-2.0*pi)/3.0)-j/3.0;
+
+        /*Choose the root closest to 1, which is "ideal gas law" */
+        if((1.0-root1)<(1.0-root2) && (1.0-root1)<(1.0-root3))
+            Z=root1;
+        else if((1.0-root2)<(1.0-root3) && (1.0-root2)<(1.0-root1))
+            Z=root2;
+        else
+            Z=root3;
+    }
+    else
+    {   /* ONLY ONE real root */
+        stuff3= X*X-Q*Q*Q;
+        uu=X-sqrt(stuff3);
+        /*Power function must have uu a positive number*/
+        if(uu<0.0)
+            uu=-1.0*uu;
+        U=pow(uu,(1.0/3.0));
+        V=Q/U;
+        root1=U+V-j/3.0;
+        Z=root1;
+    }
+    /* using Z calculate the fugacity */
+    double f1, f2, f3, f4, lnfoverp, fugacity;
+
+    f1=(Z-1.0)-log(Z-B);
+    f2=A/(2.0*sqrt(2.0)*B);
+    f3=Z+(1.0+sqrt(2.0))*B;
+    f4=Z+(1.0-sqrt(2.0))*B;
+    lnfoverp=f1-f2*log(f3/f4);
+    fugacity=exp(lnfoverp)*pressure;
+
+    return(fugacity);
+}

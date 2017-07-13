@@ -15,19 +15,19 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
 {
     map<string, map<string, vector<reference_data>>> NIST_data;
     vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
-    map<string, double> pressures = { {"00.1", 00.1},
-                                      {"001", 01.0},
-                                      {"005", 05.0},
-                                      {"010", 10.0},
-                                      {"020", 20.0},
-                                      {"030", 30.0}
+    map<string, double> pressures = { {"0.1", 00.1},
+                                      {"1.0", 01.0},
+                                      {"5.0", 05.0},
+                                      {"10.0", 10.0},
+                                      {"20.0", 20.0},
+                                      {"30.0", 30.0}
     };
     for(string s : species)
     {
         for(auto p : pressures)
         {
             string fileName = "ISOBAR/" + s + p.first;
-            ifstream file(fileName);
+            fstream file(fileName);
             if(file.is_open())
             {
                 double temperature = 0.0,
@@ -40,7 +40,7 @@ map<string, map<string, vector<reference_data>>> read_reference_data()
                     double liters = this_point.volume_l_mol * MOLES;
                     this_point.volume_m3 = liters / 1000.0;
                     this_point.compressibility = get_compressibility(this_point.temperature,
-                                                                     p.second,
+                                                                    p.second*101325,
                                                                      this_point.volume_m3);
                     NIST_data[s][p.first].push_back(this_point);
                 }
@@ -223,6 +223,7 @@ void calculate_data(vector<vector<run>> &all_runs)
         for(auto mini_beg = all_beg->begin(); mini_beg != all_beg->end();mini_beg++) {
             mini_beg->simulation_Z = get_compressibility(mini_beg->temperature, mini_beg->pressure_pa, mini_beg->simulation_V);
             mini_beg->EOS_Z = solve_peng_robinson_for_compressibility(mini_beg->temperature, mini_beg->pressure_atm, *mini_beg);
+            mini_beg->EOS_fugacity = solve_peng_robinson_for_fugacity(mini_beg->temperature, mini_beg->pressure_atm, *mini_beg);
         }
     }
 }
@@ -231,7 +232,8 @@ void calculate_data(vector<vector<run>> &all_runs)
 double get_compressibility(double temperature, double pressure, double volume)
 {
     double num = 64.0/AVOGADRO;//n is in moles
-    return (pressure * volume) / (num * GAS_CONSTANT * temperature);
+    double ans = (pressure * volume) / (num * GAS_CONSTANT * temperature);
+    return ans;
 }
 
 void file_output(vector<vector<run>> all_runs,
@@ -248,7 +250,7 @@ void file_output(vector<vector<run>> all_runs,
         cout << "FILE NAME FOR OUTPUT : " << file_name << endl;
         for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
         {
-           double reference_Z =get_reference_data_for_output(general_runs[i-1].species,
+           double reference_Z = get_reference_data_for_output(general_runs[i-1].species,
                                                              mini_beg->pressure_atm,
                                                              mini_beg->temperature,
                                                              NIST_data);
@@ -257,7 +259,8 @@ void file_output(vector<vector<run>> all_runs,
                        << mini_beg->pressure_atm << ",    "
                        << mini_beg->simulation_Z << ",  "
                        << mini_beg->EOS_Z << ", "
-                       << reference_Z*100000.0 //awful hack, I'm sorry
+                       << reference_Z << ", "
+                       << mini_beg->EOS_fugacity
                        << endl;
         }
         output_file.close();
@@ -271,12 +274,12 @@ double get_reference_data_for_output(string atom_type,
                                      map<string, map<string, vector<reference_data>>> NIST_data)
 {
     vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
-    map<string, double> pressures = { {"00.1", 0.1},
-                                      {"001", 01.0},
-                                      {"005", 05.0},
-                                      {"010", 10.0},
-                                      {"020", 20.0},
-                                      {"030", 30.0}
+    map<string, double> pressures = { {"0.1", 00.1},
+                                      {"1.0", 01.0},
+                                      {"5.0", 05.0},
+                                      {"10.0", 10.0},
+                                      {"20.0", 20.0},
+                                      {"30.0", 30.0}
     };
     string this_pressure;
     for(auto p : pressures)
@@ -289,7 +292,7 @@ double get_reference_data_for_output(string atom_type,
          nist_end = NIST_data[atom_type][this_pressure].end();
     while(nist_begin != nist_end)
     {
-        if (this_temperature == nist_begin->temperature)
+        if (this_temperature == (int)nist_begin->temperature)
         {
             reference_Z = nist_begin->compressibility;
             break;

@@ -49,6 +49,7 @@ struct run
     double Tc,
            Pc,
            w;
+    double EOS_fugacity;
 };
 
 struct reference_data
@@ -73,6 +74,7 @@ void calculate_data(std::vector<std::vector<run>> &all_runs);
 //FUNCTIONS CALLED BY CALCULATE_DATA:
 double get_compressibility(double temperature, double pressure, double volume);
 double solve_peng_robinson_for_compressibility(double temperature, double pressure, run some_run );
+double solve_peng_robinson_for_fugacity(double temperature, double pressure, run some_run );
 //END
 
 void file_output(std::vector<std::vector<run>> all_runs,
