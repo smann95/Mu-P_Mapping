@@ -11,44 +11,6 @@ using namespace std;
  * group of simulations
  */
 
-map<string, map<string, vector<reference_data>>> read_reference_data()
-{
-    map<string, map<string, vector<reference_data>>> NIST_data;
-    vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
-    map<string, double> pressures = { {"0.1", 00.1},
-                                      {"1.0", 01.0},
-                                      {"5.0", 05.0},
-                                      {"10.0", 10.0},
-                                      {"20.0", 20.0},
-                                      {"30.0", 30.0}
-    };
-    for(string s : species)
-    {
-        for(auto p : pressures)
-        {
-            string fileName = "ISOBAR/" + s + p.first;
-            fstream file(fileName);
-            if(file.is_open())
-            {
-                double temperature = 0.0,
-                        volume = 0.0;
-                while(file >> temperature >> volume)
-                {
-                    reference_data this_point;
-                    this_point.temperature = temperature;
-                    this_point.volume_l_mol = volume;
-                    double liters = this_point.volume_l_mol * MOLES;
-                    this_point.volume_m3 = liters / 1000.0;
-                    this_point.compressibility = get_compressibility(this_point.temperature,
-                                                                    p.second*101325,
-                                                                     this_point.volume_m3);
-                    NIST_data[s][p.first].push_back(this_point);
-                }
-            }
-        }
-    }
-    return NIST_data;
-}
 
 
 vector <general_run_data> set_up_general_runs(int argc, char ** argv)
@@ -232,73 +194,6 @@ void calculate_data(vector<vector<run>> &all_runs)
 double get_compressibility(double temperature, double pressure, double volume)
 {
     double num = 64.0/AVOGADRO;//n is in moles
-    double ans = (pressure * volume) / (num * GAS_CONSTANT * temperature);
-    return ans;
-}
-
-void file_output(vector<vector<run>> all_runs,
-                 vector<general_run_data> general_runs,
-                 map<string, map<string, vector<reference_data>>> NIST_data,
-                 char ** argv)
-{
-    int i = 1;
-    for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
-    {
-        string input_name = argv[i];
-        auto file_name = input_name + ".OUT";
-        ofstream output_file(file_name);
-        cout << "FILE NAME FOR OUTPUT : " << file_name << endl;
-        for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
-        {
-           double reference_Z = get_reference_data_for_output(general_runs[i-1].species,
-                                                             mini_beg->pressure_atm,
-                                                             mini_beg->temperature,
-                                                             NIST_data);
-
-           output_file << mini_beg->temperature << ",     "
-                       << mini_beg->pressure_atm << ",    "
-                       << mini_beg->simulation_Z << ",  "
-                       << mini_beg->EOS_Z << ", "
-                       << reference_Z << ", "
-                       << mini_beg->EOS_fugacity
-                       << endl;
-        }
-        output_file.close();
-        i++;
-    }
-}
-
-double get_reference_data_for_output(string atom_type,
-                                     double pressure_atm,
-                                     double this_temperature,
-                                     map<string, map<string, vector<reference_data>>> NIST_data)
-{
-    vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
-    map<string, double> pressures = { {"0.1", 00.1},
-                                      {"1.0", 01.0},
-                                      {"5.0", 05.0},
-                                      {"10.0", 10.0},
-                                      {"20.0", 20.0},
-                                      {"30.0", 30.0}
-    };
-    string this_pressure;
-    for(auto p : pressures)
-    {
-        if(p.second == pressure_atm)
-            this_pressure = p.first;
-    }
-    double reference_Z;
-    auto nist_begin = NIST_data[atom_type][this_pressure].begin(),
-         nist_end = NIST_data[atom_type][this_pressure].end();
-    while(nist_begin != nist_end)
-    {
-        if (this_temperature == (int)nist_begin->temperature)
-        {
-            reference_Z = nist_begin->compressibility;
-            break;
-        }
-        nist_begin++;
-    }
-    return reference_Z;
+    return (pressure * volume) / (num * GAS_CONSTANT * temperature);
 }
 

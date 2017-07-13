@@ -8,9 +8,9 @@ AR_data=( C7440371 390 90 30)
 KR_data=( C7439909 420 120 30)
 XE_data=( C7440633 370 170 20 )
 
-rm -r ISOBAR
-mkdir -p ISOBAR
-cd ISOBAR
+rm -r ISOBAR_REFERENCE_DATA
+mkdir -p ISOBAR_REFERENCE_DATA
+cd ISOBAR_REFERENCE_DATA
 for species in CH4 CO2 H2 NE AR KR XE; do
     for pressure in 0.1 1.0 5.0 10.0 20.0 30.0; do
         tmp=$species"_data[1]"
@@ -33,7 +33,7 @@ N2_data_0=( C7727379 77 77 0 )
 N2_data_1=( C7727379 290 110 30 )
 N2_data_2=( C7727379 410 330 40 )
 
-cd ISOBAR
+cd ISOBAR_REFERENCE_DATA
 for species in N2; do
     for pressure in 0.1 1.0 5.0 10.0 20.0 30.0; do
         for special in 0 1 2; do
@@ -46,9 +46,6 @@ for species in N2; do
             tmp=$species"_data_$special[3]"
             INC=${!tmp}
             link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="$species_ID"&Type=IsoBar&Digits=5&P="$pressure"&THigh="$T_HIGH"&TLow="$T_LOW"&TInc="$INC"&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-            ECHO " ************************************************************** "
-            echo $link
-            ECHO " ************************************************************** "
             python ../tables.py $link | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
             sed -i '/^\s*$/d' ${species}${pressure}
         done
@@ -59,7 +56,7 @@ cd ..
 HE_data_0=( C7440597 65 5 30 )
 HE_data_1=( C7440597 310 100 30 )
 
-cd ISOBAR
+cd ISOBAR_REFERENCE_DATA
 for species in HE; do
     for pressure in 0.1 1.0 5.0 10.0 20.0 30.0; do
         for special in 0 1; do
@@ -72,9 +69,6 @@ for species in HE; do
             tmp=$species"_data_$special[3]"
             INC=${!tmp}
             link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="$species_ID"&Type=IsoBar&Digits=5&P="$pressure"&THigh="$T_HIGH"&TLow="$T_LOW"&TInc="$INC"&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-            ECHO " ************************************************************** "
-            echo $link
-            ECHO " ************************************************************** "
             python ../tables.py $link | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
             sed -i '/^\s*$/d' ${species}${pressure}
         done

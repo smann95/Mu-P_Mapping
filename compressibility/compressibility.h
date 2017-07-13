@@ -52,7 +52,7 @@ struct run
     double EOS_fugacity;
 };
 
-struct reference_data
+struct isobar_reference_data
 {
     double temperature,
            volume_l_mol,
@@ -60,7 +60,18 @@ struct reference_data
            compressibility;
 };
 
-std::map<std::string, std::map<std::string, std::vector<reference_data>>> read_reference_data();
+struct isotherm_reference_data
+{
+    double pressure,
+           volume_l_mol,
+           volume_m3,
+           compressibility,
+           fugacity;
+};
+
+std::map<std::string, std::map<std::string, std::vector<isobar_reference_data>>> read_isobar_reference_data();
+std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> read_isotherm_reference_data();
+
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);
 std::vector<std::vector<run>> set_up_simulation_structs(std::vector<general_run_data> general_runs);
 //FUNCTIONS CALLED BY SET_UP_SIMULATION_STRUCTS:
@@ -79,13 +90,13 @@ double solve_peng_robinson_for_fugacity(double temperature, double pressure, run
 
 void file_output(std::vector<std::vector<run>> all_runs,
                  std::vector<general_run_data> general_runs,
-                 std::map<std::string, std::map<std::string, std::vector<reference_data>>> NIST_data,
+                 std::map<std::string, std::map<std::string, std::vector<isobar_reference_data>>> NIST_data,
                  char ** argv);
 //FUNCTIONS CALLED BY FILE_OUTPUT:
 double get_reference_data_for_output(std::string atom_type,
                                      double pressure_atm,
                                      double this_temperature,
-                                     std::map<std::string, std::map<std::string, std::vector<reference_data>>> NIST_data);
+                                     std::map<std::string, std::map<std::string, std::vector<isobar_reference_data>>> NIST_data);
 //END
 
 #endif //COMPRESSIBILITY_COMPRESSIBILITY_H

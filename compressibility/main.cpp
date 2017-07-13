@@ -11,8 +11,11 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    //Get scraped small_dataset from small_dataset/ directory and store it for later use
-    map<string, map<string, vector<reference_data>>> NIST_data = read_reference_data();
+    /*
+     * We read and store the isobaric data for calculating compressiblities
+     */
+    map<string, map<string, vector<isobar_reference_data>>> NIST_data = read_isobar_reference_data();
+
 
     /* these three functions:
      * 1. figure out how many vectors and vectors-of-vectors we're going to need
