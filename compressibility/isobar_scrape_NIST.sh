@@ -12,19 +12,23 @@ rm -r ISOBAR_REFERENCE_DATA
 mkdir -p ISOBAR_REFERENCE_DATA
 cd ISOBAR_REFERENCE_DATA
 for species in CH4 CO2 H2 NE AR KR XE; do
+    mkdir ${species}
+    cd ${species}
+    pwd
     for pressure in 0.1 1.0 5.0 10.0 20.0 30.0; do
-        tmp=$species"_data[1]"
+        tmp=${species}"_data[1]"
         T_HIGH=${!tmp}
-        tmp=$species"_data[2]"
+        tmp=${species}"_data[2]"
         T_LOW=${!tmp}
-        tmp=$species"_data[3]"
+        tmp=${species}"_data[3]"
         INC=${!tmp}
-        tmp=$species"_data[0]"
+        tmp=${species}"_data[0]"
         species_ID=${!tmp}
-        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="$species_ID"&Type=IsoBar&Digits=5&P=${pressure}&THigh=${!T_HIGH}&TLow=${!T_LOW}&TInc=${!INC}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-        python ../tables.py $link | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
+        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="${species_ID}"&Type=IsoBar&Digits=5&P=${pressure}&THigh=${!T_HIGH}&TLow=${!T_LOW}&TInc=${!INC}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
+        python ../tables.py ${link} | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
         sed -i '/^\s*$/d' ${species}${pressure}
     done
+    cd ..
 done
 cd ..
 
@@ -35,21 +39,24 @@ N2_data_2=( C7727379 410 330 40 )
 
 cd ISOBAR_REFERENCE_DATA
 for species in N2; do
+    mkdir ${species}
+    cd ${species}
     for pressure in 0.1 1.0 5.0 10.0 20.0 30.0; do
         for special in 0 1 2; do
-            tmp=$species"_data_$special[0]"
+            tmp=${species}"_data_$special[0]"
             species_ID=${!tmp}
-            tmp=$species"_data_$special[1]"
+            tmp=${species}"_data_$special[1]"
             T_HIGH=${!tmp}
-            tmp=$species"_data_$special[2]"
+            tmp=${species}"_data_$special[2]"
             T_LOW=${!tmp}
-            tmp=$species"_data_$special[3]"
+            tmp=${species}"_data_$special[3]"
             INC=${!tmp}
-            link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="$species_ID"&Type=IsoBar&Digits=5&P="$pressure"&THigh="$T_HIGH"&TLow="$T_LOW"&TInc="$INC"&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-            python ../tables.py $link | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
+            link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="${species_ID}"&Type=IsoBar&Digits=5&P="${pressure}"&THigh="${T_HIGH}"&TLow="${T_LOW}"&TInc="${INC}"&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
+            python ../tables.py ${link} | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
             sed -i '/^\s*$/d' ${species}${pressure}
         done
     done
+    cd ..
 done
 cd ..
 
@@ -58,20 +65,24 @@ HE_data_1=( C7440597 310 100 30 )
 
 cd ISOBAR_REFERENCE_DATA
 for species in HE; do
+    mkdir ${species}
+    cd ${species}
+    pwd
     for pressure in 0.1 1.0 5.0 10.0 20.0 30.0; do
         for special in 0 1; do
-            tmp=$species"_data_$special[0]"
+            tmp=${species}"_data_$special[0]"
             species_ID=${!tmp}
-            tmp=$species"_data_$special[1]"
+            tmp=${species}"_data_$special[1]"
             T_HIGH=${!tmp}
-            tmp=$species"_data_$special[2]"
+            tmp=${species}"_data_$special[2]"
             T_LOW=${!tmp}
-            tmp=$species"_data_$special[3]"
+            tmp=${species}"_data_$special[3]"
             INC=${!tmp}
-            link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="$species_ID"&Type=IsoBar&Digits=5&P="$pressure"&THigh="$T_HIGH"&TLow="$T_LOW"&TInc="$INC"&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-            python ../tables.py $link | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
+            link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="${species_ID}"&Type=IsoBar&Digits=5&P="${pressure}"&THigh="${T_HIGH}"&TLow="${T_LOW}"&TInc="${INC}"&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
+            python ../tables.py ${link} | awk '{print $1,$4}' | tail -n +2 >> ${species}${pressure}
             sed -i '/^\s*$/d' ${species}${pressure}
         done
     done
+    cd ..
 done
 cd ..

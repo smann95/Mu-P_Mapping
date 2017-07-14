@@ -16,20 +16,20 @@ rm -r ISOTHERM_REFERENCE_DATA
 mkdir -p ISOTHERM_REFERENCE_DATA
 cd ISOTHERM_REFERENCE_DATA
 for species in CH4 CO2 H2 NE AR KR XE; do
-    mkdir $species
-    cd $species
+    mkdir ${species}
+    cd ${species}
     pwd
-    tmp=$species"_data[1]"
+    tmp=${species}"_data[1]"
     T_HIGH=${!tmp}
-    tmp=$species"_data[2]"
+    tmp=${species}"_data[2]"
     T_LOW=${!tmp}
-    tmp=$species"_data[3]"
+    tmp=${species}"_data[3]"
     INC=${!tmp}
-    for temperature in `seq $T_LOW $INC $T_HIGH`; do
-        tmp=$species"_data[0]"
+    for temperature in `seq ${T_LOW} ${INC} ${T_HIGH}`; do
+        tmp=${species}"_data[0]"
         species_ID=${!tmp}
-        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="$species_ID"&Type=IsoTherm&Digits=5&PLow=${P_LOW}&PHigh=${P_HIGH}&PInc=${P_INC}&T=${temperature}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-        python ../../tables.py $link | awk '{print $2,$4}' | tail -n +2 >> ${temperature}
+        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="${species_ID}"&Type=IsoTherm&Digits=5&PLow=${P_LOW}&PHigh=${P_HIGH}&PInc=${P_INC}&T=${temperature}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
+        python ../../tables.py ${link} | awk '{print $2,$4}' | tail -n +2 >> ${temperature}
         sed -i '/^\s*$/d' ${temperature}
     done
     cd ..
@@ -51,28 +51,28 @@ cd N2
     pwd
 #seq doesn't like 0 increments so just get the one for this temperature
 link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=C7727379&Type=IsoTherm&Digits=5&PLow=${P_LOW}&PHigh=${P_HIGH}&PInc=${P_INC}&T=77&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-python ../../tables.py $link | awk '{print $2,$4}' | tail -n +2 >> "077"
+python ../../tables.py ${link} | awk '{print $2,$4}' | tail -n +2 >> "077"
 sed -i '/^\s*$/d' "077"
 cd ..
 cd ..
 
 cd ISOTHERM_REFERENCE_DATA
 for species in N2; do
-  mkdir -p $species
-  cd $species
+  mkdir -p ${species}
+  cd ${species}
     pwd
   for special in 0 1; do
-    tmp=$species"_data_$special[1]"
+    tmp=${species}"_data_$special[1]"
     T_HIGH=${!tmp}
-    tmp=$species"_data_$special[2]"
+    tmp=${species}"_data_$special[2]"
     T_LOW=${!tmp}
-    tmp=$species"_data_$special[3]"
+    tmp=${species}"_data_$special[3]"
     INC=${!tmp}
-    for temperature in `seq $T_LOW $INC $T_HIGH`; do
-        tmp=$species"_data_$special[0]"
+    for temperature in `seq ${T_LOW} ${INC} ${T_HIGH}`; do
+        tmp=${species}"_data_$special[0]"
         species_ID=${!tmp}
-        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="$species_ID"&Type=IsoTherm&Digits=5&PLow=${P_LOW}&PHigh=${P_HIGH}&PInc=${P_INC}&T=${temperature}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-        python ../../tables.py $link | awk '{print $2,$4}' | tail -n +2 >> ${temperature}
+        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="${species_ID}"&Type=IsoTherm&Digits=5&PLow=${P_LOW}&PHigh=${P_HIGH}&PInc=${P_INC}&T=${temperature}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
+        python ../../tables.py ${link} | awk '{print $2,$4}' | tail -n +2 >> ${temperature}
         sed -i '/^\s*$/d' ${temperature}
     done
   done
@@ -87,21 +87,21 @@ HE_data_1=( C7440597 310 100 30 )
 
 cd ISOTHERM_REFERENCE_DATA
 for species in HE; do
-    mkdir $species
-    cd $species
+    mkdir ${species}
+    cd ${species}
     pwd
   for special in 0 1; do
-    tmp=$species"_data_$special[1]"
+    tmp=${species}"_data_$special[1]"
     T_HIGH=${!tmp}
-    tmp=$species"_data_$special[2]"
+    tmp=${species}"_data_$special[2]"
     T_LOW=${!tmp}
-    tmp=$species"_data_$special[3]"
+    tmp=${species}"_data_$special[3]"
     INC=${!tmp}
-    for temperature in `seq $T_LOW $INC $T_HIGH`; do
-        tmp=$species"_data_$special[0]"
+    for temperature in `seq ${T_LOW} ${INC} ${T_HIGH}`; do
+        tmp=${species}"_data_$special[0]"
         species_ID=${!tmp}
-        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="$species_ID"&Type=IsoTherm&Digits=5&PLow=${P_LOW}&PHigh=${P_HIGH}&PInc=${P_INC}&T=${temperature}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
-        python ../../tables.py $link | awk '{print $2,$4}' | tail -n +2 >> ${temperature}
+        link="http://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID="${species_ID}"&Type=IsoTherm&Digits=5&PLow=${P_LOW}&PHigh=${P_HIGH}&PInc=${P_INC}&T=${temperature}&RefState=DEF&TUnit=K&PUnit=atm&DUnit=mol%2Fl&HUnit=kJ%2Fmol&WUnit=m%2Fs&VisUnit=uPa*s&STUnit=N%2Fm"
+        python ../../tables.py ${link} | awk '{print $2,$4}' | tail -n +2 >> ${temperature}
         sed -i '/^\s*$/d' ${temperature}
     done
   done
