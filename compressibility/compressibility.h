@@ -15,6 +15,7 @@
 #include <string.h>
 #include <cstring>
 #include <iterator>
+#include <experimental/filesystem>
 
 
 #define GAS_CONSTANT 8.3144598
@@ -62,7 +63,8 @@ struct isobar_reference_data
 
 struct isotherm_reference_data
 {
-    double pressure,
+    double temperature,
+           pressure,
            volume_l_mol,
            volume_m3,
            compressibility,

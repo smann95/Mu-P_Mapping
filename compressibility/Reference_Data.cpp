@@ -21,7 +21,7 @@ map<string, map<string, vector<isobar_reference_data>>> read_isobar_reference_da
     {
         for(auto p : pressures)
         {
-            string fileName = "ISOBAR/" + s + p.first;
+            string fileName = "ISOBAR_REFERENCE_DATA/" + s + "/" + p.first;
             fstream file(fileName);
             if(file.is_open())
             {
@@ -40,6 +40,7 @@ map<string, map<string, vector<isobar_reference_data>>> read_isobar_reference_da
                     NIST_data[s][p.first].push_back(this_point);
                 }
             }
+            file.close();
         }
     }
     return NIST_data;
@@ -65,12 +66,12 @@ void file_output(vector<vector<run>> all_runs,
                                                                NIST_data);
 
             output_file << mini_beg->temperature << ",     "
-            << mini_beg->pressure_atm << ",    "
-            << mini_beg->simulation_Z << ",  "
-            << mini_beg->EOS_Z << ", "
-            << reference_Z << ", "
-            << mini_beg->EOS_fugacity
-            << endl;
+                        << mini_beg->pressure_atm << ",    "
+                        << mini_beg->simulation_Z << ",  "
+                        << mini_beg->EOS_Z << ", "
+                        << reference_Z << ", "
+                        << mini_beg->EOS_fugacity
+                        << endl;
         }
         output_file.close();
         i++;
@@ -119,32 +120,47 @@ double get_reference_data_for_output(string atom_type,
     return reference_Z;
 }
 
-map<string, map<string, vector<isotherm_reference_data>>> read_isotherm_reference_data()
+
+
+map<string, map<double, vector<isotherm_reference_data>>> read_isotherm_reference_data()
 {
-    map<string, map<string, vector<isotherm_reference_data>>> NIST_data;
+    map<string, map<double, vector<isotherm_reference_data>>> NIST_data;
     vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
+
+    namespace fs = experimental::filesystem;
+
     for(string s : species)
     {
-            string command = "ls ISOTHERM_REFERENCE_DATA/ | grep ";
-            command += s;
-            s = system(command.c_str());
+        vector<string> this_species_temps = {};
+        string path = "ISOTHERM_REFERENCE_DATA";
+        for(auto p : fs::directory_iterator(path))
+        {
+            this_species_temps.emplace_back(p);
+        }
+        string my_file_name = path + "/" + s + "/";
+        for(auto t : this_species_temps)
+        {
+            my_file_name += t;
+            fstream file(my_file_name);
             if(file.is_open())
             {
-                double temperature = 0.0,
+                double pressure = 0.0,
                         volume = 0.0;
-                while(file >> temperature >> volume)
+                while(file >> pressure >> volume)
                 {
-                    isobar_reference_data this_point;
-                    this_point.temperature = temperature;
+                    isotherm_reference_data this_point;
+                    this_point.temperature = stod(t);
+                    this_point.pressure = pressure;
                     this_point.volume_l_mol = volume;
                     double liters = this_point.volume_l_mol * MOLES;
                     this_point.volume_m3 = liters / 1000.0;
                     this_point.compressibility = get_compressibility(this_point.temperature,
-                                                                     p.second*101325,
+                                                                     pressure*101325,
                                                                      this_point.volume_m3);
-                    NIST_data[s][p.first].push_back(this_point);
+                    NIST_data[s][this_point.temperature].push_back(this_point);
                 }
             }
+        }
     }
     return NIST_data;
 }

@@ -13,6 +13,7 @@ AR_models=( AR )
 KR_models=( KR )
 XE_models=( XE )
 
+rm -rf GRAPHS
 mkdir -p GRAPHS
 
 for species in CH4 CO2 N2 NE AR KR XE; do
@@ -22,7 +23,7 @@ for species in CH4 CO2 N2 NE AR KR XE; do
     for model in "${!array}"; do
         mkdir -p ${model}
         cd .. #out of species into the main directory
-        ./cmake-build-debug/compressibility ${species}${model}${date_stamp}".dat"
+        ./compressibility ${species}${model}${date_stamp}".dat"
         split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
         cd ${species}/${model} #into the innermost directory (species + model)
             rm DATAa*
@@ -53,7 +54,7 @@ for species in H2 HE; do
                 for model in "${!model_array}"; do
                     mkdir -p ${model}
                     cd ../.. #out of species into the main directory
-                    cmake-build-debug/compressibility ${species}${corrections}${model}${date_stamp}".dat"
+                    ./compressibility ${species}${corrections}${model}${date_stamp}".dat"
                     split -l 11 ${species}${corrections}${model}${date_stamp}".dat.OUT" DATA
                     cd ${species}/${corrections}/${model} #into the innermost directory
                         rm DATAa*

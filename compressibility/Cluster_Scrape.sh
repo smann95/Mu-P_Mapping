@@ -18,7 +18,7 @@ ctl=${sshfifos}/${user}@${host}:22 # ssh stores named socket for open ctrl conn 
 ssh -fNMS ${ctl} ${user}@${host}  # Control Master: Prompts password then persists in background
 
 if [ "$host" = "bridges.psc.edu" ]; then
-    scp_path="/pylon5/ch3benp/luciano2/Mu-P_Mapping/compressibility/"
+    scp_path="/pylon2/ch3benp/luciano2/Mu-P_Mapping/compressibility/"
 fi
 if [ "$host" = "itn.rc.usf.edu" ]; then
     scp_path="~/repos/MuP_Mapping/compressibility/"
