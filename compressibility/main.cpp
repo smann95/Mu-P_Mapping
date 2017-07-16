@@ -11,21 +11,18 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    /*
-     * We read and store the isobaric data for calculating compressiblities
-     */
-    map<string, map<string, vector<isobar_reference_data>>> NIST_data = read_isobar_reference_data();
+    //read in and store reference_data
+    auto NIST_data = read_reference_data();
 
 
     /* these three functions:
      * 1. figure out how many vectors and vectors-of-vectors we're going to need
      * 2. set up the needed small_dataset structures
      * 3. read in the simulation small_dataset from the input file to all_runs*/
-    vector<general_run_data> general_runs = set_up_general_runs(argc, argv);
-    vector<vector<run>> all_runs = set_up_simulation_structs(general_runs);
+    auto general_runs = set_up_general_runs(argc, argv);
+    auto all_runs = set_up_simulation_structs(general_runs);
     read_simulation_data(argc, argv, all_runs);
 
-    /* Convert small_dataset to friendlier units */
     convert_data_to_other_units(all_runs, general_runs);
 
     /* We get our answers...*/

@@ -51,15 +51,15 @@ first_array=("CH4" "CO2" "H2" "NE" "AR" "KR" "XE")
 second_array=("N2" "HE")
 third_array=("N22" "HE2")
 
-temp_low=0.1
-temp_max=5
-while [ "${temp_max}" -le 30 ]
+pres_low=0.1
+pres_max=5
+while [ "${pres_max}" -le 30 ]
 do
-    get_data_for first_array ${temp_low} ${temp_max}
-    get_data_for second_array ${temp_low} ${temp_max}
-    get_data_for third_array ${temp_low} ${temp_max}
-    temp_low=$( echo "${temp_low} + 5" | bc)
-    temp_max=$(( $temp_max + 5 ))
+    get_data_for first_array ${pres_low} ${pres_max}
+    get_data_for second_array ${pres_low} ${pres_max}
+    get_data_for third_array ${pres_low} ${pres_max}
+    pres_low=$( echo "${pres_low} + 5" | bc)
+    pres_max=$(( $pres_max + 5 ))
 done
 
 cp -R N22/. N2/

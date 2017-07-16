@@ -12,10 +12,10 @@
 #include <sstream>
 #include <cmath>
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 #include <string.h>
 #include <cstring>
 #include <iterator>
-#include <experimental/filesystem>
 
 
 #define GAS_CONSTANT 8.3144598
@@ -53,26 +53,19 @@ struct run
     double EOS_fugacity;
 };
 
-struct isobar_reference_data
-{
-    double temperature,
-           volume_l_mol,
-           volume_m3,
-           compressibility;
-};
-
 struct isotherm_reference_data
 {
-    double temperature,
-           pressure,
+    double pressure,
            volume_l_mol,
            volume_m3,
            compressibility,
            fugacity;
 };
 
-std::map<std::string, std::map<std::string, std::vector<isobar_reference_data>>> read_isobar_reference_data();
-std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> read_isotherm_reference_data();
+std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> read_reference_data();
+//FUNCTIONS CALLED BY READ_REFERENCE_DATA:
+void get_species_temperatures(std::vector<std::string> &this_species_temps, std::string species);
+//END FUNCTIONS CALLED BY READ_REFERENCE_DATA
 
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);
 std::vector<std::vector<run>> set_up_simulation_structs(std::vector<general_run_data> general_runs);
@@ -92,13 +85,13 @@ double solve_peng_robinson_for_fugacity(double temperature, double pressure, run
 
 void file_output(std::vector<std::vector<run>> all_runs,
                  std::vector<general_run_data> general_runs,
-                 std::map<std::string, std::map<std::string, std::vector<isobar_reference_data>>> NIST_data,
+                 std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data,
                  char ** argv);
 //FUNCTIONS CALLED BY FILE_OUTPUT:
 double get_reference_data_for_output(std::string atom_type,
                                      double pressure_atm,
                                      double this_temperature,
-                                     std::map<std::string, std::map<std::string, std::vector<isobar_reference_data>>> NIST_data);
+                                     std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data);
 //END
 
 #endif //COMPRESSIBILITY_COMPRESSIBILITY_H

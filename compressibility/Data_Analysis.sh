@@ -14,7 +14,7 @@ KR_models=( KR )
 XE_models=( XE )
 
 rm -rf GRAPHS
-mkdir -p GRAPHS
+mkdir -p GRAPHS/compressibilities
 
 for species in CH4 CO2 N2 NE AR KR XE; do
     array="${species}_models[@]"
@@ -26,18 +26,18 @@ for species in CH4 CO2 N2 NE AR KR XE; do
         ./compressibility ${species}${model}${date_stamp}".dat"
         split -l 11 ${species}${model}${date_stamp}".dat.OUT" DATA
         cd ${species}/${model} #into the innermost directory (species + model)
-            rm DATAa*
+            rm DATAa* 2> /dev/null
         cd ../../ #to the outermost directory (the main working directory)
         mv DATAa* ${species}/${model}
         cd ${species}/${model} #into the innermost directory (species + model)
             echo "Starting $species($model) graphs now..."
-            python ../../graph_most.py DATAaa ${species} ${model}
-            python ../../graph_most.py DATAab ${species} ${model}
-            python ../../graph_most.py DATAac ${species} ${model}
-            python ../../graph_most.py DATAad ${species} ${model}
-            python ../../graph_most.py DATAae ${species} ${model}
-            python ../../graph_most.py DATAaf ${species} ${model}
-            mv *.png ../../GRAPHS
+            python ../../graph_most_compressibilities.py DATAaa ${species} ${model}
+            python ../../graph_most_compressibilities.py DATAab ${species} ${model}
+            python ../../graph_most_compressibilities.py DATAac ${species} ${model}
+            python ../../graph_most_compressibilities.py DATAad ${species} ${model}
+            python ../../graph_most_compressibilities.py DATAae ${species} ${model}
+            python ../../graph_most_compressibilities.py DATAaf ${species} ${model}
+            mv *.png ../../GRAPHS/compressibilities
         cd ../ #back to species
     done
     cd ..
@@ -57,18 +57,18 @@ for species in H2 HE; do
                     ./compressibility ${species}${corrections}${model}${date_stamp}".dat"
                     split -l 11 ${species}${corrections}${model}${date_stamp}".dat.OUT" DATA
                     cd ${species}/${corrections}/${model} #into the innermost directory
-                        rm DATAa*
+                        rm DATAa* 2> /dev/null
                     cd ../../../ #to the outermost directory (the main working directory)
                     mv DATAa* ${species}/${corrections}/${model}/
                     cd ${species}/${corrections}/${model} #into the innermost directory (species + model)
                         echo "Starting $species($model[$corrections]) graphs now..."
-                        python ../../../graph_H2He.py DATAaa ${species} ${corrections} ${model}
-                        python ../../../graph_H2He.py DATAab ${species} ${corrections} ${model}
-                        python ../../../graph_H2He.py DATAac ${species} ${corrections} ${model}
-                        python ../../../graph_H2He.py DATAad ${species} ${corrections} ${model}
-                        python ../../../graph_H2He.py DATAae ${species} ${corrections} ${model}
-                        python ../../../graph_H2He.py DATAaf ${species} ${corrections} ${model}
-                        mv *.png ../../../GRAPHS
+                        python ../../../graph_H2He_compressibilities.py DATAaa ${species} ${corrections} ${model}
+                        python ../../../graph_H2He_compressibilities.py DATAab ${species} ${corrections} ${model}
+                        python ../../../graph_H2He_compressibilities.py DATAac ${species} ${corrections} ${model}
+                        python ../../../graph_H2He_compressibilities.py DATAad ${species} ${corrections} ${model}
+                        python ../../../graph_H2He_compressibilities.py DATAae ${species} ${corrections} ${model}
+                        python ../../../graph_H2He_compressibilities.py DATAaf ${species} ${corrections} ${model}
+                        mv *.png ../../GRAPHS/compressibilities
                     cd .. #back to species
                 done
             cd ../
