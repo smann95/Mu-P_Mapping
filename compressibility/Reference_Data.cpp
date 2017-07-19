@@ -62,7 +62,7 @@ void file_output(vector<vector<run>> all_runs,
         cout << "FILE NAME FOR OUTPUT : " << file_name << endl;
         for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
         {
-            double reference_Z = get_reference_data_for_output(general_runs[i-1].species,
+            double reference_Z = get_reference_compressibility(general_runs[i-1].species,
                                                                mini_beg->pressure_atm,
                                                                mini_beg->temperature,
                                                                NIST_data);
@@ -80,10 +80,11 @@ void file_output(vector<vector<run>> all_runs,
     }
 }
 
-double get_reference_data_for_output(string atom_type,
+double get_reference_compressibility(string atom_type,
                                      double pressure_atm,
                                      double this_temperature,
-                                     map<string, map<string, vector<isotherm_reference_data>>> NIST_data) {
+                                     map<string, map<string, vector<isotherm_reference_data>>> NIST_data)
+{
     ostringstream temperature_string;
     temperature_string << this_temperature;
     auto beg = NIST_data[atom_type][temperature_string.str()].begin(),
@@ -116,7 +117,7 @@ void get_species_temperatures(vector<string> & this_species_temps, string specie
     }
 }
 
-double get_reference_fugacity(map<string, map<string, vector<isotherm_reference_data>>> NIST_data)
+void get_reference_fugacity(map<string, map<string, vector<isotherm_reference_data>>> & NIST_data)
 {
 
     vector<string> species = {"AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE"};
@@ -129,15 +130,18 @@ double get_reference_fugacity(map<string, map<string, vector<isotherm_reference_
         {
             auto beg = NIST_data[s][t].begin(),
                  end = NIST_data[s][t].end();
+            auto first_pressure = NIST_data[s][t]->pressure_atm;
             while(beg != end)
             {
-
-                beg++;
+              beg->fugacity = beg->pressure * exp(integrate_compressibility_for_fugacity(pressure_atm, NIST_data);
             }
         }
     }
-
-
 }
 
+double integrate_compressibility_for_fugacity(double pressure_atm, map<string, map<string,vector<istoherm_reference_data>>> & NIST_data)
+{
 
+    
+    return reference_fugacity;
+}

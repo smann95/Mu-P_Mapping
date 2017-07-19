@@ -13,6 +13,7 @@ int main(int argc, char ** argv)
 
     //read in and store reference_data
     auto NIST_data = read_reference_data();
+    get_reference_fugacity(NIST_data);
 
 
     /* these three functions:
