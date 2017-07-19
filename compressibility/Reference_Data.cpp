@@ -116,3 +116,28 @@ void get_species_temperatures(vector<string> & this_species_temps, string specie
     }
 }
 
+double get_reference_fugacity(map<string, map<string, vector<isotherm_reference_data>>> NIST_data)
+{
+
+    vector<string> species = {"AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE"};
+
+    for (auto s : species)
+    {
+        vector<string> this_species_temps = {};
+        get_species_temperatures(this_species_temps, s);
+        for(auto t : this_species_temps)
+        {
+            auto beg = NIST_data[s][t].begin(),
+                 end = NIST_data[s][t].end();
+            while(beg != end)
+            {
+
+                beg++;
+            }
+        }
+    }
+
+
+}
+
+
