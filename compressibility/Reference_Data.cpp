@@ -119,7 +119,6 @@ void get_species_temperatures(vector<string> & this_species_temps, string specie
 
 void get_reference_fugacity(map<string, map<string, vector<isotherm_reference_data>>> & NIST_data)
 {
-
     vector<string> species = {"AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE"};
 
     for (auto s : species)
@@ -130,7 +129,6 @@ void get_reference_fugacity(map<string, map<string, vector<isotherm_reference_da
         {
             auto beg = NIST_data[s][t].begin(),
                  end = NIST_data[s][t].end();
-            auto first_pressure = NIST_data[s][t]->pressure_atm;
             while(beg != end)
             {
               beg->fugacity = beg->pressure * exp(integrate_compressibility_for_fugacity(pressure_atm, NIST_data);
@@ -139,10 +137,10 @@ void get_reference_fugacity(map<string, map<string, vector<isotherm_reference_da
     }
 }
 
-double integrate_compressibility_for_fugacity(double pressure_atm, map<string, map<string,vector<istoherm_reference_data>>> & NIST_data)
+void integrate_compressibility_for_fugacity(double pressure_atm, map<string, map<string,vector<istoherm_reference_data>>> & NIST_data)
 {
     vector<string> species = {"AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE"};
-    double current_z = 0.0;
+    double fugacity = 0.0
     for (auto s : species)
     {
       vector<string> this_species_temps;
@@ -151,15 +149,20 @@ double integrate_compressibility_for_fugacity(double pressure_atm, map<string, m
       {
         auto beg = NIST_data[s][t].begin(),
             end = NIST_data[s][t].end();
+        fugacity += (beg->compressibility + 1.0) / pressure_atm;
+        end--;
+        fugacity += (end->compressibility + 1.0) / pressure_atm;
+        beg ++;
+        end ++;
         while(beg != end)
         {
-          if(beg->pressure = pressure_atm)
+          do 
           {
-
-          }
+              double this_term = (beg->compressibility + 1)/pressure_atm;  
+              fugacity += 2 * this_term;
+              beg++;
+          }while (beg->pressure != pressure_atm);
         }
-      
+      }
     }
-    
-    return reference_fugacity;
 }
