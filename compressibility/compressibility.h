@@ -66,7 +66,7 @@ std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>
 void get_species_temperatures(std::vector<std::string> &this_species_temps, std::string species);
 //END FUNCTIONS CALLED BY READ_REFERENCE_DATA
 
-void get_reference_fugacity(std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data);
+void calculate_reference_fugacities(std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data);
 //FUNCTIONS CALLED BY GET_REFERENCE_FUGACITY:
 double integrate_compressibility_for_fugacity(double pressure_atm, std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> & NIST_data);
 //END FUNCTIONS CALLED BY GET_REFERENCE_FUGACITY
@@ -93,6 +93,10 @@ void file_output(std::vector<std::vector<run>> all_runs,
                  char ** argv);
 //FUNCTIONS CALLED BY FILE_OUTPUT:
 double get_reference_compressibility(std::string atom_type,
+                                     double pressure_atm,
+                                     double this_temperature,
+                                     std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data);
+double get_reference_fugacity(std::string atom_type,
                                      double pressure_atm,
                                      double this_temperature,
                                      std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data);
