@@ -12,12 +12,12 @@ map<string, map<string, vector<isotherm_reference_data>>> read_reference_data()
     map<string, map<string, vector<isotherm_reference_data>>> NIST_data;
     vector<string> species = {"AR","CH4","CO2","H2","HE","KR","N2","NE","XE"};
 
-    for(string s : species)
+    for(const auto &s : species)
     {
         vector<string> this_species_temps = {};
         get_species_temperatures(this_species_temps, s);
         path p("ISOTHERM_REFERENCE_DATA/" + s);
-        for(auto t : this_species_temps)
+        for(const auto &t : this_species_temps)
         {
             string my_file_name = "ISOTHERM_REFERENCE_DATA/" + s + "/" + t;
             std::fstream file(my_file_name);
@@ -54,25 +54,25 @@ void file_output(vector<vector<run>> all_runs,
                  char ** argv)
 {
     int i = 1;
-    for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
+    for (auto &all_run : all_runs)
     {
         string input_name = argv[i];
         auto file_name = input_name + ".OUT";
         std::ofstream output_file(file_name);
         cout << "FILE NAME FOR OUTPUT : " << file_name << endl;
-        for(auto mini_beg = all_beg->begin();mini_beg != all_beg->end();mini_beg++)
+        for (auto &mini_beg : all_run)
         {
             double reference_Z = get_reference_compressibility(general_runs[i-1].species,
-                                                               mini_beg->pressure_atm,
-                                                               mini_beg->temperature,
+                                                               mini_beg.pressure_atm,
+                                                               mini_beg.temperature,
                                                                NIST_data);
 
-            output_file << mini_beg->temperature << ",     "
-                        << mini_beg->pressure_atm << ",    "
-                        << mini_beg->simulation_Z << ",  "
-                        << mini_beg->EOS_Z << ", "
+            output_file << mini_beg.temperature << ",     "
+                        << mini_beg.pressure_atm << ",    "
+                        << mini_beg.simulation_Z << ",  "
+                        << mini_beg.EOS_Z << ", "
                         << reference_Z << ", "
-                        << mini_beg->EOS_fugacity
+                        << mini_beg.EOS_fugacity
                         << endl;
         }
         output_file.close();
@@ -117,35 +117,37 @@ void get_species_temperatures(vector<string> & this_species_temps, string specie
     }
 }
 
-void get_reference_fugacity(map<string, map<string, vector<isotherm_reference_data>>> & NIST_data)
+void get_reference_fugacity(std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data)
 {
     vector<string> species = {"AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE"};
 
-    for (auto s : species)
+    for (const auto &s : species)
     {
         vector<string> this_species_temps = {};
         get_species_temperatures(this_species_temps, s);
-        for(auto t : this_species_temps)
+        for(const auto &t : this_species_temps)
         {
             auto beg = NIST_data[s][t].begin(),
-                 end = NIST_data[s][t].end();
+                    end = NIST_data[s][t].end();
             while(beg != end)
             {
-              beg->fugacity = beg->pressure * exp(integrate_compressibility_for_fugacity(pressure_atm, NIST_data);
+                double integral_result = integrate_compressibility_for_fugacity(beg->pressure, NIST_data);
+                beg->fugacity = beg->pressure * exp(integral_result);
             }
         }
     }
 }
 
-void integrate_compressibility_for_fugacity(double pressure_atm, map<string, map<string,vector<istoherm_reference_data>>> & NIST_data)
+
+double integrate_compressibility_for_fugacity(double pressure_atm, map<string, map<string,vector<isotherm_reference_data>>> & NIST_data)
 {
     vector<string> species = {"AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE"};
-    double fugacity = 0.0
-    for (auto s : species)
+    double fugacity = 0.0;
+    for (const auto &s : species)
     {
       vector<string> this_species_temps;
-      get_species_temperature(this_species_temps, s);
-      for(auto t : this_species_temps)
+      get_species_temperatures(this_species_temps, s);
+      for(const auto &t : this_species_temps)
       {
         auto beg = NIST_data[s][t].begin(),
             end = NIST_data[s][t].end();
@@ -165,4 +167,6 @@ void integrate_compressibility_for_fugacity(double pressure_atm, map<string, map
         }
       }
     }
+    fugacity *= ((pressure_atm-.01)/.01);
+    return fugacity;
 }

@@ -13,7 +13,6 @@
 #include <cmath>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
-#include <string.h>
 #include <cstring>
 #include <iterator>
 
@@ -66,9 +65,10 @@ std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>
 //FUNCTIONS CALLED BY READ_REFERENCE_DATA:
 void get_species_temperatures(std::vector<std::string> &this_species_temps, std::string species);
 //END FUNCTIONS CALLED BY READ_REFERENCE_DATA
+
 void get_reference_fugacity(std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data);
 //FUNCTIONS CALLED BY GET_REFERENCE_FUGACITY:
-double integrate_compressibility_for_fugacity(double pressure_atm, std::map<std::string, std::map<std::string,std:;vector<isotherm_reference_data>>> NIST_data);
+double integrate_compressibility_for_fugacity(double pressure_atm, std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> & NIST_data);
 //END FUNCTIONS CALLED BY GET_REFERENCE_FUGACITY
 
 std::vector<general_run_data> set_up_general_runs(int argc, char ** argv);

@@ -18,8 +18,8 @@ int main(int argc, char ** argv)
 
     /* these three functions:
      * 1. figure out how many vectors and vectors-of-vectors we're going to need
-     * 2. set up the needed small_dataset structures
-     * 3. read in the simulation small_dataset from the input file to all_runs*/
+     * 2. set up the needed data structures
+     * 3. read in the simulation data from the input file to all_runs*/
     auto general_runs = set_up_general_runs(argc, argv);
     auto all_runs = set_up_simulation_structs(general_runs);
     read_simulation_data(argc, argv, all_runs);

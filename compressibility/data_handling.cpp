@@ -116,9 +116,19 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
         getline(input,a_line);
         getline(input,a_line);
         if(all_runs[i-1][j].atom_type == "H2" || all_runs[i-1][j].atom_type == "HE")
+        {
             getline(input,a_line);//helium and H2 have an extra line in their input file
+        }
 
-        int num_runs = atoi(a_line.c_str());
+        int num_runs;
+        stringstream convert(a_line);
+        if(!(convert >> num_runs))
+        {
+            cerr << "Error in converting number of runs to integer in data_handling.cpp"
+                 << "function read_simulation_data()"
+                 << endl;
+            exit(1);//error handling
+        }
         getline(input,a_line);
         if(input.is_open())
         {
@@ -132,7 +142,7 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                         istream_iterator<string>(),
                         back_inserter(this_line)
                 );
-                if(this_line.size())
+                if(!this_line.empty())
                 {
                     auto &ref = (all_runs[i - 1])[j];//make current run a ref to clean up the code a bit
                     ref.temperature = atof(this_line[0].c_str());
@@ -140,9 +150,13 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                     ref.simulation_V = atof(this_line[2].c_str());
                     ref.density = atof(this_line[3].c_str());
                     if(j == (num_runs - 1))
+                    {
                         break;
+                    }
                     else
+                    {
                         j++;
+                    }
                 }
                 else
                 {
@@ -180,9 +194,8 @@ void convert_data_to_other_units(vector<vector<run>> &all_runs, vector<general_r
 
 void calculate_data(vector<vector<run>> &all_runs)
 {
-    for(auto all_beg = all_runs.begin();all_beg != all_runs.end();all_beg++)
-    {
-        for(auto mini_beg = all_beg->begin(); mini_beg != all_beg->end();mini_beg++) {
+    for (auto &all_run : all_runs) {
+        for(auto mini_beg = all_run.begin(); mini_beg != all_run.end();mini_beg++) {
             mini_beg->simulation_Z = get_compressibility(mini_beg->temperature, mini_beg->pressure_pa, mini_beg->simulation_V);
             mini_beg->EOS_Z = solve_peng_robinson_for_compressibility(mini_beg->temperature, mini_beg->pressure_atm, *mini_beg);
             mini_beg->EOS_fugacity = solve_peng_robinson_for_fugacity(mini_beg->temperature, mini_beg->pressure_atm, *mini_beg);
