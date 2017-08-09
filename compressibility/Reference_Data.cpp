@@ -158,6 +158,7 @@ void calculate_reference_fugacities(std::map<std::string, std::map<std::string, 
             {
                 double integral_result = integrate_compressibility_for_fugacity(beg->pressure, NIST_data);
                 beg->fugacity = beg->pressure * exp(integral_result);
+                beg++;
             }
         }
     }
