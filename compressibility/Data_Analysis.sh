@@ -19,6 +19,7 @@ mkdir -p GRAPHS/compressibilities
 for species in CH4 CO2 N2 NE AR KR XE; do
     array="${species}_models[@]"
     mkdir -p ${species}
+    echo ${species}
     cd ${species}
     for model in "${!array}"; do
         mkdir -p ${model}
@@ -47,6 +48,7 @@ for species in H2 HE; do
     mkdir -p ${species}
     model_array="${species}_models[@]"
     temp_array="${species}_temperatures[@]"
+    echo ${species}
     cd ${species}
         for corrections in FH_ON FH_OFF; do
             mkdir -p ${corrections}
