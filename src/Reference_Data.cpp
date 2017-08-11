@@ -128,7 +128,7 @@ double get_reference_fugacity(string atom_type,
 }
 void get_species_temperatures(vector<string> & this_species_temps, string species)
 {
-    path p("ISOTHERM_REFERENCE_DATA/" + species);
+    path p("../misc/ISOTHERM_REFERENCE_DATA/" + species);
     for (auto i = directory_iterator(p); i != directory_iterator(); i++)
     {
         if (!is_directory(i->path()))
