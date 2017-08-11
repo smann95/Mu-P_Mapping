@@ -183,14 +183,17 @@ double integrate_compressibility_for_fugacity(double pressure_atm, map<string, m
         fugacity += (end->compressibility + 1.0) / pressure_atm;
         beg ++;//already got the first term, advance pointer
         end ++;//put pointer back where it should be
+
+        auto diff = abs(beg->pressure - pressure_atm);
         while(beg != end)
         {
-            while (beg->pressure != pressure_atm);
-            {
-                double this_term = (beg->compressibility + 1.0) / pressure_atm;
-                fugacity += 2.0 * this_term;
-                beg++;
+            if(diff < 10e-2) {
+                break;
             }
+            double this_term = (beg->compressibility + 1.0) / pressure_atm;
+            fugacity += 2.0 * this_term;
+            beg++;
+            diff = abs(beg->pressure - pressure_atm);
         }
       }
     }
