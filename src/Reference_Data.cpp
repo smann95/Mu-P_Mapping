@@ -16,10 +16,10 @@ map<string, map<string, vector<isotherm_reference_data>>> read_reference_data()
     {
         vector<string> this_species_temps = {};
         get_species_temperatures(this_species_temps, s);
-        path p("ISOTHERM_REFERENCE_DATA/" + s);
+        path p("../misc/ISOTHERM_REFERENCE_DATA/" + s);
         for(const auto &t : this_species_temps)
         {
-            string my_file_name = "ISOTHERM_REFERENCE_DATA/" + s + "/" + t;
+            string my_file_name = "../misc/ISOTHERM_REFERENCE_DATA/" + s + "/" + t;
             std::fstream file(my_file_name);
             if(file.is_open())
             {
