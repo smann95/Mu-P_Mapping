@@ -2,10 +2,16 @@
 // Created by luciano on 8/11/2017.
 //
 
-#include "gtest/gtest.h"
-#include "../../src/compressibility.h"
+#define CATCH_CONFIG_MAIN
+#include "catch/catch.hpp"
 
-TEST( test_unit_conversion, unit_correctness)
+#include "../src/compressibility.h"
+#include "../src/data_handling.cpp"
+#include "../src/peng_robinson.cpp"
+#include "../src/Reference_Data.cpp"
+
+
+TEST_CASE("Units converted properly", "[unit conversion]")
 {
     std::vector<std::vector<run>> all_runs;
     std::vector<general_run_data> general_run;
@@ -33,9 +39,9 @@ TEST( test_unit_conversion, unit_correctness)
 
     convert_data_to_other_units(all_runs, general_run);
 
-    EXPECT_EQ(all_runs[0][0].pressure_bar, 0.99999972975 );
-    EXPECT_EQ(all_runs[0][0].pressure_pa, 101324.9726169187);
-    EXPECT_EQ(all_runs[0][0].simulation_V, 1 );
+    REQUIRE(all_runs[0][0].pressure_bar == 1 );
+    REQUIRE(all_runs[0][0].pressure_pa == 100000);
+    REQUIRE(all_runs[0][0].simulation_V == 1 );
 
 }
 
