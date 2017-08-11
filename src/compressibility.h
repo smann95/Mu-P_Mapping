@@ -45,7 +45,7 @@ struct run
            simulation_Z,
            density,
            moles;
-    double EOS_Z;//compressibility
+    double EOS_Z;//src
     double Tc,
            Pc,
            w;
