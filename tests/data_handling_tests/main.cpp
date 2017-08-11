@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/compressibility.h"
+#include "../../src/compressibility.h"
 
 int main(int argc, char ** argv)
 {

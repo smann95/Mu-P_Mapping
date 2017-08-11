@@ -3,8 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/compressibility.h"
-#include "tests.h"
+#include "../../src/compressibility.h"
 
 TEST( test_unit_conversion, unit_correctness)
 {
