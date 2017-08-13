@@ -10,7 +10,9 @@
 #include "../src/peng_robinson.cpp"
 #include "../src/Reference_Data.cpp"
 
-
+/*
+ * BEGIN DATA_HANDLING.cpp TESTS
+ */
 TEST_CASE("Units converted properly", "[unit conversion]")
 {
     std::vector<std::vector<run>> all_runs;
@@ -42,6 +44,18 @@ TEST_CASE("Units converted properly", "[unit conversion]")
     REQUIRE(all_runs[0][0].pressure_bar == 1 );
     REQUIRE(all_runs[0][0].pressure_pa == 100000);
     REQUIRE(all_runs[0][0].simulation_V == 1 );
-
 }
+
+TEST_CASE("Compressibility is 1 when expected", "[compressibility")
+{
+    double temperature = 297,
+           pressure_pa = 328042000,
+           V = 8e-28;
+    REQUIRE(get_compressibility(temperature, pressure_pa, V) == Approx(1.0).epsilon(0.01));
+}
+
+
+/*
+ * END DATA_HANDLING.cpp TESTS
+ */
 
