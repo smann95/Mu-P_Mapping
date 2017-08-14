@@ -4,13 +4,10 @@ from scipy import integrate
 
 
 def z(p):
-    z = Z_of.get(p, Z_of[min(Z_of.keys(), key=lambda k: abs(k - p))])
-    z += 1
-    z /= p
-    return z
+    return (Z_of.get(p, Z_of[min(Z_of.keys(), key=lambda k: abs(k - p))]) + 1) / p
 
 
-file_name = "../misc/ISOTHERM_REFERENCE_DATA/AR/90"
+file_name = "../misc/ISOTHERM_REFERENCE_DATA/AR/300"
 
 with open(file_name) as f:
     reader = csv.reader(f, delimiter=" ")
@@ -26,7 +23,7 @@ for p_str, v_str in zip(pressure_strings, volume_strings):
 my_Zs = []
 
 for p, v in zip(pressures, volumes):
-    this_z = (p * v) / (0.082057388 * 90)
+    this_z = (p * v) / (0.082057388 * 300)
     my_Zs.append(this_z)
 
 Z_of = {}
