@@ -15,7 +15,6 @@ int main(int argc, char ** argv)
     auto NIST_data = read_reference_data();
     calculate_reference_fugacities(NIST_data);
 
-
     /* these three functions:
      * 1. figure out how many vectors and vectors-of-vectors we're going to need
      * 2. set up the needed data structures

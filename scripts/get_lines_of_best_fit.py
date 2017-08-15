@@ -1,37 +1,51 @@
 import csv
 from math import exp
 from scipy import integrate
+import numpy as np
+import os
 
 
-def z(p):
-    return (Z_of.get(p, Z_of[min(Z_of.keys(), key=lambda k: abs(k - p))]) + 1) / p
+def compressibility(p, polynomial):
+    return (polynomial(p) - 1) / p
 
 
-file_name = "../misc/ISOTHERM_REFERENCE_DATA/AR/300"
+def fugacity(file_name, temperature, pressure):
+    print file_name, temperature, pressure
+    with open(file_name) as f:
+        reader = csv.reader(f, delimiter=" ")
+        pressure_strings, volume_strings = zip(*reader)
 
-with open(file_name) as f:
-    reader = csv.reader(f, delimiter=" ")
-    pressure_strings, volume_strings = zip(*reader)
+    pressures = []
+    volumes = []
+    compressibilities = []
 
-pressures = []
-volumes = []
+    for p_str, v_str in zip(pressure_strings, volume_strings):
+        pressures.append(float(p_str))
+        volumes.append(float(v_str))
+    for p, v in zip(pressures, volumes):
+        this_z = (p * v) / (0.082057388 * temperature)
+        compressibilities.append(this_z)
 
-for p_str, v_str in zip(pressure_strings, volume_strings):
-    pressures.append(float(p_str))
-    volumes.append(float(v_str))
+    x = np.array(pressures)
+    z = np.array(compressibilities)
 
-my_Zs = []
+    coefficients = np.polynomial.legendre.legfit(x, z, 10)
+    polynomial = np.polynomial.legendre.Legendre(coefficients)
+    return pressure * exp(integrate.quad(compressibility, 0.1, 30, args=polynomial)[0])
 
-for p, v in zip(pressures, volumes):
-    this_z = (p * v) / (0.082057388 * 300)
-    my_Zs.append(this_z)
 
-Z_of = {}
+for species in "AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE":
+    file_name = "../misc/ISOTHERM_REFERENCE_DATA/"
+    file_name += species
+    file_name += "/"
+    species_temperatures = os.listdir(file_name)
 
-for i, p in enumerate(pressures):
-    Z_of[p] = my_Zs[i]
-
-result, error = integrate.quad(z, 0.1, 30.0)
-answer = 30.0 * exp(result)
-
-print answer
+    for temperature in species_temperatures:
+        file_name = "../misc/ISOTHERM_REFERENCE_DATA/"
+        file_name += species
+        file_name += "/"
+        file_name += temperature
+        out_file = open(file_name + "OUT", 'w')
+        in_file = open(file_name, 'r')
+        for line in in_file:
+            out_file.write(line.rstrip('\n') + " " + str(fugacity(file_name, float(temperature), float(line.split(" ")[0]))) + '\n')

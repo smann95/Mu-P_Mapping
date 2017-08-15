@@ -19,7 +19,7 @@ map<string, map<string, vector<isotherm_reference_data>>> read_reference_data()
         path p("../misc/ISOTHERM_REFERENCE_DATA/" + s);
         for(const auto &t : this_species_temps)
         {
-            string my_file_name = "../misc/ISOTHERM_REFERENCE_DATA/" + s + "/" + t;
+            string my_file_name = "/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/misc/ISOTHERM_REFERENCE_DATA/" + s + "/" + t;
             std::fstream file(my_file_name);
             if(file.is_open())
             {
@@ -76,8 +76,8 @@ void file_output(vector<vector<run>> all_runs,
                         << mini_beg.simulation_Z << ",  "
                         << mini_beg.EOS_Z << ", "
                         << reference_Z << ", "
-                        << mini_beg.EOS_fugacity << ", "
-                        << reference_f
+                        << mini_beg.EOS_fugacity
+                        << ", "<< reference_f
                         << endl;
         }
         output_file.close();
@@ -94,16 +94,14 @@ double get_reference_compressibility(string atom_type,
     temperature_string << this_temperature;
     auto beg = NIST_data[atom_type][temperature_string.str()].begin(),
          end = NIST_data[atom_type][temperature_string.str()].end();
-    double reference_Z = 0.0;
     while(beg != end)
     {
         if(beg->pressure == pressure_atm)
         {
-            reference_Z = beg->compressibility;
+            return beg->compressibility;
         }
         beg++;
     }
-    return reference_Z;
 }
 
 double get_reference_fugacity(string atom_type,
@@ -120,7 +118,7 @@ double get_reference_fugacity(string atom_type,
     {
         if(beg->pressure == pressure_atm)
         {
-            reference_f = beg->fugacity;
+            return beg->fugacity;
         }
         beg++;
     }
@@ -128,7 +126,8 @@ double get_reference_fugacity(string atom_type,
 }
 void get_species_temperatures(vector<string> & this_species_temps, string species)
 {
-    path p("../misc/ISOTHERM_REFERENCE_DATA/" + species);
+    string this_path = "/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/misc/ISOTHERM_REFERENCE_DATA/" + species;
+    path p(this_path);
     for (auto i = directory_iterator(p); i != directory_iterator(); i++)
     {
         if (!is_directory(i->path()))
@@ -156,7 +155,7 @@ void calculate_reference_fugacities(std::map<std::string, std::map<std::string, 
                     end = NIST_data[s][t].end();
             while(beg != end)
             {
-                double integral_result = integrate_compressibility_for_fugacity(beg->pressure, NIST_data);
+                double integral_result = integrate_compressibility_for_fugacity(beg->pressure, NIST_data, s, t);
                 beg->fugacity = beg->pressure * exp(integral_result);
                 beg++;
             }
@@ -166,39 +165,33 @@ void calculate_reference_fugacities(std::map<std::string, std::map<std::string, 
 
 /*this function uses the trapezoid rule to integrate for fugacity*/
 
-double integrate_compressibility_for_fugacity(double pressure_atm, map<string, map<string,vector<isotherm_reference_data>>> & NIST_data)
+double integrate_compressibility_for_fugacity(double pressure_atm, map<string, map<string,vector<isotherm_reference_data>>> & NIST_data, string species, string temperature)
 {
-    vector<string> species = {"AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE"};
     double fugacity = 0.0;
-    for (const auto &s : species)
-    {
-      vector<string> this_species_temps;
-      get_species_temperatures(this_species_temps, s);
-      for(const auto &t : this_species_temps)
-      {
-        auto beg = NIST_data[s][t].begin(),
-             end = NIST_data[s][t].end();
-        fugacity += (beg->compressibility + 1.0) / pressure_atm;
-        end--;//need to get last term for trapezoid rule
-        fugacity += (end->compressibility + 1.0) / pressure_atm;
-        beg ++;//already got the first term, advance pointer
-        end ++;//put pointer back where it should be
+    auto beg = NIST_data[species][temperature].begin(),
+         end = NIST_data[species][temperature].end();
+    fugacity += (beg->compressibility - 1.0) / pressure_atm;
+    end--;//need to get last term for trapezoid rule
+    fugacity += (end->compressibility - 1.0) / pressure_atm;
+    beg ++;//already got the first term, advance pointer
+    FILE * my_file = fopen("temp.txt", "a");
 
-        auto diff = abs(beg->pressure - pressure_atm);
-        while(beg != end)
+    fugacity /= 2.0;
+
+    auto diff = abs(pressure_atm - beg->pressure);
+    while(beg != end)
+    {
+        fprintf(my_file,"%lf %lf %lf\n", pressure_atm, beg->pressure, diff);
+        if(diff < 1e-5)
         {
-            if(diff < 10e-2) {
-                break;
-            }
-            double this_term = (beg->compressibility + 1.0) / pressure_atm;
-            fugacity += 2.0 * this_term;
-            beg++;
-            diff = abs(beg->pressure - pressure_atm);
+            break;
         }
-      }
+        double this_term = (beg->compressibility - 1.0) / pressure_atm;
+        fugacity += this_term;
+        //fprintf(my_file, "%lf %lf %lf %lf \n", beg->pressure, beg->compressibility, fugacity, this_term);
+        beg++;
+        diff = abs(beg->pressure - pressure_atm);
     }
-    auto num_intervals = (pressure_atm - .1) / .01,
-         outer_term = (pressure_atm - .1) / num_intervals;
-    fugacity *= outer_term;
-    return fugacity;
+    fclose(my_file);
+    return fugacity * .01;
 }

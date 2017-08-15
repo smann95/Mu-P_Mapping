@@ -54,6 +54,12 @@ TEST_CASE("Compressibility is 1 when expected", "[compressibility")
     REQUIRE(get_compressibility(temperature, pressure_pa, V) == Approx(1.0).epsilon(0.01));
 }
 
+TEST_CASE("Case-insensitive string comparison works", "[get_species_mass]")
+{
+    REQUIRE(get_species_mass("Co2") == 44.0095);
+    REQUIRE(get_species_mass("cO2") == 44.0095);
+    REQUIRE(get_species_mass("CO2") == 44.0095);
+}
 
 /*
  * END DATA_HANDLING.cpp TESTS
