@@ -115,11 +115,6 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
         getline(input,a_line);
         getline(input,a_line);
         getline(input,a_line);
-        if(all_runs[i-1][j].atom_type == "H2" || all_runs[i-1][j].atom_type == "HE")
-        {
-            getline(input,a_line);//helium and H2 have an extra line in their input file
-        }
-
         int num_runs;
         stringstream convert(a_line);
         if(!(convert >> num_runs))
@@ -128,6 +123,10 @@ void read_simulation_data(int argc, char ** argv, vector<vector<run>> &all_runs)
                  << "function read_simulation_data()"
                  << endl;
             exit(1);//error handling
+        }
+        if(all_runs[i-1][j].atom_type == "H2" || all_runs[i-1][j].atom_type == "HE")
+        {
+            getline(input,a_line);//helium and H2 have an extra line in their input file
         }
         getline(input,a_line);
         if(input.is_open())
@@ -210,3 +209,13 @@ double get_compressibility(double temperature, double pressure, double volume)
     return (pressure * volume) / (num * GAS_CONSTANT * temperature);
 }
 
+void get_simulation_fugacities(int argc, char ** argv)
+{
+    for(int i = 1;i< argc; i++)
+    {
+        string input_name = argv[i];
+        auto file_name = input_name + ".OUT";
+        auto command = "python ../scripts/integrate_simulation_data.py " + file_name;
+        system(command.c_str());
+    }
+}

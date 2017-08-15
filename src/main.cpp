@@ -11,9 +11,10 @@ int main(int argc, char ** argv)
         return 1;
     }
 
+    cout << "BEGIN MU-P MAPPING FOR " << argv[1] << endl;
+
     //read in and store reference_data
     auto NIST_data = read_reference_data();
-    calculate_reference_fugacities(NIST_data);
 
     /* these three functions:
      * 1. figure out how many vectors and vectors-of-vectors we're going to need
@@ -31,6 +32,18 @@ int main(int argc, char ** argv)
     /* And write them to a file*/
     file_output(all_runs,general_runs, NIST_data, argv);
 
-    cout << "DONE" << endl;
+
+    /*
+     *
+     *After outputting most of the data we need, the magic happens via python because doing quadrature is a pain in
+     *the ass in C++. This is probably the dumbest way to do this but it works
+     *
+     */
+
+    cout << "BEGIN FUGACITY INTEGRATOR" << endl;
+    get_simulation_fugacities(argc, argv);
+    cout << "DONE WITH FUGACITY" << endl;
+
+    cout << "END MU-P MAPPING FOR "<< argv[1] << endl;
     return 0;
 }

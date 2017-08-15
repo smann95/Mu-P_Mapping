@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Mu-P_Mapping"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mapMu-Ptests">
+				<Option output="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/mapMu-Ptests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/tests/catch"/>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 mapMu-Ptests"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mapMu-Ptests/fast">
+				<Option output="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/mapMu-Ptests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/tests/catch"/>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 mapMu-Ptests/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mapMu-P">
+				<Option output="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/mapMu-P" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 mapMu-P"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="mapMu-P/fast">
+				<Option output="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/mapMu-P" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 mapMu-P/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/src/Reference_Data.cpp">
+			<Option target="mapMu-P"/>
+		</Unit>
+		<Unit filename="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/src/compressibility.h">
+			<Option target="mapMu-P"/>
+		</Unit>
+		<Unit filename="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/src/data_handling.cpp">
+			<Option target="mapMu-P"/>
+		</Unit>
+		<Unit filename="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/src/main.cpp">
+			<Option target="mapMu-P"/>
+		</Unit>
+		<Unit filename="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/src/peng_robinson.cpp">
+			<Option target="mapMu-P"/>
+		</Unit>
+		<Unit filename="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/tests/tests_main.cpp">
+			<Option target="mapMu-Ptests"/>
+		</Unit>
+		<Unit filename="/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

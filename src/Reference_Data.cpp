@@ -19,13 +19,19 @@ map<string, map<string, vector<isotherm_reference_data>>> read_reference_data()
         path p("../misc/ISOTHERM_REFERENCE_DATA/" + s);
         for(const auto &t : this_species_temps)
         {
-            string my_file_name = "/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/misc/ISOTHERM_REFERENCE_DATA/" + s + "/" + t;
+            string my_file_name = "/home/luciano/Dropbox/Mu-P_Mapping/misc/ISOTHERM_REFERENCE_DATA/";
+            my_file_name.append(s);
+            my_file_name.append("/");
+            my_file_name.append(t);
+
+
             std::fstream file(my_file_name);
             if(file.is_open())
             {
                 double pressure = 0.0,
-                        volume = 0.0;
-                while(file >> pressure >> volume)
+                       volume = 0.0,
+                       fugacity = 0.0;
+                while(file >> pressure >> volume >> fugacity)
                 {
                     isotherm_reference_data this_point;
                     this_point.pressure = pressure;
@@ -35,6 +41,7 @@ map<string, map<string, vector<isotherm_reference_data>>> read_reference_data()
                     this_point.compressibility = get_compressibility(stod(t),
                                                                      pressure*101325,
                                                                      this_point.volume_m3);
+                    this_point.fugacity = fugacity;
                     NIST_data[s][t].push_back(this_point);
                 }
             }
@@ -71,13 +78,13 @@ void file_output(vector<vector<run>> all_runs,
                                                                mini_beg.temperature,
                                                                NIST_data);
 
-            output_file << mini_beg.temperature << ",     "
-                        << mini_beg.pressure_atm << ",    "
-                        << mini_beg.simulation_Z << ",  "
-                        << mini_beg.EOS_Z << ", "
-                        << reference_Z << ", "
-                        << mini_beg.EOS_fugacity
-                        << ", "<< reference_f
+            output_file << mini_beg.temperature << " "
+                        << mini_beg.pressure_atm << " "
+                        << mini_beg.simulation_Z << " "
+                        << mini_beg.EOS_Z << " "
+                        << reference_Z << " "
+                        << mini_beg.EOS_fugacity << " "
+                        << reference_f << " "
                         << endl;
         }
         output_file.close();
@@ -92,8 +99,8 @@ double get_reference_compressibility(string atom_type,
 {
     ostringstream temperature_string;
     temperature_string << this_temperature;
-    auto beg = NIST_data[atom_type][temperature_string.str()].begin(),
-         end = NIST_data[atom_type][temperature_string.str()].end();
+    auto beg = NIST_data[atom_type][temperature_string.str()+"OUT"].begin(),
+         end = NIST_data[atom_type][temperature_string.str()+"OUT"].end();
     while(beg != end)
     {
         if(beg->pressure == pressure_atm)
@@ -111,8 +118,8 @@ double get_reference_fugacity(string atom_type,
 {
     ostringstream temperature_string;
     temperature_string << this_temperature;
-    auto beg = NIST_data[atom_type][temperature_string.str()].begin(),
-            end = NIST_data[atom_type][temperature_string.str()].end();
+    auto beg = NIST_data[atom_type][temperature_string.str()+"OUT"].begin(),
+            end = NIST_data[atom_type][temperature_string.str()+"OUT"].end();
     double reference_f = 0.0;
     while(beg != end)
     {
@@ -126,11 +133,11 @@ double get_reference_fugacity(string atom_type,
 }
 void get_species_temperatures(vector<string> & this_species_temps, string species)
 {
-    string this_path = "/disk2/home/laratelli/CLionProjects/Mu-P_Mapping/misc/ISOTHERM_REFERENCE_DATA/" + species;
+    string this_path = "/home/luciano/Dropbox/Mu-P_Mapping/misc/ISOTHERM_REFERENCE_DATA/";
+    this_path.append(species);
     path p(this_path);
     for (auto i = directory_iterator(p); i != directory_iterator(); i++)
-    {
-        if (!is_directory(i->path()))
+    { if (!is_directory(i->path()))
         {
             this_species_temps.push_back(i->path().filename().string());
         }
@@ -141,57 +148,3 @@ void get_species_temperatures(vector<string> & this_species_temps, string specie
     }
 }
 
-void calculate_reference_fugacities(std::map<std::string, std::map<std::string, std::vector<isotherm_reference_data>>> NIST_data)
-{
-    vector<string> species = {"AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE"};
-
-    for (const auto &s : species)
-    {
-        vector<string> this_species_temps = {};
-        get_species_temperatures(this_species_temps, s);
-        for(const auto &t : this_species_temps)
-        {
-            auto beg = NIST_data[s][t].begin(),
-                    end = NIST_data[s][t].end();
-            while(beg != end)
-            {
-                double integral_result = integrate_compressibility_for_fugacity(beg->pressure, NIST_data, s, t);
-                beg->fugacity = beg->pressure * exp(integral_result);
-                beg++;
-            }
-        }
-    }
-}
-
-/*this function uses the trapezoid rule to integrate for fugacity*/
-
-double integrate_compressibility_for_fugacity(double pressure_atm, map<string, map<string,vector<isotherm_reference_data>>> & NIST_data, string species, string temperature)
-{
-    double fugacity = 0.0;
-    auto beg = NIST_data[species][temperature].begin(),
-         end = NIST_data[species][temperature].end();
-    fugacity += (beg->compressibility - 1.0) / pressure_atm;
-    end--;//need to get last term for trapezoid rule
-    fugacity += (end->compressibility - 1.0) / pressure_atm;
-    beg ++;//already got the first term, advance pointer
-    FILE * my_file = fopen("temp.txt", "a");
-
-    fugacity /= 2.0;
-
-    auto diff = abs(pressure_atm - beg->pressure);
-    while(beg != end)
-    {
-        fprintf(my_file,"%lf %lf %lf\n", pressure_atm, beg->pressure, diff);
-        if(diff < 1e-5)
-        {
-            break;
-        }
-        double this_term = (beg->compressibility - 1.0) / pressure_atm;
-        fugacity += this_term;
-        //fprintf(my_file, "%lf %lf %lf %lf \n", beg->pressure, beg->compressibility, fugacity, this_term);
-        beg++;
-        diff = abs(beg->pressure - pressure_atm);
-    }
-    fclose(my_file);
-    return fugacity * .01;
-}
