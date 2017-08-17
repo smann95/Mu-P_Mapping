@@ -1,3 +1,8 @@
 *.idea
 cmake-build-debug/
 GRAPHS
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+mapMu-P
+mapMu-Ptests
