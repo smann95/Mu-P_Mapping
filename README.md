@@ -9,7 +9,3 @@ This repository is intended to be entirely self-contained,
 that is, one should be able to clone it to a cluster and begin
 running jobs immediately assuming the .pqr files one wants are here.
 
-The **fugacity** folder is the first phase of this project; we ended up
-going with a much simpler approach which is both easier to think
-about and much easier to implement in code. The simpler approach is
-found in the **compressibility** folder.
