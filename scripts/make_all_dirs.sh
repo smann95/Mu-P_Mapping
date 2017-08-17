@@ -28,8 +28,8 @@ XE_temperatures=( 170.0 190.0 210.0 230.0 250.0 270.0 290.0 310.0 330.0 350.0 37
 for species in CH4 CO2 N2 NE AR KR XE; do
     model_array="${species}_models[@]"
     temp_array="${species}_temperatures[@]"
-    mkdir -p ${species}
-    cd ${species}
+    mkdir -p ../simulation_runs/${species}
+    cd ../simulation_runs/${species}
         for model in "${!model_array}"; do
             mkdir -p ${model}
             cd ${model}
