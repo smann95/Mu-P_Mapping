@@ -6,6 +6,9 @@
 !GRAPHS/*
 !misc
 !misc/*
+!misc/inputfiles/*
+!misc/modelfiles/*
+!misc/ISOTHERM_REFERENCE_DATA/
 !scripts
 !scripts/*
 !src
@@ -15,3 +18,26 @@
 !CMakeLists.txt
 !README.md
 !run_me_first.sh
+
+# Compiled Python files
+*.pyc
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+GRAPHS/AR/
+GRAPHS/CH4/
+GRAPHS/CO2/
+GRAPHS/H2/
+GRAPHS/HE/
+GRAPHS/KR/
+GRAPHS/N2/
+GRAPHS/NE/
+GRAPHS/XE/
