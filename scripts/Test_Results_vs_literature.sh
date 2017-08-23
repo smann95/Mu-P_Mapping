@@ -32,8 +32,8 @@ for species in H2; do
                                         gsub(/XXXPRESXXX/, pres);
                                         gsub(/XXXSPECIESXXX/, species);
                                         print;
-                                        }' ~/Dropbox/Mu-P_Mapping/misc/inputfiles/${ensemble}${species}${corrections}"input.inp" > ${species}".inp"
-                                        cp ~/Dropbox/Mu-P_Mapping/misc/modelfiles/FOURBYFOUR/${species}_${model}".pqr" input.pqr
+                                        }' /pylon5/ch3benp/luciano2/Mu-P_Mapping/misc/inputfiles/${ensemble}${species}${corrections}"input.inp" > ${species}".inp"
+                                        cp /pylon5/ch3benp/luciano2/Mu-P_Mapping/misc/modelfiles/FOURBYFOUR/${species}_${model}".pqr" input.pqr
                                     cd .. #out of temperature
                                 done
                             cd .. #out of pressure
@@ -60,7 +60,7 @@ for species in H2; do
                                 touch these_are_temperatures_in_kelvin
                                 for temperature in "${!temp_array}";do
                                     cd ${temperature}
-                                        cp ~/Dropbox/Mu-P_Mapping/scripts/submit.sh .
+                                        cp /pylon5/ch3benp/luciano2/Mu-P_Mapping/scripts/submit.sh .
                                         sed -i "s/XXXJOBNAMEXXX/${species}_${corrections}_${model}"_P"${pres}"_T"${temperature}/g" submit.sh
                                         #sbatch submit.sh
                                         pwd
