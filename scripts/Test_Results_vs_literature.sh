@@ -5,7 +5,7 @@ ensemble=npt
 
 H2_models=( luo_lloyd )
 
-H2_temperatures=( 020.0 060.0 077.0 100.0 140.0 180.0 200.0 220.0 260.0 293.0 300.0 340.0 )
+H2_temperatures=( 077.0 100.0 200.0 )
 
 #H2 and He have a separate loop because they require Feynman_Hibbs corrections
 for species in H2; do
@@ -20,7 +20,7 @@ for species in H2; do
                     mkdir -p ${model}
                     cd ${model}
                         touch these_numbers_are_pressures_in_ATM
-                        for pres in 9.8692e-10 9.8692e-9 4.9346e-8 9.8692e-8 1.4804e-7 1.9738e-7; do
+                        for pres in 9.86923 19.7385 29.6077 39.4769 49.3462 59.2154 69.0846 78.9538 88.8231 98.6923 108.562 118.431 128.3 138.169 148.038 157.908 167.777 177.646 187.515 197.385 ; do
                             mkdir -p ${pres}
                             cd ${pres}
                                 touch these_are_temperatures_in_kelvin
@@ -55,7 +55,7 @@ for species in H2; do
                 for model in "${!model_array}"; do
                     cd ${model}
                         touch these_numbers_are_pressures_in_ATM
-                        for pres in 9.8692e-10 9.8692e-9 4.9346e-8 9.8692e-8 1.4804e-7 1.9738e-7; do
+                        for pres in 9.86923 19.7385 29.6077 39.4769 49.3462 59.2154 69.0846 78.9538 88.8231 98.6923 108.562 118.431 128.3 138.169 148.038 157.908 167.777 177.646 187.515 197.385 ; do
                             cd ${pres}
                                 touch these_are_temperatures_in_kelvin
                                 for temperature in "${!temp_array}";do
