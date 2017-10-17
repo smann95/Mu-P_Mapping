@@ -2,9 +2,9 @@
 
 using namespace std;
 
-int main(int argc, char ** argv)
+int main(int argc, char **argv)
 {
-    if(argc < 2)
+    if (argc < 2)
     {
         cerr << "Wrong number of args. Takes at least one filename as input.\n"
              << endl;
@@ -30,7 +30,7 @@ int main(int argc, char ** argv)
     calculate_data(all_runs);
 
     /* And write them to a file*/
-    file_output(all_runs,general_runs, NIST_data, argv);
+    file_output(all_runs, general_runs, NIST_data, argv);
 
 
     /*
@@ -44,6 +44,6 @@ int main(int argc, char ** argv)
     get_simulation_fugacities(argc, argv);
     cout << "DONE WITH FUGACITY" << endl;
 
-    cout << "END MU-P MAPPING FOR "<< argv[1] << endl;
+    cout << "END MU-P MAPPING FOR " << argv[1] << endl;
     return 0;
 }
