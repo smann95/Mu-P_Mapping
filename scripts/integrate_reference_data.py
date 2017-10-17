@@ -38,21 +38,21 @@ def fugacity(file_name, temperature, pressure):
     return pressure * exp(integrate.quad(compressibility, 0.1, 30, args=polynomial)[0])
 
 
-for species in "AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE":
+#for species in "AR", "CH4", "CO2", "H2", "HE", "KR", "N2", "NE", "XE":
+species = "H22"
+file_name = "../misc/ISOTHERM_REFERENCE_DATA/"
+file_name += species
+file_name += "/"
+species_temperatures = os.listdir(file_name)
+
+for temperature in species_temperatures:
     file_name = "../misc/ISOTHERM_REFERENCE_DATA/"
     file_name += species
     file_name += "/"
-    species_temperatures = os.listdir(file_name)
-
-    for temperature in species_temperatures:
-        file_name = "../misc/ISOTHERM_REFERENCE_DATA/"
-        file_name += species
-        file_name += "/"
-        file_name += temperature
-        out_file = open(file_name + "OUT", 'w')
-        in_file = open(file_name, 'r')
-        for line in in_file:
-            fugacity(file_name, float(temperature), float(line.split(" ")[0]))
-            out_file.write(line.rstrip('\n') + " " + str(fugacity(file_name, float(temperature), float(line.split(" ")[0]))) + '\n')
-
-
+    file_name += temperature
+    out_file = open(file_name + "OUT", 'w')
+    in_file = open(file_name, 'r')
+    for line in in_file:
+        fugacity(file_name, float(temperature), float(line.split(" ")[0]))
+        out_file.write(line.rstrip('\n') + " " + str(
+            fugacity(file_name, float(temperature), float(line.split(" ")[0]))) + '\n')

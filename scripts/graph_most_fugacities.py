@@ -20,35 +20,18 @@ reference_f = the_data.reference_fug.tolist()
 
 fig = plt.figure()
 
-
 plt.scatter(t, state_f, s=20, c='red', label='State Fugacity')
-#plt.plot(t, state_f, c='red', label='State Fugacity')
+# plt.plot(t, state_f, c='red', label='State Fugacity')
 plt.scatter(t, sim_f, s=20, c='green', label='Simulation Fugacity')
-#plt.plot(t, sim_f, c='green', label='Simulation Fugacity')
+# plt.plot(t, sim_f, c='green', label='Simulation Fugacity')
 plt.scatter(t, reference_f, s=20, c='purple', label='Reference Fugacity')
-#plt.plot(t, reference_f, c='purple', label='Reference Fugacity')
+# plt.plot(t, reference_f, c='purple', label='Reference Fugacity')
 
 title = "NPT " + species + "(" + model + ")" + "at P = "
 file_name = "placeholder"
 
-if p[0] == 0.1:
-    title += "0.1"
-    file_name = species + model + "_P_0.1.png"
-elif p[0] == 1:
-    title += "1.0"
-    file_name = species + model + "_P_1.png"
-elif p[0] == 5:
-    title += "5.0"
-    file_name = species + model + "_P_5.png"
-elif p[0] == 10:
-    title += "10.0"
-    file_name = species + model + "_P_10.png"
-elif p[0] == 20:
-    title += "20.0"
-    file_name = species + model + "_P_20.png"
-elif p[0] == 30:
-    title += "30.0"
-    file_name = species + model + "_P_30.png"
+title += str(p[0])
+file_name = species + model + "_P_" + str(p[0]) + ".png"
 
 title += "ATM"
 ax = plt.subplot(111)

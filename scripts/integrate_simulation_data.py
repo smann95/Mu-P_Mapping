@@ -5,6 +5,10 @@ import sys
 from operator import itemgetter
 
 
+def change_to_float(l, dtype=float):
+    return map(dtype, l)
+
+
 def compressibility(p, polynomial):
     return (polynomial(p) - 1) / p
 
@@ -37,12 +41,17 @@ def main():
     file_out = sys.argv[1] + ".FINAL"
     out_file = open(file_out, "w")
 
-    all_my_lists = []
+    all_my_string_lists = []
 
     for input_line in in_file:
         out = [item for item in filter(None, input_line.strip().split(' '))]
-        all_my_lists.append(out)
+        all_my_string_lists.append(out)
 
+    all_my_lists = []
+    for a_list in all_my_string_lists:
+        all_my_lists.append(change_to_float(a_list))
+
+    # sort by the temperature
     my_sorted_lists = sorted(all_my_lists, key=itemgetter(0))
 
     this_temperature = my_sorted_lists[0][0]
@@ -59,9 +68,10 @@ def main():
             fugacity(current_list)
             current_list = [working_line]
             this_temperature = current_temperature
-        if counter == 6:
+        if counter == 20:  # number of state points per temperature
             fugacity(current_list)
 
+    # sort the results by pressure, which is the second column in each list
     final_list = sorted(my_sorted_lists, key=itemgetter(1))
 
     for output_line in final_list:
