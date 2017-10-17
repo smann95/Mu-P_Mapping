@@ -3,6 +3,7 @@
 //
 
 #define CATCH_CONFIG_MAIN
+
 #include "catch/catch.hpp"
 
 #include "../src/compressibility.h"
@@ -41,16 +42,16 @@ TEST_CASE("Units converted properly", "[unit conversion]")
 
     convert_data_to_other_units(all_runs, general_run);
 
-    REQUIRE(all_runs[0][0].pressure_bar == 1 );
+    REQUIRE(all_runs[0][0].pressure_bar == 1);
     REQUIRE(all_runs[0][0].pressure_pa == 100000);
-    REQUIRE(all_runs[0][0].simulation_V == 1 );
+    REQUIRE(all_runs[0][0].simulation_V == 1);
 }
 
 TEST_CASE("Compressibility is 1 when expected", "[compressibility")
 {
     double temperature = 297,
-           pressure_pa = 328042000,
-           V = 8e-28;
+            pressure_pa = 328042000,
+            V = 8e-28;
     REQUIRE(get_compressibility(temperature, pressure_pa, V) == Approx(1.0).epsilon(0.01));
 }
 

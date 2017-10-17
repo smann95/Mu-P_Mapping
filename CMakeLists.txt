@@ -25,6 +25,6 @@ target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
 add_executable(mapMu-P src/main.cpp ${SOURCE_FILES})
 target_link_libraries(mapMu-P ${Boost_LIBRARIES})
 
-add_executable(mapMu-Ptests tests/tests_main.cpp )
+add_executable(mapMu-Ptests tests/tests_main.cpp)
 target_link_libraries(mapMu-Ptests Catch ${Boost_LIBRARIES})
 
